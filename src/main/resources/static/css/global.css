@@ -1,0 +1,30 @@
+body {
+  min-height: 100%;
+  min-width: 100%;
+}
+.container-full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.RootInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.BaseInput {
+  display: block;
+  padding: 0.5rem 0.25rem 0.5rem 0.25rem;
+  width: 100%;
+  max-width: 10rem;
+  min-width: 5rem;
+}
+
+.BaseButton {
+  display: block;
+  padding: 0.5rem 0.25rem 0.5rem 0.25rem;
+}
+
+.container-fluid {
+  width: 100vw !important;
+}

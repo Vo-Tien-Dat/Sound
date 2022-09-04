@@ -1,0 +1,85 @@
+.FormSideBar {
+  height: 100vh;
+  padding: 2rem 1rem 1.5rem 1rem;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+.BrandSideBar {
+  display: block;
+  display: flex;
+  justify-content: center;
+}
+
+.BrandSideBarImg {
+  height: 4rem;
+  width: 4rem;
+}
+
+.CollapseSideBar {
+  margin: 1.5rem 0rem 0rem 0rem;
+}
+
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  column-gap: 0.5rem;
+}
+
+.SidebarItem {
+  display: block;
+  margin: 0.25rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.SidebarItemActive {
+  background-color: aqua;
+}
+
+.ItemTextAndIcon {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  column-gap: 0.25rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.Typography {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.FontSizeXl {
+  font-size: 2rem;
+}
+
+.HoverItemSideBar {
+}
+
+.HoverItemSideBar:hover {
+  background-color: black;
+}
+
+.FormAvatar {
+  position: absolute;
+  bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.AvatarSidebar {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid red;
+}
+
+.NameUser {
+  display: inline-block;
+  white-space: nowrap;
+}

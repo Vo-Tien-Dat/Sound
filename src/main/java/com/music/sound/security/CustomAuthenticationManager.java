@@ -1,17 +1,16 @@
-package com.music.sound.security.manager;
+package com.music.sound.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import com.music.sound.security.providers.UsernamepasswordProvider;
 import org.springframework.security.core.AuthenticationException;
 
-public class UsernamepasswordManager implements AuthenticationManager{
+public class CustomAuthenticationManager implements AuthenticationManager{
     @Autowired
-    private UsernamepasswordProvider usernamepasswordProvider;
+    private CustomAuthenticationProvider authenticationProviderCustom;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException{
-        return usernamepasswordProvider.authenticate(authentication); 
+        return authenticationProviderCustom.authenticate(authentication); 
     }
 }

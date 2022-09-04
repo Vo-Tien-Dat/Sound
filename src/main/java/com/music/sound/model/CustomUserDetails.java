@@ -4,9 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
-public class UserDetailsOverwrite implements UserDetails{
-    public User user; 
-    public UserDetailsOverwrite(User user){
+public class CustomUserDetails implements UserDetails{
+    private User user; 
+    public CustomUserDetails(User user){
         this.user = user;
     }
 
@@ -17,12 +17,12 @@ public class UserDetailsOverwrite implements UserDetails{
 
     @Override
     public String getPassword(){
-        return null;
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername(){
-        return null;
+        return this.user.getUsername();
     }
 
     @Override
@@ -44,9 +44,6 @@ public class UserDetailsOverwrite implements UserDetails{
     public boolean isEnabled(){
         return true;    
     }
-
-
-
 }
 
 

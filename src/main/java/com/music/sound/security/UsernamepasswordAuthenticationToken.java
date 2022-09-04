@@ -1,4 +1,4 @@
-package com.music.sound.security.auth;
+package com.music.sound.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import java.util.Collection;
@@ -12,5 +12,7 @@ public class UsernamepasswordAuthenticationToken extends UsernamePasswordAuthent
     public UsernamepasswordAuthenticationToken(Object principal, Object credentials,Collection<? extends GrantedAuthority> authorities){
         super(principal, credentials, authorities);
     }
+
+    
     
 }
