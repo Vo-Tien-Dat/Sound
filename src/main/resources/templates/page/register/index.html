@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/register.css}" />
+  </head>
+  <body>
+    <div class="ContainerFullScreen">
+      <form
+        class="RootRegister"
+        th:action="@{/register}"
+        th:method="post"
+        th:object="${userRegisterDTO}"
+      >
+        <div class="Box Flex JustifyContentCenter">
+          <img th:src="@{/assets/img/logo.png}" alt="" class="ImgBrand" />
+        </div>
+        <div class="Box MarginY2">
+          <div class="InputRoot">
+            <div class="Icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <input
+              class="InputBase"
+              type="text"
+              placeholder="username"
+              th:field="*{username}"
+            />
+          </div>
+        </div>
+        <div class="Box MarginY2">
+          <div class="InputRoot">
+            <div class="Icon">
+              <i class="fa-solid fa-key"></i>
+            </div>
+            <input
+              class="InputBase"
+              type="password"
+              placeholder="password"
+              th:field="*{password}"
+            />
+          </div>
+        </div>
+        <div class="Box MarginY2">
+          <div class="InputRoot">
+            <div class="Icon">
+              <i class="fa-solid fa-key"></i>
+            </div>
+            <input
+              class="InputBase"
+              type="password"
+              placeholder="confirm password"
+            />
+          </div>
+        </div>
+        <div class="Box MarginY2">
+          <div class="InputRoot">
+            <div class="Icon">
+              <i class="fa-regular fa-envelope"></i>
+            </div>
+            <input
+              class="InputBase"
+              type="text"
+              placeholder="email"
+              th:field="*{email}"
+            />
+          </div>
+        </div>
+        <div class="Box">
+          <div
+            class="BoxErrorMessage"
+            th:classappend="${errorMessage == null} ? '' : 'active'"
+          >
+            <div class="TypographyErrorMessage" th:text="${errorMessage}"></div>
+          </div>
+        </div>
+        <div class="Box MarginY2">
+          <button class="ButtonBase" type="submit">
+            <div class="Typography NormalCase">
+              <span>Sign In</span>
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/b36a60f224.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

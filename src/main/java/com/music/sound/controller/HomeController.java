@@ -24,8 +24,7 @@ public class HomeController {
     public ModelAndView getHome(){
         String pathFile = "/page/home/index"; 
         ModelAndView modelAndView = new ModelAndView(pathFile);
-        UserDTO userDTO =  userService.runConvertEntityToDTO();
-        logger.info(userDTO.getUsername());
+        logger.info("Page: HOME"); 
         return modelAndView;
     }
 }

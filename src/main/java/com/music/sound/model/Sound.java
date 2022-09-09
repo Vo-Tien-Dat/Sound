@@ -5,31 +5,34 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
+import javax.persistence.Table;
+import lombok.Data;
+@Table(name = "SOUND")
 @Entity
+@Data
 
-public class Music {
+public class Sound {
     @Id 
-    @Column(name = "id_music")
+    @Column(name = "id_sound")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id ; 
 
-
-    @Column(name = "music_name")
-    private String musicName;
+    @Column(name = "name_sound")
+    private String nameSound;
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false, referencedColumnName = "id_user")
     private User user; 
 
-    public String getMusicname(){
-        return this.musicName;
-    }
+    @Column(name = "viewer")
+    private Long viewer; 
 
-    public User getUser(){
-        return this.user;
-    }
+    @Column(name = "link_sound")
+    private String linkSound; 
+
+    @ManyToOne
+    @JoinColumn(name = "id_album", nullable = true, referencedColumnName = "id_album")
+    private Album album; 
 }

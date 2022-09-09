@@ -21,8 +21,12 @@ public class SecurityWebApplication {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+            .cors()
+                .and()
+            .csrf()
+                .disable()
             .authorizeHttpRequests()
-            .antMatchers("/login", "/home", "/css/**")
+            .antMatchers("/login", "/home", "/css/**", "/register")
             .permitAll();
         return httpSecurity.build();
     }
