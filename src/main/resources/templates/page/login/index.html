@@ -19,8 +19,9 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="container-full-screen">
+    <div class="ContainerFullScreen">
       <form class="RootLogin" action="/login" method="post">
+        <h1 th:text="${errorMessage}"></h1>
         <input
           class="BaseInput"
           placeholder="user name"
