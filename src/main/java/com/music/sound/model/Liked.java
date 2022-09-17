@@ -1,33 +1,25 @@
 package com.music.sound.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import lombok.Data;
-
 import javax.persistence.GenerationType;
 
-
-@Table(name = "COMMENT")
+@Table(name = "LIKED")
 @Entity
 @Data
-public class Comment {
+public class Liked {
     @Id
-    @Column(name = "id_comment")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id; 
-
-    @Column(name = "content")
-    private String content; 
+    Long id ; 
 
     @OneToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    private User user ; 
+    private User user; 
 
     @OneToOne
     @JoinColumn(name = "id_sound", referencedColumnName = "id_sound")

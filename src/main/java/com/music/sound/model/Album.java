@@ -1,8 +1,6 @@
 package com.music.sound.model;
 
 import java.util.Set;
-
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,11 +15,11 @@ import lombok.Data;
 @Table(name = "ALBUM")
 @Data
 public class Album {
+    
     @Id
     @Column(name = "id_album")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id; 
-
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     Set<Sound> sounds; 

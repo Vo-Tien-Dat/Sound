@@ -103,3 +103,31 @@ input:focus {
 .Left1\/2 {
   left: 50%;
 }
+
+.w-100 {
+  width: 100%;
+}
+
+.h-75 {
+  height: 75px;
+}
+
+.w-75 {
+  width: 75px;
+}
+
+.h-30 {
+  height: 150px;
+}
+
+.w-30 {
+  width: 150px;
+}
+
+.top-100 {
+  top: 100%;
+}
+
+.translate-y-50 {
+  transform: translateY(-15%);
+}

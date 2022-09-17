@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.Set;
 import javax.persistence.Table;
@@ -22,7 +21,7 @@ public class User {
     @Column(name = "id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id ; 
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username; 
 
     
@@ -30,9 +29,19 @@ public class User {
     private String password; 
 
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email; 
 
+
+    @Column(name = "location")
+    private String location; 
+
+
+    @Column(name = "path_img_avatar")
+    private String pathImgAvatar; 
+
+    @Column(name = "path_img_background")
+    private String pathImgBackground; 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Sound> sounds;    

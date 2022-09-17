@@ -23,7 +23,7 @@ public class Sound {
     private String nameSound;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false, referencedColumnName = "id_user")
+    @JoinColumn(name = "id_user", nullable = true, referencedColumnName = "id_user")
     private User user; 
 
     @Column(name = "viewer")
