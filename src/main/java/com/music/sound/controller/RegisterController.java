@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import com.music.sound.DAO.UserDAO;
 import com.music.sound.DTO.UserDTO.UserRegisterDTO;
-import com.music.sound.model.User;
 import com.music.sound.service.UserService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
@@ -38,11 +37,6 @@ public class RegisterController {
         ModelAndView modelAndView = new ModelAndView(pathFile);
         try{
             userService.create(userRegisterDTO);
-            // User user = new User() ; 
-            // user.setEmail(userRegisterDTO.getEmail());
-            // user.setUsername(userRegisterDTO.getUsername());
-            // user.setPassword(userRegisterDTO.getPassword());
-            // userDAO.save(user); 
         }
         catch(Exception ex){
             modelAndView.addObject("errorMessage", ex.getMessage()); 

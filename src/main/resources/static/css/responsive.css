@@ -1,0 +1,17 @@
+/* HOME PAGE */
+
+/* sidebar */
+@media (max-width: 767px) {
+  .hidden {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .sidebar {
+    min-width: 160px;
+  }
+  .wrapper {
+    flex: 1;
+  }
+}

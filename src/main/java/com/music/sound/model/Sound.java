@@ -19,7 +19,7 @@ public class Sound {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id ; 
 
-    @Column(name = "name_sound")
+    @Column(name = "name_sound", unique = true)
     private String nameSound;
 
     @ManyToOne
@@ -29,7 +29,7 @@ public class Sound {
     @Column(name = "viewer")
     private Long viewer; 
 
-    @Column(name = "link_sound")
+    @Column(name = "link_sound", nullable = false)
     private String linkSound; 
 
     @ManyToOne
