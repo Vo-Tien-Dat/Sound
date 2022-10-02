@@ -9,30 +9,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import lombok.Data;
-@Table(name = "SOUND")
+
 @Entity
+@Table(name = "SOUND")
 @Data
 
 public class Sound {
-    @Id 
+    @Id
     @Column(name = "id_sound")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id ; 
+    Long id;
 
     @Column(name = "name_sound", unique = true)
     private String nameSound;
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = true, referencedColumnName = "id_user")
-    private User user; 
+    private User user;
 
     @Column(name = "viewer")
-    private Long viewer; 
+    private Long viewer;
 
     @Column(name = "link_sound", nullable = false)
-    private String linkSound; 
+    private String linkSound;
 
     @ManyToOne
     @JoinColumn(name = "id_album", nullable = true, referencedColumnName = "id_album")
-    private Album album; 
+    private Album album;
 }

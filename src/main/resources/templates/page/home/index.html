@@ -20,6 +20,7 @@
       integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
       crossorigin="anonymous"
     ></script>
+    <link rel="shortcut icon" href="#">
     <link rel="stylesheet" th:href="@{/css/global.css}" />
     <link rel="stylesheet" th:href="@{/css/home.css}" />
     <link rel="stylesheet" th:href="@{/css/responsive.css}" />
@@ -43,157 +44,10 @@
   </head>
   <body>
     <body>
-      <div class="app container-fluid">
-        <div class="app__container row">
-          <!-- sidebar -->
-          <div class="sidebar col-md-2 hidden">
-            <div class="sidebar__header">
-              <div class="sidebar__header__logo">
-                <img th:src="@{/assets/img/logo1.png}" alt="logo" />
-              </div>
-              <a href="#" class="sidebar__header__name">SOUND</a>
-            </div>
-
-            <div class="sidebar__list">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <i
-                    class="nav-item__icon fa-sharp fa-solid fa-circle-user"
-                  ></i>
-                  <a class="nav-link" href="#">Login</a>
-                </li>
-
-                <li class="nav-item active">
-                  <i
-                    class="nav-item__icon fa-sharp fa-solid fa-house-chimney"
-                  ></i>
-                  <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                  <i class="nav-item__icon fa-solid fa-layer-group"></i>
-                  <a class="nav-link" href="#">Library</a>
-                </li>
-                <li class="nav-item">
-                  <i class="nav-item__icon fa-solid fa-cloud-arrow-up"></i>
-                  <a class="nav-link" href="#">Upload</a>
-                </li>
-                <li class="nav-item">
-                  <i class="nav-item__icon fa-solid fa-clone"></i>
-                  <a class="nav-link" href="#">Playlist</a>
-                </li>
-
-                <li class="nav-item">
-                  <i class="nav-item__icon fa-solid fa-heart"></i>
-                  <a class="nav-link" href="#">Likes</a>
-                </li>
-                <li class="nav-item">
-                  <i class="nav-item__icon fa-solid fa-toggle-off"></i>
-                  <a class="nav-link" href="#">Dark mode</a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="sidebar__footer">
-              <div class="sidebar__footer__detail">
-                <a href="#">Legal </a> <span> - </span>
-                <a href="#"> Privacy </a> <span> - </span>
-                <a href="#">Policy</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- container -->
-          <div class="wrapper col-md-7 col-sm-12 col-12">
-            <!-- homepage -->
-            <div class="container__home container">
-              <div class="container__home__header row">
-                <span class="container__home__header__name-page col-md-3"
-                  >HOME</span
-                >
-                <div class="container__home__header__search col-md-7">
-                  <div class="input-group rounded">
-                    <input
-                      type="search"
-                      class="form-control rounded"
-                      placeholder="Search"
-                      aria-label="Search"
-                      aria-describedby="search-addon"
-                    />
-                    <span class="input-group__icon">
-                      <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                  </div>
-                </div>
-
-                <div class="container__home__header__options col-md-2">
-                  <div class="options__icon-noti">
-                    <i class="fa-solid fa-bell"></i>
-                  </div>
-                </div>
-                <!-- <div class="container__home__header__btn col-md-4">
-                              <button type="button" class="btn">Log in</button>
-                              <button type="button" class="btn btn--active">Sign in</button>
-                          </div> -->
-              </div>
-
-              <div class="container__home__content row">
-                <h2>content</h2>
-              </div>
-            </div>
-          </div>
-
-          <!-- play controll -->
-          <div class="playing-bar col-md-3">
-            <div class="player">
-              <!-- Dashboard -->
-              <div class="player__dashboard">
-                <!-- Header -->
-                <header>
-                  <h2>String 57th & 9th</h2>
-                </header>
-
-                <!-- CD -->
-                <div class="cd">
-                  <div class="cd-thumb"></div>
-                </div>
-
-                <!-- Control -->
-                <div class="control">
-                  <div class="btn btn-repeat">
-                    <i class="fas fa-redo"></i>
-                  </div>
-                  <div class="btn btn-prev">
-                    <i class="fas fa-step-backward"></i>
-                  </div>
-                  <div class="btn btn-toggle-play">
-                    <i class="fas fa-pause icon-pause"></i>
-                    <i class="fas fa-play icon-play"></i>
-                  </div>
-                  <div class="btn btn-next">
-                    <i class="fas fa-step-forward"></i>
-                  </div>
-                  <div class="btn btn-random">
-                    <i class="fas fa-random"></i>
-                  </div>
-                </div>
-
-                <input
-                  id="progress"
-                  class="progress"
-                  type="range"
-                  value="0"
-                  step="1"
-                  min="0"
-                  max="100"
-                />
-
-                <audio id="audio" src=""></audio>
-              </div>
-
-              <!-- Playlist -->
-              <div class="player__playlist"></div>
-            </div>
-          </div>
+    
+      <div th:replace = "layout/mainlayout/index :: mainlayout(null)">
+        <div th:fragment = "content">
+          
         </div>
       </div>
 

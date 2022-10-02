@@ -15,12 +15,12 @@ import lombok.Data;
 @Table(name = "ALBUM")
 @Data
 public class Album {
-    
+
     @Id
     @Column(name = "id_album")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id; 
+    Long id;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
-    Set<Sound> sounds; 
+    Set<Sound> sounds;
 }

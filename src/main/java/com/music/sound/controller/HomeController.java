@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import com.music.sound.DTO.UserDTO.UserDTO;
 import com.music.sound.service.UserService;
 
 @Controller
@@ -15,16 +14,21 @@ public class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-
     @Autowired
-    private UserService userService; 
+    private UserService userService;
 
+    @RequestMapping(value = "/home/*", method = RequestMethod.GET)
+    public ModelAndView getIndex() {
+        String pathRedirect = "redirect:/home";
+        ModelAndView modelAndView = new ModelAndView(pathRedirect);
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView getHome(){
-        String pathFile = "/page/home/index"; 
+    public ModelAndView getHome() {
+        String pathFile = "/page/home/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
-        logger.info("Page: HOME"); 
+        logger.info("Page: HOME");
         return modelAndView;
     }
 }

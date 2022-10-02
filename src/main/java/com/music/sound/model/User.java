@@ -7,43 +7,39 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Set;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+
+import java.util.Set;
 import lombok.Data;
+
+@Table(name = "USER")
 @Entity
-//@Table(name = "USER",uniqueConstraints = @UniqueConstraint(name = "unique_constraints_user",  columnNames = {"username", "email"}))
 @Data
 public class User {
-    
-    @Id 
+
+    @Id
     @Column(name = "id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id ; 
+    Long id;
 
-    
     @Column(name = "username", nullable = false, length = 50, unique = true)
-    private String username; 
+    private String username;
 
-    
     @Column(name = "password", nullable = false)
-    private String password; 
-
+    private String password;
 
     @Column(name = "email", nullable = false, length = 50, unique = true)
-    private String email; 
-
+    private String email;
 
     @Column(name = "location")
-    private String location; 
-
+    private String location;
 
     @Column(name = "path_img_avatar")
-    private String pathImgAvatar; 
+    private String pathImgAvatar;
 
     @Column(name = "path_img_background")
-    private String pathImgBackground; 
+    private String pathImgBackground;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Sound> sounds;    
+    private Set<Sound> sounds;
 }
