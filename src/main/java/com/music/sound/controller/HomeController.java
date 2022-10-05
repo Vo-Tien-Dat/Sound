@@ -28,7 +28,7 @@ public class HomeController {
     public ModelAndView getHome() {
         String pathFile = "/page/home/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
-        logger.info("Page: HOME");
+        modelAndView.addObject("namePage", "Home");
         return modelAndView;
     }
 }

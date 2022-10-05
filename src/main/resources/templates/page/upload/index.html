@@ -27,89 +27,140 @@
 </head>
 <body>
   <body>
-
+    
     <div th:replace="layout/mainlayout/index :: mainlayout(~{::content})">
       <div th:fragment="content">
-        <div class="container">
-          <div class="d-inline file-sound">
-           <input type = "file" id = "file-sound" multiple>
-           <label for = "file-sound" class = "file-sound__label">Choose file to upload</label>
+        <!-- chức năng upload file âm nhạc  -->
+        <div class="container" >
+          <div class="container" id = "container-upload-file">
+            <div class="d-flex h-100 justify-content-center align-items-center">
+              <input type="file" id="file-sound" multiple>
+              <label for="file-sound" class="file-sound__label">
+                Choose file to upload</label>
+            </div>
           </div>
         </div>
-        <form action="" method = "post">
-          <div class="container">
-            <div class="d-flex">
-              <!-- chức năng thêm ảnh vào những bài hát được tải lên  -->
-              <div class="col-sm-4">
-                <div class="container ">
-                  <div class="d-flex justify-content-center align-items-center" id = "file-image" >
-                    <input type = "file" id = "file-image__input"/>
-                    <label for = "file-image" id = "file-image__label">
-                      uploadfile 
-                    </label>
+        <!-- chức năng upload file âm nhạc, cập nhật tên những file upload  -->
+        <div class="d-block container p-0 d-none" id = "container-upload-file-details">
+          <form action="" method="post">
+            <div class="container p-0">
+              <div class="d-flex">
+                <!-- chức năng thêm ảnh vào những bài hát được tải lên  -->
+                <div class="col-sm-4">
+                  <div class="container p-0 ">
+                    <div class="d-flex justify-content-center align-items-center" id="file-image">
+                      <!-- <input type="file" id="file-image__input" />
+                      <label for="file-image__input" id="file-image__label">
+                        uploadfile
+                      </label> -->
+                    </div>
                   </div>
                 </div>
-              </div>
-              <!-- chức năng nhập thông tin các bài hat được tải lên -->
-              <div class="col-sm-8">
-                <div class="d-flex flex-column gap-3">
-                  <!-- nhập tên của của các bài hát được tải lên  -->
-                  <div class="p-0 d-block" >
-                    <div class="d-flex flex-column">
-                      
-                      <div class="p-0">
-                        <div class="text-start fs-5 fw-semibold">Title</div>
-                      </div>
-                      <div class="p-0 w-100" >
-                        <input class = "px-2 py-3 w-100 fs-5 fw-semibold" type = "text" placeholder = "Name your playlist"/>
+                <!-- chức năng nhập thông tin các bài hat được tải lên -->
+                <div class="col-sm-8">
+                  <div class="d-flex flex-column gap-3">
+                    <!-- nhập tên của của các bài hát được tải lên  -->
+                    <div class="p-0 d-block">
+                      <div class="d-flex flex-column">
+          
+                        <div class="p-0">
+                          <div class="text-start fs-5 fw-semibold">Title</div>
+                        </div>
+                        <div class="p-0 w-100">
+                          <input class="px-2 py-3 w-100 fs-5 fw-semibold rounded" type="text" placeholder="Name your playlist" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="p-0 d-block">
-                    <div class="container p-0">
-                      <div class="row">
-                        <div class="col-6 ">
-                          <div class="d-flex flex-column">
-                            <div class="p-0">
-                              <p class="text-start fs-5 fw-semibold">Type sound</p>
+                    <div class="p-0 d-block">
+                      <div class="container p-0">
+                        <div class="row">
+                          <div class="col-6 ">
+                            <div class="d-flex flex-column">
+                              <div class="p-0">
+                                <p class="text-start fs-5 fw-semibold">Type sound</p>
+                              </div>
+                              <div class="p-0 w-100">
+                                <select class="px-1 py-2 w-100 fs-5 fw-semibold">
+                                  <option>dance</option>
+                                  <option>EDM</option>
+                                </select>
+                              </div>
                             </div>
-                            <div class="p-0 w-100">
-                              <select class="px-1 py-2 w-100 fs-5 fw-semibold">
-                                <option>dance</option>
-                                <option>EDM</option>
-                              </select>
+                          </div>
+                          <div class="col-6">
+                            <div class="d-flex flex-column">
+                              <div class="p-0">
+                                <p class="text-start fs-5 fw-semibold">Release Date</p>
+                              </div>
+                              <div class="p-0 w-100">
+                                <input type="date" class="px-2 py-2 w-100 fs-5 fw-semibold" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-6">
-                          <div class="d-flex flex-column">
-                            <div class="p-0">
-                              <p class="text-start fs-5 fw-semibold">Release Date</p>
-                            </div>
-                            <div class="p-0 w-100">
-                              <input type = "date" class = "px-2 py-2 w-100 fs-5 fw-semibold"/>
-                            </div>
-                          </div>
-                        </div>
+          
                       </div>
-                      
                     </div>
-                  </div>
-                  <div class="p-0 d-block">
-                    <div class="d-flex flex-column">
-                      <div class="p-0">
-                        <p class="text-start fs-5 fw-semibold">Description</p>
-                      </div>
-                      <div class="p-0">
-                        <textarea class = "d-block w-100"></textarea>
+                    <div class="p-0 d-block">
+                      <div class="d-flex flex-column">
+                        <div class="p-0">
+                          <p class="text-start fs-5 fw-semibold">Description</p>
+                        </div>
+                        <div class="p-0">
+                          <textarea class="d-block w-100"></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+            <!-- chức năng quản lí file upload  -->
+            <div class="d-block container mt-3">
+              <div class="d-flex flex-column">
+                <div class="d-block p-0">
+            
+                </div>
+                <div class="d-block p-0">
+                  <div class="container">
+                    <div class="row p-4" style="border: 1px solid red">
+                      <div class="d-block col-sm-1 h-100"></div>
+                      <div class="col-sm-10 h-100">
+                        <input class="w-100" type="text" value="hello world" />
+                      </div>
+                      <div class="col-sm-1 h-100">
+                        <i class="fa-solid fa-trash-can-xmark"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-block p-0">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <div class="container p-0 ">
+                      <div class="d-inline">
+                        <input type="file" id="file-sound" multiple>
+                        <label for="file-sound" class="file-sound__label w-100">
+                          <i class="fa-solid fa-plus"></i>
+                          
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-block container">
+              <div class="d-flex justify-content-end align-items-center gap-4">
+                <div class="d-inline">
+                  <button class="btn btn-primary" type="submit">Cancel</button>
+                </div>
+                <div class="d-inline">
+                  <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
         
       </div>
     </div>
@@ -124,6 +175,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/upload.js}"></script>
   </body>
 </body>
 </html>

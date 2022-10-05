@@ -7,11 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RootController {
+
     @RequestMapping(value = "/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
-
-        ModelAndView modelAndView = new ModelAndView();
+        String pathRedirect = "redirect:/home";
+        ModelAndView modelAndView = new ModelAndView(pathRedirect);
         return modelAndView;
     }
-
 }

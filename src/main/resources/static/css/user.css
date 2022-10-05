@@ -1,3 +1,24 @@
-.border {
-  background-color: white;
+
+
+#avatar{
+  width: 100%; 
+  padding-top: 100%!important; 
+  background-color: purple;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
+
+#background-user{
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 0.5rem;
+}
+
+
+#content-tab{
+  background-color: white;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+

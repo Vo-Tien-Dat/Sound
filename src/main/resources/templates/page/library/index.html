@@ -22,16 +22,66 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
-    <title>Document</title>
+    <title>Library</title>
 </head>
 <body>
     <body>
-
-        <div th:replace="layout/mainlayout/index :: mainlayout(null)">
-            <div th:fragment="content">
-
+        <div th:fragment = "library(contentFirst)">
+            <div th:replace="layout/mainlayout/index :: mainlayout(~{this::contentRoot})">
+                <div th:fragment="contentRoot">
+                    <div class="container">
+                        <div class="d-flex flex-column">
+                            <div class="d-block p-0">
+                                <div class="d-flex flex-row gap-4">
+                                    <div class="d-inline p-0">
+                                        <a href = "/library/overview">
+                                            <p class="text-center fs-3 ">
+                                                Overview
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline p-0">
+                                        <a href="/library/album">
+                                            <p class="text-center fs-3">
+                                                Albums
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline p-0">
+                                        <a href="/library/playlist">
+                                            <p class="text-center fs-3">
+                                                Playlist
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline p-0">
+                                        <a href="/library/track">
+                                            <p class="text-center fs-3">
+                                                Track
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline p-0">
+                                        <a href="/library/following">
+                                            <p class="text-center fs-3">
+                                                Following
+                                            </p>
+                                        </a>
+                                    </div>
+            
+                                </div>
+                            </div>
+                            <div class="d-block p-0">
+                                <div th:if="${contentFirst != null}">
+                                    <div th:replace="${contentFirst}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+       
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

@@ -19,6 +19,7 @@ public class PlaylistController {
     public ModelAndView getPlaylist() {
         String pathFile = "/page/playlist/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
+        modelAndView.addObject("namePage", "Playlist");
         return modelAndView;
     }
 
@@ -26,6 +27,7 @@ public class PlaylistController {
     public ModelAndView getPlaylistId() {
         String pathFile = "/page/playlist_id/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
+        modelAndView.addObject("namePage", "Playlist");
         return modelAndView;
     }
 }

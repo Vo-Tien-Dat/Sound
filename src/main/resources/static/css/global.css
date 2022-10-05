@@ -131,3 +131,8 @@ input:focus {
 .translate-y-50 {
   transform: translateY(-15%);
 }
+
+
+.empty {
+  height: 200px;
+}
