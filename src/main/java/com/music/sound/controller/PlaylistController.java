@@ -1,9 +1,14 @@
 package com.music.sound.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import java.util.List;
 
 @Controller
 public class PlaylistController {
@@ -20,6 +25,16 @@ public class PlaylistController {
         String pathFile = "/page/playlist/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         modelAndView.addObject("namePage", "Playlist");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/playlist", method = RequestMethod.POST)
+    public ModelAndView postPlaylist(@RequestParam("file") List<MultipartFile> files) {
+        for (MultipartFile file : files) {
+            System.out.println(file.getOriginalFilename());
+        }
+        String pathFile = "/page/playlist/index";
+        ModelAndView modelAndView = new ModelAndView(pathFile);
         return modelAndView;
     }
 

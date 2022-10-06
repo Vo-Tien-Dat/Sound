@@ -19,8 +19,11 @@ public class Album {
     @Id
     @Column(name = "id_album")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
-    Set<Sound> sounds;
+    private Set<Sound> sounds;
+
+    @Column(name = "number_view")
+    private Long numberView;
 }

@@ -10,7 +10,7 @@ public class UserController {
 
     @RequestMapping(value = { "/user/*", "/user" }, method = RequestMethod.GET)
     public ModelAndView getIndex() {
-        String pathRedirect = "redirect:/user/albums";
+        String pathRedirect = "redirect:/user/tracks";
         ModelAndView modelAndView = new ModelAndView(pathRedirect);
         return modelAndView;
     }
@@ -25,6 +25,13 @@ public class UserController {
     @RequestMapping(value = "/user/tracks", method = RequestMethod.GET)
     public ModelAndView getTracks() {
         String path = "/page/user/tracks/index";
+        ModelAndView modelAndView = new ModelAndView(path);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/user/playlists", method = RequestMethod.GET)
+    public ModelAndView getPlaylists() {
+        String path = "/page/user/playlists/index";
         ModelAndView modelAndView = new ModelAndView(path);
         return modelAndView;
     }

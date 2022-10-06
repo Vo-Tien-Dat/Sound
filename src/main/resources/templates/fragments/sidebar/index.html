@@ -35,31 +35,31 @@
       
       <div class="sidebar__list">
         <ul class="nav flex-column">      
-          <li class="nav-item active">
+          <li class="nav-item" id = "home">
             <i class="nav-item__icon fa-sharp fa-solid fa-house-chimney"></i>
             <a class="nav-link" th:href="@{/home}">Home</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id = "library">
             <i class="nav-item__icon fa-solid fa-layer-group"></i>
             <a class="nav-link" th:href="@{/library}">Library</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id = "upload">
             <i class="nav-item__icon fa-solid fa-cloud-arrow-up"></i>
             <a class="nav-link" th:href="@{/upload}">Upload</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id = "playlist">
             <i class="nav-item__icon fa-solid fa-clone"></i>
             <a class="nav-link" th:href="@{/playlist}">Playlist</a>
           </li>
       
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <i class="nav-item__icon fa-solid fa-heart"></i>
             <a class="nav-link" href="#">Likes</a>
           </li>
           <li class="nav-item">
             <i class="nav-item__icon fa-solid fa-toggle-off"></i>
             <a class="nav-link" href="#">Dark mode</a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -74,6 +74,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
   </body>
 </body>
 </html>

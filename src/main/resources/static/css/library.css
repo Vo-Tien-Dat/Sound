@@ -1,0 +1,27 @@
+.active{
+background-color: rgb(229, 229, 229);
+    border-radius: 0.5rem;
+}
+
+a{
+    color: inherit!important; 
+}
+
+.tab-active{
+    background-color: rgb(229, 229, 229);
+    border-radius: 0.5rem;
+}
+
+.tab-hover{
+    /* background-color: rgb(87 83 78);
+    border-radius: 0.5rem; */
+}
+
+.tab-hover:hover {
+    background-color: rgb(229, 229, 229);
+    border-radius: 0.5rem;
+}
+
+.no-underline{
+    text-decoration-line:none;
+}

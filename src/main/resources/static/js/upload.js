@@ -6,6 +6,7 @@ const containerUploadFileDetails = document.getElementById(
 );
 const inputFileSound = document.getElementById("file-sound");
 
+// nhận sự kiện upload file
 inputFileSound.addEventListener("change", (event) => {
   const { files } = event.target;
   if (files.length > 0) {

@@ -34,7 +34,7 @@
         <div class="container" >
           <div class="container" id = "container-upload-file">
             <div class="d-flex h-100 justify-content-center align-items-center">
-              <input type="file" id="file-sound" multiple>
+              <!-- <input type="file" id="file-sound" multiple> -->
               <label for="file-sound" class="file-sound__label">
                 Choose file to upload</label>
             </div>
@@ -42,7 +42,7 @@
         </div>
         <!-- chức năng upload file âm nhạc, cập nhật tên những file upload  -->
         <div class="d-block container p-0 d-none" id = "container-upload-file-details">
-          <form action="" method="post">
+          <form th:action="@{/playlist}" th:method="post" enctype="multipart/form-data">
             <div class="container p-0">
               <div class="d-flex">
                 <!-- chức năng thêm ảnh vào những bài hát được tải lên  -->
@@ -138,10 +138,9 @@
                   <div class="d-flex justify-content-center align-items-center">
                     <div class="container p-0 ">
                       <div class="d-inline">
-                        <input type="file" id="file-sound" multiple>
+                        <input name="file" type="file" id="file-sound" multiple>
                         <label for="file-sound" class="file-sound__label w-100">
                           <i class="fa-solid fa-plus"></i>
-                          
                         </label>
                       </div>
                     </div>
@@ -176,6 +175,7 @@
       crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
     <script type="text/javascript" th:src="@{/js/upload.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
   </body>
 </body>
 </html>

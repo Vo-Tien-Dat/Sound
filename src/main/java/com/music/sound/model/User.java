@@ -42,4 +42,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Sound> sounds;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Playlist> playlists;
 }
