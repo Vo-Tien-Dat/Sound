@@ -1,8 +1,6 @@
 package com.music.sound.controller;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,10 +27,8 @@ public class PlaylistController {
     }
 
     @RequestMapping(value = "/playlist", method = RequestMethod.POST)
-    public ModelAndView postPlaylist(@RequestParam("file") List<MultipartFile> files) {
-        for (MultipartFile file : files) {
-            System.out.println(file.getOriginalFilename());
-        }
+    public ModelAndView postPlaylist() {
+        
         String pathFile = "/page/playlist/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         return modelAndView;

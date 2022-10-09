@@ -31,8 +31,7 @@
         <div th:replace="layout/mainlayout/index :: mainlayout(~{::content})">
             <div th:fragment="content">
                 <div class="container-fluid position-fixed justify-content-center align-items-center d-none " id = "container-add-playlist">
-                    <div class="d-inline">
-                        
+                    <div class="d-inline"> 
                         <form action="" method = "post" class = "d-block position-relative" id = "form-add-playlist">
                             <div class="d-inline position-absolute" id = "icon-close-form-add-playlist">
                                 <i class="fa-solid fa-x"></i>
@@ -43,6 +42,9 @@
                                 </div>
                                 <div class="p-0">
                                     <input placeholder="input playlist" />
+                                </div>
+                                <div class = "p-0">
+                                    <input type = "submit" onclick="return false"/>
                                 </div>
                             </div>
                         </form>

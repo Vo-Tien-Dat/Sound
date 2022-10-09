@@ -23,7 +23,6 @@ const app = {
     const listTab = this.split();
     const position = listTab.length - 1;
     const tabUser = listTab[position];
-    console.log(listTab);
     try {
       this.listen("click", tabUser);
     } catch (e) {

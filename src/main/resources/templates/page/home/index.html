@@ -46,9 +46,9 @@
   <body>
     <body>
     
-      <div th:replace = "layout/mainlayout/index :: mainlayout(null)">
+      <div th:replace = "layout/mainlayout/index :: mainlayout(~{this::content})">
         <div th:fragment = "content">
-          
+            <h1>Home</h1>
         </div>
       </div>
 
