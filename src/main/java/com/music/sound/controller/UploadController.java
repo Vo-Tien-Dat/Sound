@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.ArrayList;
+import org.springframework.http.MediaType;
 
 @Controller
 public class UploadController {
@@ -31,12 +32,13 @@ public class UploadController {
     }
 
     // tính năng: upload lại form thay đổi tên bài hát
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ModelAndView postUpload(
             @RequestParam("file") List<MultipartFile> files,
             @ModelAttribute("album") AlbumDTO albumDTO) {
         String path = "/page/upload/pending_upload/index";
         ModelAndView modelAndView = new ModelAndView(path);
+        System.out.println(files);
         List<SoundDTO> sounds = new ArrayList<SoundDTO>();
         if (!files.isEmpty()) {
             for (MultipartFile file : files) {
@@ -48,6 +50,7 @@ public class UploadController {
             AlbumDTO album = new AlbumDTO();
             album.setSounds(sounds);
             modelAndView.addObject("album", album);
+            modelAndView.addObject("file", files);
         }
         if (albumDTO != null) {
             System.out.println(albumDTO);

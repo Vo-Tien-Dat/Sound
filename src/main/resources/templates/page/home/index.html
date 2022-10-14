@@ -48,7 +48,118 @@
     
       <div th:replace = "layout/mainlayout/index :: mainlayout(~{this::content})">
         <div th:fragment = "content">
-            <h1>Home</h1>
+            <div class="container p-0">
+              <div class="d-flex flex-column">
+                <!-- giao diện: top 10 album được nghe nhiều nhất  -->
+                <div class="d-block">
+                  <div class="container form-slider">
+                    <div class="d-flex flex-column">
+                      <div class="d-block">
+                        <div class="container p-0 form-slider__title">
+                          <p class="text-start fs-3 fw-semibold mb-0">Albums</p>
+                        </div>
+                      </div>
+                      <div class="d-block">
+                        <div class="container form-slider__content_row">
+                          <div class="row">
+                            <div class="col-sm-3 form-slider__content_row_item"></div>
+                            <div class="col-sm-3 form-slider__content_row_item"></div>
+                            <div class="col-sm-3 form-slider__content_row_item"></div>
+                            <div class="col-sm-3 form-slider__content_row_item"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- giao diện: top 10 playlist được nghe nhiều nhất  -->
+                <div class="d-block"></div>
+                <!-- giao diện: top 10 bài hát được nghe nhiều nhất và gợi ý follower  -->
+                <div class="d-block">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-sm-6 px-0">
+                        <div class="container form-slider">
+                          <div class="d-flex flex-column">
+                            <div class="d-block">
+                              <div class="container p-0 form-slider__title">
+                                <p class="text-start fs-3 fw-semibold mb-0">Sound</p>
+                              </div>
+                            </div>
+                            <div class="d-block">
+                              <div class="container p-0 form-slider__content_col">
+                                <div class="list-group">
+                                  <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="container p-0"></div>
+                                  </a>
+                                
+                                  <a href="#" class="list-group-item list-group-item-action ">A simple primary list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action ">A simple secondary list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple success list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple danger list group item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple warning list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple info list group item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple light list group item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple dark list group item</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 px-0">
+                        <div class="container form-slider">
+                          <div class="d-flex flex-column">
+                            <div class="d-block">
+                              <div class="container p-0 form-slider__title">
+                                <p class="text-start fs-3 fw-semibold mb-0">Sound</p>
+                              </div>
+                            </div>
+                            <div class="d-block">
+                              <div class="container p-0 form-slider__content_col">
+                                <div class="list-group">
+                                  <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="container p-0"></div>
+                                  </a>
+                      
+                                  <a href="#" class="list-group-item list-group-item-action ">A simple primary list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action ">A simple secondary list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple success list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple danger list group item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple warning list group
+                                    item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple info list group item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple light list group item</a>
+                                  <a href="#" class="list-group-item list-group-item-action">A simple dark list group item</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div class="col-sm-6"></div> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="d-block">
+                  <div class="container text-center">
+                    <div class="row row-cols-3">
+                      <div class="col">Column</div>
+                      <div class="col">Column</div>
+                      <div class="col">Column</div>
+                      <div class="col">Column</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
 
