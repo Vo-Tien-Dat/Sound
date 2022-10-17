@@ -86,7 +86,44 @@ html {
   --p-8: 2rem;
   --p-9: 2.25rem;
 
+  /* height  */
+  --h-0: 0px; 
+  --h-px: 1px; 
+  --h-0\.5: 0.125rem;
+  --h-1: 0.25rem;
+  --h-1\.5: 0.375rem;
+  --h-2: 0.5rem;
+  --h-16: 4rem;
+  --h-20: 5rem;
+  --h-24: 6rem;
+  --h-28: 7rem; 
+
+  /* width */
+  --w-0: 0px;
+  --w-px: 1px;
+  --w-0\.5: 0.125rem;
+  --w-1: 0.25rem;
+  --w-1\.5: 0.375rem;
+  --w-2: 0.5rem;
+  --w-16: 4rem;
+  --w-20: 5rem;
+  --w-24: 6rem;
+  --w-28: 7rem;
+
+  /* overflow  */
+  --overflow-auto: auto; 
+  --overflow-hidden: hidden; 
+  --overflow-clip: clip; 
+  --overflow-visible: visible; 
+  --overflow-scroll: scroll; 
+  --overflow-x-auto: auto; 
+  --overflow-y-auto: auto; 
+  --overflow-x-hidden: hidden;
+  --overflow-y-hidden: hidden; 
 }
+
+
+
 
 /* HOME PAGE */
 
@@ -480,12 +517,15 @@ header h2 {
 /* hiển thị form từng bài hát  */
 .form-music{
  
-  border-style: solid;
-  border-width: 1px;
+  border-style: var(--border-solid);
+  border-width: var(--border);
   border-color: black; 
-  padding: 0.75rem 1.25rem 0.75rem 1.25rem;
-  border-radius: 0.5rem;
-  min-width: 5rem!important;
+  padding-top: var(--p-3); 
+  padding-right: var(--p-5); 
+  padding-bottom: var(--p-3); 
+  padding-left: var(--p-5); 
+  border-radius: var(--rounded-lg);
+  min-width: var(--w-20);
 }
 
 .form-music:hover{ 
@@ -494,24 +534,24 @@ header h2 {
 
 .form-music__image{
   background-color: pink; 
-  height: 5rem; 
-  width: 5rem;
-  overflow: hidden;
-  border-radius: 0.25rem;
+  height: var(--h-20); 
+  width: var(--w-20);
+  overflow: var(--overflow-hidden);
+  border-radius: var(--rounded);
 }
 
 .form-music__name_music{
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
 }
 
 .form-music__name_user{ 
-  font-size: 1rem;
-  font-weight: 500; 
+  font-size: var(--text-base);
+  font-weight: var(--font-medium); 
 }
 
 .form_music__menu{
-  font-size: 2rem;
+  font-size: var(--text-3xl);
 }
 
 /* hiển thị form gợi ý following  */
@@ -531,8 +571,8 @@ header h2 {
 
 
 .form-following__image{
-  height: 5rem; 
-  width: 5rem; 
+  height: var(--h-20); 
+  width: var(--w-20); 
   border-radius: 50%;
   overflow: hidden;
   background-color: pink;
