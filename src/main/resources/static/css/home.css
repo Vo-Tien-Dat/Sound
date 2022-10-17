@@ -9,6 +9,83 @@ html {
   --primary-color: #e5370c;
   --text-color-light-mode: #333;
   --btn-color-defaut: #f0f0f0;
+  
+
+  /* border-width  */
+  --border: 1px; 
+  --border-2: 2px; 
+  --border-4: 4px; 
+  --border-8: 8px; 
+
+  /* border-style  */
+  --border-solid: solid; 
+  --border-dashed: dashed; 
+  --border-dotted: dotted; 
+  --border-double: double; 
+  --border-hidden: hidden; 
+  --border-none: none; 
+
+  /* border-radius:  */
+  --rounded-none: 0px; 
+  --rounded-sm: 0.125rem; 
+  --rounded: 0.25rem;
+  --rounded-md: 0.375rem;
+  --rounded-lg: 0.5rem;
+  --rounded-xl: 0.75rem;
+  --rounded-2xl: 1rem;
+  --rounded-3xl: 1.5rem;
+
+  /* font-size  */
+  --text-xs: 0.75rem; 
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem; 
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem; 
+  --text-4xl: 2.25rem; 
+  --text-5xl: 3rem;
+
+
+  /* font-weight  */
+  --font-thin: 100; 
+  --font-extralight: 200; 
+  --font-light: 300; 
+  --font-normal: 400; 
+  --font-medium: 500; 
+  --font-semibold: 600;
+  --font-bold: 700; 
+  --font-extrabold: 800; 
+  --font-black: 900; 
+
+  /* display  */
+  --block: block; 
+  --inline-block: inline-block; 
+  --inline: inline; 
+  --flex: flex; 
+  --inline-flex: inline-flex; 
+  --table: table; 
+  --inline-table: inline-table; 
+  --grid: grid; 
+  --hidden: none; 
+
+  /* padding  */
+  --p-0: 0px; 
+  --p-px: 1px; 
+  --p-0\.5: 0.125rem;
+  --p-1: 0.25rem;
+  --p-1\.5: 0.375rem;
+  --p-2: 0.5rem;
+  --p-2\.5: 0.625rem;
+  --p-3: 0.75rem;
+  --p-3\.5: 0.875rem;
+  --p-4: 1rem;
+  --p-5: 1.25rem;
+  --p-6: 1.5rem;
+  --p-7: 1.75rem;
+  --p-8: 2rem;
+  --p-9: 2.25rem;
+
 }
 
 /* HOME PAGE */
@@ -22,6 +99,7 @@ html {
   height: 100%;
   background-color: var(--background-color-light-mode);
   overflow: hidden;
+  min-height: 100vh;
 }
 
 /*1. SIDEBAR */
@@ -396,3 +474,87 @@ header h2 {
   height: 16rem;
   border: 1px solid black; 
 }
+
+
+
+/* hiển thị form từng bài hát  */
+.form-music{
+ 
+  border-style: solid;
+  border-width: 1px;
+  border-color: black; 
+  padding: 0.75rem 1.25rem 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  min-width: 5rem!important;
+}
+
+.form-music:hover{ 
+  background-color: pink;
+}
+
+.form-music__image{
+  background-color: pink; 
+  height: 5rem; 
+  width: 5rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+}
+
+.form-music__name_music{
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-music__name_user{ 
+  font-size: 1rem;
+  font-weight: 500; 
+}
+
+.form_music__menu{
+  font-size: 2rem;
+}
+
+/* hiển thị form gợi ý following  */
+
+.form-following{
+  border-radius: var(--rounded-lg);
+  padding-top: var(--p-3);
+  padding-right: var(--p-5); 
+  padding-bottom: var(--p-3);
+  padding-right: var(--p-5);
+  border-style: var(--border-solid);
+  border-width: var(--border);
+  border-color: red;
+}
+.form-following:hover{
+}
+
+
+.form-following__image{
+  height: 5rem; 
+  width: 5rem; 
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: pink;
+}
+
+.form-following__icon_small{
+  font-size: var(--text-base);
+}
+
+.form-following__text_big {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+}
+
+.form-following__text_small{
+  font-size: var(--text-base);
+  font-weight: var(--font-medium); 
+}
+.form-following__button{
+  border-style: var(--border-solid);
+  border-width: var(--border); 
+  border-color: #666;
+  background-color: #666;
+}
+

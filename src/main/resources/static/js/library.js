@@ -1,11 +1,29 @@
-// chức năng chuyển tab
-const app = {
+const app1 = {
   tab: {
     current: "",
   },
-  path: {
-    default: ["home", "library", "upload", "playlist"],
-  },
+  path: [
+    {
+      item: "overview",
+      id: "library.overview",
+    },
+    {
+      item: "albums",
+      id: "library.albums",
+    },
+    {
+      item: "playlists",
+      id: "library.playlists",
+    },
+    {
+      item: "sounds",
+      id: "library.sounds",
+    },
+    {
+      item: "following",
+      id: "library.following",
+    },
+  ],
   split: function () {
     return window.location.pathname.split("/");
   },
@@ -17,19 +35,21 @@ const app = {
       throw Error("Name is null or undefined");
     }
     const element = document.getElementById(name);
-    element.classList.add("active");
+    element.classList.add("tab-active");
   },
   start: function () {
-    const listTab = this.split();
-    const position = listTab.length - 1;
-    const tabUser = listTab[position];
-    console.log(listTab);
-    try {
-      this.listen("click", tabUser);
-    } catch (e) {
-      console.log(e.message);
-    }
+    const splitUrl = this.split();
+    splitUrl.forEach((element) => {
+      if (element != "") {
+        const result = this.path.find((itemCurrent) => {
+          const { item, id } = itemCurrent;
+          if (element == item) {
+            this.listen("click", id);
+          }
+        });
+      }
+    });
   },
 };
 
-app.start();
+app1.start();

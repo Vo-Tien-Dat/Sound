@@ -28,21 +28,21 @@ public class LibraryController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/library/album", method = RequestMethod.GET)
+    @RequestMapping(value = "/library/albums", method = RequestMethod.GET)
     public ModelAndView getAlbum() {
         String pathFile = "/page/library/album/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/library/playlist", method = RequestMethod.GET)
+    @RequestMapping(value = "/library/playlists", method = RequestMethod.GET)
     public ModelAndView getPlaylist() {
         String pathFile = "/page/library/playlist/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/library/track", method = RequestMethod.GET)
+    @RequestMapping(value = "/library/sounds", method = RequestMethod.GET)
     public ModelAndView getTracks() {
         String pathFile = "/page/library/track/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);

@@ -38,23 +38,22 @@ public class UploadController {
             @ModelAttribute("album") AlbumDTO albumDTO) {
         String path = "/page/upload/pending_upload/index";
         ModelAndView modelAndView = new ModelAndView(path);
-        System.out.println(files);
-        List<SoundDTO> sounds = new ArrayList<SoundDTO>();
-        if (!files.isEmpty()) {
-            for (MultipartFile file : files) {
-                String nameSound = file.getOriginalFilename();
-                SoundDTO soundDTO = new SoundDTO(nameSound);
-                sounds.add(soundDTO);
-            }
+        // List<SoundDTO> sounds = new ArrayList<SoundDTO>();
+        // if (!files.isEmpty()) {
+        // for (MultipartFile file : files) {
+        // String nameSound = file.getOriginalFilename();
+        // SoundDTO soundDTO = new SoundDTO(nameSound);
+        // sounds.add(soundDTO);
+        // }
 
-            AlbumDTO album = new AlbumDTO();
-            album.setSounds(sounds);
-            modelAndView.addObject("album", album);
-            modelAndView.addObject("file", files);
-        }
-        if (albumDTO != null) {
-            System.out.println(albumDTO);
-        }
+        // AlbumDTO album = new AlbumDTO();
+        // album.setSounds(sounds);
+        // modelAndView.addObject("album", album);
+        // modelAndView.addObject("file", files);
+        // }
+        // if (albumDTO != null) {
+        // System.out.println(albumDTO);
+        // }
 
         return modelAndView;
     }

@@ -3,9 +3,24 @@ const app = {
   tab: {
     current: "",
   },
-  path: {
-    default: ["home", "library", "upload", "playlist"],
-  },
+  path: [
+    {
+      item: "home",
+      id: "sidebar.home",
+    },
+    {
+      item: "library",
+      id: "sidebar.library",
+    },
+    {
+      item: "upload",
+      id: "sidebar.upload",
+    },
+    {
+      item: "playlist",
+      id: "sidebar.playlist",
+    },
+  ],
   split: function () {
     return window.location.pathname.split("/");
   },
@@ -20,14 +35,17 @@ const app = {
     element.classList.add("active");
   },
   start: function () {
-    const listTab = this.split();
-    const position = listTab.length - 1;
-    const tabUser = listTab[position];
-    try {
-      this.listen("click", tabUser);
-    } catch (e) {
-      console.log(e.message);
-    }
+    const splitUrl = this.split();
+    splitUrl.forEach((element) => {
+      if (element != "") {
+        const result = this.path.find((itemCurrent) => {
+          const { item, id } = itemCurrent;
+          if (element == item) {
+            this.listen("click", id);
+          }
+        });
+      }
+    });
   },
 };
 

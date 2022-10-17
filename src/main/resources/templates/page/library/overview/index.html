@@ -31,12 +31,12 @@
         <div th:replace="page/library/index :: library(~{this::content})">
             <div th:fragment="content">
                 <div class="container p-0">
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column gap-4">
                         <!-- chức năng hiện thị một số lượng album theo dõi  -->
                         <div class="d-block">
-                            <div class="d-flex">
+                            <div class="d-flex flex-column">
                                 <div class="d-block">
-                                    <p class="text-start fs-4 fw-bold">Albums</p>
+                                    <p class="text-start fs-4 fw-bold mb-0">Albums</p>
                                 </div>
                                 <div class="d-block">
                                     <div class="container p-0">
@@ -50,16 +50,18 @@
                                         </div>
                                     </div>
                                     <div class="container p-0">
-                                        
+                                        <div class="container p-0 d-flex justify-content-center align-items-center rounded slider__content rounded" >
+                                            <p class="text-cente fs-5 fw-semibold">Bạn chưa có album </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- chức năng hiện thị playlist theo dõi -->
                         <div class="d-block">
-                            <div class="d-flex">
+                            <div class="d-flex flex-column">
                                 <div class="d-block">
-                                    <p class="text-start fs-4 fw-bold">Playlist</p>
+                                    <p class="text-start fs-4 fw-bold mb-0">Playlist</p>
                                 </div>
                                 <div class="d-block">
                                     <div class="container p-0">
@@ -67,6 +69,11 @@
                                             <div class="col-sm-2"></div>
                                             <div class="col-sm-2"></div>
                                             <div class="col-sm-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="container p-0">
+                                        <div class="container p-0 d-flex justify-content-center align-items-center rounded slider__content rounded">
+                                            <p class="text-cente fs-5 fw-semibold">Bạn chưa có playlist </p>
                                         </div>
                                     </div>
                                 </div>
@@ -74,9 +81,9 @@
                         </div>
                         <!-- chức năng những track đã đăng lên trong tài khoản  -->
                         <div class="d-block">
-                            <div class="d-flex">
+                            <div class="d-flex flex-column">
                                 <div class="d-block">
-                                    <p class="text-start fs-4 fw-bold">Track</p>
+                                    <p class="text-start fs-4 fw-bold mb-0">Sound</p>
                                 </div>
                                 <div class="d-block">
                                     <div class="container p-0">
@@ -86,14 +93,19 @@
                                             <div class="col-sm-2"></div>
                                         </div>
                                     </div>
+                                    <div class="container p-0">
+                                        <div class="container p-0 d-flex justify-content-center align-items-center rounded slider__content rounded">
+                                            <p class="text-cente fs-5 fw-semibold">Bạn chưa có bài hát</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- chức năng hiện thị những người đã following  -->
                         <div class="d-block">
-                            <div class="d-flex">
+                            <div class="d-flex flex-column">
                                 <div class="d-block">
-                                    <p class="text-start fs-4 fw-bold">Following</p>
+                                    <p class="text-start fs-4 fw-bold mb-0">Following</p>
                                 </div>
                                 <div class="d-block">
                                     <div class="container p-0">
@@ -101,6 +113,11 @@
                                             <div class="col-sm-2"></div>
                                             <div class="col-sm-2"></div>
                                             <div class="col-sm-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="container p-0">
+                                        <div class="container p-0 d-flex justify-content-center align-items-center rounded slider__content rounded">
+                                            <p class="text-cente fs-5 fw-semibold">Bạn chưa theo dõi ai </p>
                                         </div>
                                     </div>
                                 </div>

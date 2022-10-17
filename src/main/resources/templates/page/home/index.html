@@ -53,7 +53,7 @@
                 <!-- giao diện: top 10 album được nghe nhiều nhất  -->
                 <div class="d-block">
                   <div class="container form-slider">
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column gap-2">
                       <div class="d-block">
                         <div class="container p-0 form-slider__title">
                           <p class="text-start fs-3 fw-semibold mb-0">Albums</p>
@@ -79,6 +79,7 @@
                   <div class="container">
                     <div class="row">
                       <div class="col-sm-6 px-0">
+                        <!-- chức năng: hiện thị những bài top 10 bài hát hay nhất  -->
                         <div class="container form-slider">
                           <div class="d-flex flex-column">
                             <div class="d-block">
@@ -88,23 +89,39 @@
                             </div>
                             <div class="d-block">
                               <div class="container p-0 form-slider__content_col">
-                                <div class="list-group">
-                                  <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="container p-0"></div>
-                                  </a>
-                                
-                                  <a href="#" class="list-group-item list-group-item-action ">A simple primary list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action ">A simple secondary list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple success list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple danger list group item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple warning list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple info list group item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple light list group item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple dark list group item</a>
+                                <div class="list-group gap-2">
+                                  <th:block th:each="sound : ${sounds}">
+                                    <div  class="list-group-item list-group-item-action mt-0 p-0">
+                                      <!-- hiển thị form từng bài hát  -->
+                                      <div class="container form-music">
+                                        <div class="d-flex flex-row gap-2 justify-content-between  align-items-center">
+                                          <div class="d-inline">
+                                            <div class="d-flex flex-row gap-2 justify-content-start align-items-center">
+                                              <div class="d-inline">
+                                                <div class="form-music__image">
+                                                </div>
+                                              </div>
+                                              <div class="d-inline">
+                                                <div class="d-flex flex-column">
+                                                  <div class="d-block">
+                                                    <p class="text-start mb-0 form-music__name_music" th:text = "${sound.nameSound}"></p>
+                                                  </div>
+                                                  <div class="d-block">
+                                                    <p class="text-start mb-0 form-music__name_user" th:text = "${sound.nameUser}"></p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="d-inline">
+                                            <div class="d-inline">
+                                              <i class="fa-solid fa-ellipsis form_music__menu"></i>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </th:block>
                                 </div>
                               </div>
                             </div>
@@ -112,32 +129,78 @@
                         </div>
                       </div>
                       <div class="col-sm-6 px-0">
+                        <!-- chức năng: hiển thị gợi ý theo dõi người khác  -->
                         <div class="container form-slider">
                           <div class="d-flex flex-column">
                             <div class="d-block">
                               <div class="container p-0 form-slider__title">
-                                <p class="text-start fs-3 fw-semibold mb-0">Sound</p>
+                                <p class="text-start fs-3 fw-semibold mb-0">Follower</p>
                               </div>
                             </div>
                             <div class="d-block">
                               <div class="container p-0 form-slider__content_col">
-                                <div class="list-group">
-                                  <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="container p-0"></div>
-                                  </a>
-                      
-                                  <a href="#" class="list-group-item list-group-item-action ">A simple primary list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action ">A simple secondary list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple success list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple danger list group item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple warning list group
-                                    item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple info list group item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple light list group item</a>
-                                  <a href="#" class="list-group-item list-group-item-action">A simple dark list group item</a>
+                                <div class="list-group gap-2">
+                                  <th:block th:each = "user : ${users}">
+                                    <div  class="list-group-item list-group-item-action mt-0 p-0">
+                                      <div class="container form-following">
+                                        <div class="d-flex flex-row justify-content-between align-items-center">
+                                          <div class="d-inline">
+                                            <div class="d-flex flex-row gap-2">
+                                              <div class="d-inline">
+                                                <div class="form-following__image"></div>
+                                              </div>
+                                              <div class="d-inline">
+                                                <div class="d-flex flex-column">
+                                                  <div class="d-inline">
+                                                    <p class="text-start form-following__text_big" th:text = "${user.nameUser}"></p>
+                                                  </div>
+                                                  <div class="d-inline">
+                                                    <div class="d-flex flex-row justify-content-start align-items-center gap-2">
+                                                      <div class="d-inline">
+                                                        <div class="d-flex flex-row justify-content-start align-items-center gap-1">
+                                                          <div class="d-inline"><i class="fa-solid fa-music form-following__icon_small"></i></div>
+                                                          <div class="d-inline">
+                                                            <p class="text-start form-following__text_small mb-0" th:text = "${user.numberSounds}"></p>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="d-inline">
+                                                        <div class="d-flex flex-row">
+                                                          <div class="d-inline">
+                                                            <i class="fa-solid fa-album form-following__icon_small"></i>
+                                                          </div>
+                                                          <div class="d-inline" >
+                                                            <p class="text-start form-following__text_small mb-0" th:text="${user.numberAlbums}"></p>
+                                                          </div>
+                                                          
+                                                        </div>
+                                                      </div>
+                                                      <div class="d-inline">
+                                                        <div class="d-flex flex-row">
+                                                          <div class="d-inline">
+                                                            <i class="fa-solid fa-list-music form-following__icon_small"></i>
+                                                          </div>
+                                                          <div class="d-inline" >
+                                                            <p class="text-start form-following__text_small mb-0" th:text="${user.numberPlaylists}"></p>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="d-inline">
+                                            <button class = "btn form-following__button" >
+                                              <i class="fa-solid fa-user-plus"></i>
+                                              <label class = "text-start mt-0 mb-0">follow</label>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </th:block>
                                 </div>
                               </div>
                             </div>
@@ -145,16 +208,6 @@
                         </div>
                       </div>
                       <!-- <div class="col-sm-6"></div> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="d-block">
-                  <div class="container text-center">
-                    <div class="row row-cols-3">
-                      <div class="col">Column</div>
-                      <div class="col">Column</div>
-                      <div class="col">Column</div>
-                      <div class="col">Column</div>
                     </div>
                   </div>
                 </div>
