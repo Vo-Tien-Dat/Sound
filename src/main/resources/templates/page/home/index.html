@@ -113,26 +113,20 @@
                             <div class="swiper mySwiper">
                               <div class="swiper-wrapper">
                                 <th:block th:each = "album : ${albums}">
-                                  <a th:href = "${album.pathUrl}" class="swiper-slide">
+                                  <a th:href="${album.pathUrl}" class="swiper-slide text-decoration-none">
                                     <div class="form-albums">
-                                      <div class="d-flex flex-column h-100">
-                                        <div class="d-block h-75">
-                                          <div class="form-albums__image">
-                                            <img th:src="${album.pathImage}" alt="" />
+                                      <div class="form-albums__image">
+                                        <img th:src="${album.pathImage}" alt="" />
+                                      </div>
+                                      <div class="form-albums__content">
+                                        <div class="form-albums__content-details">
+                                          <div class="form-albums__name_album">
+                                            <p class="text-start mb-0 text-name_album" th:text="${album.nameAlbum}">
+                                            </p>
                                           </div>
-                                        </div>
-                                        <div class="d-block h-25">
-                                          <div class="form-albums__content">
-                                            <div class="d-flex flex-column">
-                                              <div class="d-block">
-                                                <p class="text-start mb-0 form-albums__name_album" th:text="${album.nameAlbum}">
-                                                </p>
-                                              </div>
-                                              <div class="d-block">
-                                                <p class="text-start mb-0 form-albums__name_user" th:text="${album.nameUser}">
-                                                </p>
-                                              </div>
-                                            </div>
+                                          <div class="form-albums__name_user">
+                                            <p class="text-start mb-0 text-name_user" th:text="${album.nameUser}">
+                                            </p>
                                           </div>
                                         </div>
                                       </div>
@@ -162,26 +156,20 @@
                             <div class="swiper mySwiper">
                               <div class="swiper-wrapper">
                                 <th:block th:each="album : ${albums}">
-                                  <a th:href="${album.pathUrl}" class="swiper-slide">
+                                  <a th:href="${album.pathUrl}" class="swiper-slide text-decoration-none">
                                     <div class="form-albums">
-                                      <div class="d-flex flex-column h-100">
-                                        <div class="d-block h-75">
-                                          <div class="form-albums__image">
-                                            <img th:src="${album.pathImage}" alt="" />
+                                      <div class="form-albums__image">
+                                        <img th:src="${album.pathImage}" alt="" />
+                                      </div>
+                                      <div class="form-albums__content">
+                                        <div class="form-albums__content-details">
+                                          <div class="form-albums__name_album">
+                                            <p class="text-start mb-0 text-name_album" th:text="${album.nameAlbum}">
+                                            </p>
                                           </div>
-                                        </div>
-                                        <div class="d-block h-25">
-                                          <div class="form-albums__content">
-                                            <div class="d-flex flex-column">
-                                              <div class="d-block">
-                                                <p class="text-start mb-0 form-albums__name_album" th:text="${album.nameAlbum}">
-                                                </p>
-                                              </div>
-                                              <div class="d-block">
-                                                <p class="text-start mb-0 form-albums__name_user" th:text="${album.nameUser}">
-                                                </p>
-                                              </div>
-                                            </div>
+                                          <div class="form-albums__name_user">
+                                            <p class="text-start mb-0 text-name_user" th:text="${album.nameUser}">
+                                            </p>
                                           </div>
                                         </div>
                                       </div>

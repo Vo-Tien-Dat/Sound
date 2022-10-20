@@ -35,6 +35,7 @@ public class UploadController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ModelAndView postUpload(
             @RequestParam("file") List<MultipartFile> files,
+            @RequestParam(name = "name-sound") String nameFile,
             @ModelAttribute("album") AlbumDTO albumDTO) {
         String path = "/page/upload/pending_upload/index";
         ModelAndView modelAndView = new ModelAndView(path);

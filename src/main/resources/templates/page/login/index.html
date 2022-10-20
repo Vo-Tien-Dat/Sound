@@ -21,19 +21,21 @@
   </head>
   <body>
     <div class="ContainerFullScreen">
-      <form class="RootLogin" action="/login" method="post">
+      <form th:action = "@{/login}" class="RootLogin"  th:method="post" th:object = "${userLoginDTO}">
         <h1 th:text="${errorMessage}"></h1>
         <input
           class="BaseInput"
           placeholder="user name"
           name="username"
           type="text"
+          
         />
         <input
           class="BaseInput"
           placeholder="password"
           name="password"
           type="pass"
+          
         />
         <button type="submit" class="BaseButton">Log In</button>
       </form>

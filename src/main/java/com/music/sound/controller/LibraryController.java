@@ -56,6 +56,11 @@ public class LibraryController {
         String pathFile = "/page/library/playlist/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         List<PlaylistDTORead> playlists = new ArrayList<>();
+        playlists.add(new PlaylistDTORead("hello", "hello", "hello", "hello"));
+        playlists.add(new PlaylistDTORead("hello", "hello", "hello", "hello"));
+        playlists.add(new PlaylistDTORead("hello", "hello", "hello", "hello"));
+        playlists.add(new PlaylistDTORead("hello", "hello", "hello", "hello"));
+        playlists.add(new PlaylistDTORead("hello", "hello", "hello", "hello"));
         modelAndView.addObject("playlists", playlists);
         return modelAndView;
     }

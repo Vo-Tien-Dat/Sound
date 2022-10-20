@@ -113,7 +113,14 @@ html {
   --h-84: 21rem;
   --h-88: 22rem;
   --h-96: 24rem;
+  --h-100: 25rem;
+  --h-104: 26rem;
+  --h-108: 27rem;
   --h-full: 100%;
+  --h-3\/4: 75%; 
+  --h-1\/4: 25%;
+  --h-1\/5: 20%; 
+
 
   /* width */
   --w-0: 0px;
@@ -141,6 +148,9 @@ html {
   --w-84: 21rem;
   --w-88: 22rem;
   --w-96: 24rem;
+  --w-100: 25rem;
+  --w-104: 26rem;
+  --w-108: 27rem;
   --w-full: 100%;
   /* overflow  */
   --overflow-auto: auto;
@@ -162,6 +172,28 @@ html {
   /* backgroud-color  */
   --bg-black: #000;
   --bg-white: #fff;
+
+  /* flex direction  */
+  --flex-row: row; 
+  --flex-row-reverse: row-reverse;
+  --flex-col: column; 
+  --flex-col-reverse: column-reverse; 
+
+  /* justify content  */
+  --justify-start: flex-start; 
+  --justify-end: flex-end; 
+  --justify-center: center; 
+  --justify-between: space-between;
+  --justify-around: space-around; 
+  --justify-evenly: space-evenly;
+
+  /* align-item  */
+  --item-start: flex-start; 
+  --item-end: flex-end; 
+  --item-center: center; 
+  --item-baseline: baseline; 
+  --item-stretch: stretch; 
+
 }
 
 body {
@@ -304,45 +336,66 @@ input:focus {
 }
 
 
-/* hiển thị từng form album  */
+/* hiển thị từng form album và playlist */
 
 .form-albums {
+  height: var(--h-96);
+  width: var(--w-full);
+  display: var(--flex);
+  flex-direction: var(--flex-col);
   border-style: var(--border-solid);
   border-width: var(--border);
   border-color: #666;
   border-radius: var(--rounded-xl);
-  height: var(--h-96);
-  width: var(--w-full);
   padding-top: var(--p-3);
   padding-right: var(--p-3);
   padding-bottom: var(--p-3);
   padding-left: var(--p-3);
+  justify-content: var(--justify-between);
+  align-items: var(--item-center);
 }
 
 .form-albums__image {
   width: var(--w-full);
-  height: var(--h-full);
+  height: var(--h-3\/4)!important;
+  display: var(--block);
+  border-style: var(--border-solid);
+  border-width: (--border);
+  border-color: #e0e0e0;
   border-radius: var(--rounded-lg);
   overflow: var(--overflow-hidden);
-  border: 1px solid rgb(165, 165, 165);
 }
 
 .form-albums__content {
   width: var(--w-full);
-  height: var(--h-full);
+  height: var(--h-1\/4);
+  display: var(--block);
 }
 
-.form-albums__name_album {
+.form-albums__content_details{
+  width: var(--w-full);
+  height: var(--h-full); 
+  display: var(--flex);
+  flex-direction: var(--flex-col);
+}
+
+.form-albums__name_album{
+  width: var(--w-full);
+  display: var(--block);
+}
+
+.form-albums__name_user{
+  width: var(--w-full);
+  display: var(--block);
+}
+
+.text-name_album {
   font-size: var(--text-2xl);
   font-weight: var(--font-semibold);
   color: var(--text-black);
 }
 
-.form-albums__name_album:hover {
-  color: purple;
-}
-
-.form-albums__name_user {
+.text-name_user {
   font-size: var(--text-xl);
   font-weight: var(--font-medium);
   color: var(--text-black);
@@ -363,6 +416,7 @@ input:focus {
   padding-bottom: var(--p-0);
   padding-left: var(--p-0);
   border: var(--border-none)!important;
+  min-width: var(--w-72)!important;
 }
 
 @media  screen and (min-width: 640px) {

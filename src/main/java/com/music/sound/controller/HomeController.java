@@ -19,8 +19,6 @@ import com.music.sound.DTO.UserDTO.UserDTOHome;
 @Controller
 public class HomeController {
 
-    private Logger logger = LoggerFactory.getLogger(HomeController.class);
-
     @Autowired
     private UserService userService;
 

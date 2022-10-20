@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import com.music.sound.DAO.UserDAO;
 import com.music.sound.DTO.UserDTO.UserRegisterDTO;
 import com.music.sound.service.UserService;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 public class RegisterController {
     private Logger logger = LoggerFactory.getLogger(RegisterController.class);
-
-    @Autowired
-    private UserDAO userDAO;
 
     @Autowired
     private UserService userService;

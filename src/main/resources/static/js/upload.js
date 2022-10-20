@@ -4,10 +4,11 @@ const fileSound = document.getElementById("file-sound");
 const locationUpload = document.getElementById("location-upload");
 const nameSound = document.getElementById("name-sound");
 const hidden = "d-none";
-    
+
 function AddElementUpload(files) {
   const htmls = Object.keys(files).map((index) => {
-    const nameFile = files[index].name;
+    let nameFile = files[index].name;
+    nameFile = nameFile.replace(".jpg", "");
     return `
         <div class="container  form-upload-file-sound">
             <div class="row">
@@ -21,7 +22,7 @@ function AddElementUpload(files) {
                         </p>
                     </div>
                     <div class="d-flex ">
-                        <input class="d-block px-3 py-1 w-100" id = "name-sound"/>
+                        <input class="d-block px-3 py-1 w-100" id = "name-sound" value = ${nameFile} />
                     </div>
                     </div>
                     <div class="d-block">
@@ -59,13 +60,6 @@ function AddElementUpload(files) {
   });
 
   locationUpload.innerHTML = htmls.join("");
-
-  const inputs = document.getElementsByTagName("input");
-  console.log(inputs);
-  Object.keys(files).map((index) => {
-    const name = files[index];
-    inputs[index].value = name;
-  });
 }
 
 fileSound.addEventListener("change", (event) => {

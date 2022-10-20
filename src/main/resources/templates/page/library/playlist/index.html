@@ -17,20 +17,19 @@
     <link rel="stylesheet" th:href="@{/css/home.css}" />
     <link rel="stylesheet" th:href="@{/css/responsive.css}" />
     <link rel="stylesheet" th:href="@{/css/library.css}" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 
-    <title>Document</title>
+    <title>Library</title>
 </head>
 <body>
     <body>
 
         <div th:replace="page/library/index :: library(~{this::content})">
             <div th:fragment="content">
-                <div class="container">
+                <div class="container p-0">
                     <th:block th:if="${#lists.size(playlists) == 0}">
                         <div class="container p-0 form-empty">
                             <div class="d-flex w-100 h-100 justify-content-center align-items-center">
@@ -39,41 +38,33 @@
                         </div>
                     </th:block>
                     <th:block th:if="${#lists.size(playlists) > 0}">
-                        <div class="container p-0 ">
-                            <div class="cards">
-                                <th:block th:each="album : ${playlists}">
-                                    <div class="card">
-                                        <a th:href="${album.pathUrl}" class="swiper-slide">
-                                            <div class="form-albums">
-                                                <div class="d-flex flex-column h-100">
-                                                    <div class="d-block h-75">
-                                                        <div class="form-albums__image">
-                                                            <img th:src="${album.pathImage}" alt="" />
-                                                        </div>
+                    <div class="container p-0 ">
+                        <div class="cards">
+                            <th:block th:each="playlist : ${playlists}">
+                                <div class="card">
+                                    <a th:href="${playlist.pathUrl}" class="text-decoration-none">
+                                        <div class="form-albums">
+                                            <div class="form-albums__image">
+                                                <img th:src="${playlist.pathImage}" alt="" />
+                                            </div>
+                                            <div class="form-albums__content">
+                                                <div class="form-albums__content-details">
+                                                    <div class="form-albums__name_album">
+                                                        <p class="text-start mb-0 text-name_album" th:text="${playlist.namePlaylist}">
+                                                        </p>
                                                     </div>
-                                                    <div class="d-block h-25">
-                                                        <div class="form-albums__content">
-                                                            <div class="d-flex flex-column">
-                                                                <div class="d-block">
-                                                                    <p class="text-start mb-0 form-albums__name_album"
-                                                                        th:text="${album.nameAlbum}">
-                                                                    </p>
-                                                                </div>
-                                                                <div class="d-block">
-                                                                    <p class="text-start mb-0 form-albums__name_user"
-                                                                        th:text="${album.nameUser}">
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div class="form-albums__name_user">
+                                                        <p class="text-start mb-0 text-name_user" th:text="${playlist.nameUser}">
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </a>
-                                    </div>
-                                </th:block>
-                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </th:block>
                         </div>
+                    </div>
                     </th:block>
                 </div>
             </div>
