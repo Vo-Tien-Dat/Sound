@@ -30,11 +30,48 @@
         <div th:replace="page/library/index :: library(~{this::content})">
             <div th:fragment="content">
                 <div class="container">
-                    <div class="container empty">
-                        <div class="d-flex w-100 h-100 justify-content-center align-items-center">
-                            <h2>Hiện không có album </h2>
+                    <th:block th:if="${#lists.size(albums) == 0}">
+                        <div class="container p-0 form-empty">
+                            <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+                                <h2>Hiện không có album </h2>
+                            </div>
                         </div>
-                    </div>
+                    </th:block>
+                    <th:block th:if="${#lists.size(albums) > 0}">
+                        <div class="container p-0 ">
+                            <div class="cards">
+                                <th:block th:each = "album : ${albums}">
+                                    <div class="card">
+                                        <a th:href="${album.pathUrl}" class="swiper-slide">
+                                            <div class="form-albums">
+                                                <div class="d-flex flex-column h-100">
+                                                    <div class="d-block h-75">
+                                                        <div class="form-albums__image">
+                                                            <img th:src="${album.pathImage}" alt="" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-block h-25">
+                                                        <div class="form-albums__content">
+                                                            <div class="d-flex flex-column">
+                                                                <div class="d-block">
+                                                                    <p class="text-start mb-0 form-albums__name_album" th:text="${album.nameAlbum}">
+                                                                    </p>
+                                                                </div>
+                                                                <div class="d-block">
+                                                                    <p class="text-start mb-0 form-albums__name_user" th:text="${album.nameUser}">
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </th:block>
                 </div>
             </div>
         </div>
@@ -50,6 +87,7 @@
             crossorigin="anonymous"></script>
         <script type="text/javascript" th:src="@{/js/main.js}"></script>
         <script type="text/javascript" th:src="@{/js/library.js}"></script>
+        <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
     </body>
 </body>
 </html>

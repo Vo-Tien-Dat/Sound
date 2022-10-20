@@ -40,7 +40,55 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <style>
+      html,
+      body {
+        position: relative;
+        height: 100%;
+      }
 
+      body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+      }
+
+      .swiper {
+        width: 100%;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
     <title>Home</title>
   </head>
   <body>
@@ -60,12 +108,39 @@
                         </div>
                       </div>
                       <div class="d-block">
-                        <div class="container form-slider__content_row">
-                          <div class="row">
-                            <div class="col-sm-3 form-slider__content_row_item"></div>
-                            <div class="col-sm-3 form-slider__content_row_item"></div>
-                            <div class="col-sm-3 form-slider__content_row_item"></div>
-                            <div class="col-sm-3 form-slider__content_row_item"></div>
+                        <div class="container p-0 form-slider__content_row">
+                          <div class="container p-0">
+                            <div class="swiper mySwiper">
+                              <div class="swiper-wrapper">
+                                <th:block th:each = "album : ${albums}">
+                                  <a th:href = "${album.pathUrl}" class="swiper-slide">
+                                    <div class="form-albums">
+                                      <div class="d-flex flex-column h-100">
+                                        <div class="d-block h-75">
+                                          <div class="form-albums__image">
+                                            <img th:src="${album.pathImage}" alt="" />
+                                          </div>
+                                        </div>
+                                        <div class="d-block h-25">
+                                          <div class="form-albums__content">
+                                            <div class="d-flex flex-column">
+                                              <div class="d-block">
+                                                <p class="text-start mb-0 form-albums__name_album" th:text="${album.nameAlbum}">
+                                                </p>
+                                              </div>
+                                              <div class="d-block">
+                                                <p class="text-start mb-0 form-albums__name_user" th:text="${album.nameUser}">
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </a>
+                                </th:block>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -73,7 +148,54 @@
                   </div>
                 </div>
                 <!-- giao diện: top 10 playlist được nghe nhiều nhất  -->
-                <div class="d-block"></div>
+                <div class="d-block">
+                  <div class="container form-slider">
+                    <div class="d-flex flex-column gap-2">
+                      <div class="d-block">
+                        <div class="container p-0 form-slider__title">
+                          <p class="text-start fs-3 fw-semibold mb-0">Playlists</p>
+                        </div>
+                      </div>
+                      <div class="d-block">
+                        <div class="container p-0 form-slider__content_row">
+                          <div class="container p-0">
+                            <div class="swiper mySwiper">
+                              <div class="swiper-wrapper">
+                                <th:block th:each="album : ${albums}">
+                                  <a th:href="${album.pathUrl}" class="swiper-slide">
+                                    <div class="form-albums">
+                                      <div class="d-flex flex-column h-100">
+                                        <div class="d-block h-75">
+                                          <div class="form-albums__image">
+                                            <img th:src="${album.pathImage}" alt="" />
+                                          </div>
+                                        </div>
+                                        <div class="d-block h-25">
+                                          <div class="form-albums__content">
+                                            <div class="d-flex flex-column">
+                                              <div class="d-block">
+                                                <p class="text-start mb-0 form-albums__name_album" th:text="${album.nameAlbum}">
+                                                </p>
+                                              </div>
+                                              <div class="d-block">
+                                                <p class="text-start mb-0 form-albums__name_user" th:text="${album.nameUser}">
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </a>
+                                </th:block>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <!-- giao diện: top 10 bài hát được nghe nhiều nhất và gợi ý follower  -->
                 <div class="d-block">
                   <div class="container">
@@ -233,6 +355,31 @@
       ></script>
       <script type="text/javascript" th:src="@{/js/main.js}"></script>
       <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+      <script>
+        var swiper = new Swiper(".mySwiper", {
+          slidesPerView: 1,
+          spaceBetween: 10,
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          breakpoints: {
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 5,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 5,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 5,
+            },
+          },
+        });
+      </script>
     </body>
   </body>
 </html>

@@ -26,7 +26,7 @@ public class UploadController {
     // tính năng: bắt đầu upload file
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public ModelAndView getUpload() {
-        String path = "/page/upload/start_upload/index";
+        String path = "/page/upload/index";
         ModelAndView modelAndView = new ModelAndView(path);
         return modelAndView;
     }

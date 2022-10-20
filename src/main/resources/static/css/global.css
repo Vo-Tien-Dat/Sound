@@ -1,3 +1,169 @@
+/* reset css */
+html {
+  font-size: 62.5%;
+}
+
+:root {
+  /* //d6d6d6 */
+  --background-color-light-mode: #f6f6f6;
+  --border-color-light-mode: #b1a4a4;
+  --primary-color: #e5370c;
+  --text-color-light-mode: #333;
+  --btn-color-defaut: #f0f0f0;
+
+
+  /* border-width  */
+  --border: 1px;
+  --border-2: 2px;
+  --border-4: 4px;
+  --border-8: 8px;
+
+  /* border-style  */
+  --border-solid: solid;
+  --border-dashed: dashed;
+  --border-dotted: dotted;
+  --border-double: double;
+  --border-hidden: hidden;
+  --border-none: none;
+
+  /* border-radius:  */
+  --rounded-none: 0px;
+  --rounded-sm: 0.125rem;
+  --rounded: 0.25rem;
+  --rounded-md: 0.375rem;
+  --rounded-lg: 0.5rem;
+  --rounded-xl: 0.75rem;
+  --rounded-2xl: 1rem;
+  --rounded-3xl: 1.5rem;
+
+  /* font-size  */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+
+  /* font-weight  */
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
+  /* display  */
+  --block: block;
+  --inline-block: inline-block;
+  --inline: inline;
+  --flex: flex;
+  --inline-flex: inline-flex;
+  --table: table;
+  --inline-table: inline-table;
+  --grid: grid;
+  --hidden: none;
+
+  /* padding  */
+  --p-0: 0px;
+  --p-px: 1px;
+  --p-0\.5: 0.125rem;
+  --p-1: 0.25rem;
+  --p-1\.5: 0.375rem;
+  --p-2: 0.5rem;
+  --p-2\.5: 0.625rem;
+  --p-3: 0.75rem;
+  --p-3\.5: 0.875rem;
+  --p-4: 1rem;
+  --p-5: 1.25rem;
+  --p-6: 1.5rem;
+  --p-7: 1.75rem;
+  --p-8: 2rem;
+  --p-9: 2.25rem;
+
+  /* height  */
+  --h-0: 0px;
+  --h-px: 1px;
+  --h-0\.5: 0.125rem;
+  --h-1: 0.25rem;
+  --h-1\.5: 0.375rem;
+  --h-2: 0.5rem;
+  --h-16: 4rem;
+  --h-20: 5rem;
+  --h-24: 6rem;
+  --h-28: 7rem;
+  --h-32: 8rem;
+  --h-36: 9rem;
+  --h-40: 10rem;
+  --h-44: 11rem;
+  --h-52: 13rem;
+  --h-56: 14rem;
+  --h-60: 15rem;
+  --h-64: 16rem;
+  --h-68: 17rem;
+  --h-72: 18rem;
+  --h-76: 19rem;
+  --h-80: 20rem;
+  --h-84: 21rem;
+  --h-88: 22rem;
+  --h-96: 24rem;
+  --h-full: 100%;
+
+  /* width */
+  --w-0: 0px;
+  --w-px: 1px;
+  --w-0\.5: 0.125rem;
+  --w-1: 0.25rem;
+  --w-1\.5: 0.375rem;
+  --w-2: 0.5rem;
+  --w-16: 4rem;
+  --w-20: 5rem;
+  --w-24: 6rem;
+  --w-28: 7rem;
+  --w-32: 8rem;
+  --w-36: 9rem;
+  --w-40: 10rem;
+  --w-44: 11rem;
+  --w-52: 13rem;
+  --w-56: 14rem;
+  --w-60: 15rem;
+  --w-64: 16rem;
+  --w-68: 17rem;
+  --w-72: 18rem;
+  --w-76: 19rem;
+  --w-80: 20rem;
+  --w-84: 21rem;
+  --w-88: 22rem;
+  --w-96: 24rem;
+  --w-full: 100%;
+  /* overflow  */
+  --overflow-auto: auto;
+  --overflow-hidden: hidden;
+  --overflow-clip: clip;
+  --overflow-visible: visible;
+  --overflow-scroll: scroll;
+  --overflow-x-auto: auto;
+  --overflow-y-auto: auto;
+  --overflow-x-hidden: hidden;
+  --overflow-y-hidden: hidden;
+
+
+  /* color  */
+  --text-black: #000;
+  --text-white: #fff;
+
+
+  /* backgroud-color  */
+  --bg-black: #000;
+  --bg-white: #fff;
+}
+
 body {
   min-height: 100%;
   min-width: 100%;
@@ -135,4 +301,84 @@ input:focus {
 
 .empty {
   height: 200px;
+}
+
+
+/* hiển thị từng form album  */
+
+.form-albums {
+  border-style: var(--border-solid);
+  border-width: var(--border);
+  border-color: #666;
+  border-radius: var(--rounded-xl);
+  height: var(--h-96);
+  width: var(--w-full);
+  padding-top: var(--p-3);
+  padding-right: var(--p-3);
+  padding-bottom: var(--p-3);
+  padding-left: var(--p-3);
+}
+
+.form-albums__image {
+  width: var(--w-full);
+  height: var(--h-full);
+  border-radius: var(--rounded-lg);
+  overflow: var(--overflow-hidden);
+  border: 1px solid rgb(165, 165, 165);
+}
+
+.form-albums__content {
+  width: var(--w-full);
+  height: var(--h-full);
+}
+
+.form-albums__name_album {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-black);
+}
+
+.form-albums__name_album:hover {
+  color: purple;
+}
+
+.form-albums__name_user {
+  font-size: var(--text-xl);
+  font-weight: var(--font-medium);
+  color: var(--text-black);
+}
+
+
+/* hiển thị grid  */
+.cards{
+  display: grid; 
+  gap: 0.5rem;
+}
+
+.card{
+  min-height: var(--h-2);
+  background-color: #4b5563;
+  padding-top: var(--p-0);
+  padding-right: var(--p-0);
+  padding-bottom: var(--p-0);
+  padding-left: var(--p-0);
+  border: var(--border-none)!important;
+}
+
+@media  screen and (min-width: 640px) {
+  .cards{
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media  screen and (min-width: 768px) {
+  .cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media  screen and (min-width: 1024px) {
+  .cards {
+      grid-template-columns: repeat(4, 1fr);
+    }
 }

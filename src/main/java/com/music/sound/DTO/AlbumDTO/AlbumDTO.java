@@ -10,5 +10,4 @@ import org.springframework.web.multipart.MultipartFile;
 public class AlbumDTO {
     private String nameAlbum;
     private List<SoundDTO> sounds;
-    private MultipartFile[] files;
 }
