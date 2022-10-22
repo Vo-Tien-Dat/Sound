@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import lombok.Data;
-import com.music.sound.model.User;
+
 
 @Entity
 @Table(name = "PLAYLIST")

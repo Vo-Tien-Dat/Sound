@@ -1,7 +1,5 @@
 package com.music.sound.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +31,6 @@ public class HomeController {
     public ModelAndView getHome() {
         String pathFile = "/page/home/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
-
         // hiện thị 10 bài hát
         List<SoundDTO> sounds = new ArrayList<>();
         sounds.add(new SoundDTO("Hồi duyên", "", "Khởi Vũ"));
