@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "SOUND")
@@ -20,26 +20,28 @@ import org.hibernate.annotations.Parameter;
 public class Sound {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator", parameters = {
-            @Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")
-    })
-    @Column(name = "id_sound")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    @Column(name = "id_sound", columnDefinition = "VARCHAR(40)")
     private UUID id;
 
-    @Column(name = "name_sound", unique = true)
+    @Column(name = "name_sound")
     private String nameSound;
 
+    @Column(name = "path_image")
+    private String pathImage;
+
+    @Column(name = "number_viewer")
+    private Long numberViewer;
+
+    @Column(name = "path_audio", nullable = false)
+    private String pathAudio;
+
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = true, referencedColumnName = "id_user")
-    private User user;
-
-    @Column(name = "viewer")
-    private Long viewer;
-
-    @Column(name = "link_sound", nullable = false)
-    private String linkSound;
-
-    @ManyToOne
-    @JoinColumn(name = "id_album", nullable = true, referencedColumnName = "id_album")
+    @JoinColumn(name = "id_album", referencedColumnName = "id_album", nullable = true)
     private Album album;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
+    private User user;
 }

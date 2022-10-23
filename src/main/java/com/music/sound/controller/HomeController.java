@@ -5,10 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import com.music.sound.service.UserService;
+import com.music.sound.service.AlbumService;
 import java.util.List;
 import java.util.ArrayList;
-
 import com.music.sound.DTO.AlbumDTO.AlbumDTORead;
 import com.music.sound.DTO.PlaylistDTO.PlaylistDTORead;
 import com.music.sound.DTO.SoundDTO.SoundDTO;
@@ -18,7 +17,7 @@ import com.music.sound.DTO.UserDTO.UserDTOHome;
 public class HomeController {
 
     @Autowired
-    private UserService userService;
+    private AlbumService albumService;
 
     @RequestMapping(value = "/home/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
@@ -31,6 +30,17 @@ public class HomeController {
     public ModelAndView getHome() {
         String pathFile = "/page/home/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
+
+        try {
+            List<AlbumDTORead> albumDTOReads = albumService.getAllAlbum();
+            for (AlbumDTORead albumDTORead : albumDTOReads) {
+                System.out.println(albumDTORead.getNameAlbum());
+                System.out.println(albumDTORead.getPathUrl());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
         // hiện thị 10 bài hát
         List<SoundDTO> sounds = new ArrayList<>();
         sounds.add(new SoundDTO("Hồi duyên", "", "Khởi Vũ"));

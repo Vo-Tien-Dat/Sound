@@ -12,6 +12,7 @@ import org.hibernate.annotations.Type;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Table(name = "USER")
@@ -27,6 +28,9 @@ public class User {
 
     @Column(name = "username", nullable = false, length = 50, unique = true)
     private String username;
+
+    @Column(name = "name_user", nullable = false, length = 40)
+    private String nameUser;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -44,8 +48,11 @@ public class User {
     private String pathImgBackground;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Sound> sounds;
+    private List<Sound> sounds;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Playlist> playlists;
+    private List<Playlist> playlists;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Album> albums;
 }

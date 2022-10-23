@@ -12,22 +12,34 @@ import java.lang.Object;
 
 @Repository
 public class UserDAO {
-    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM USER WHERE username = ?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
-    public User findUserByUsername(String username) {
+    // sql
+    private final String SQL_FIND_USER_BY_ID = "SELECT * FROM USER WHERE id_user = ?";
 
-        User result = (User) jdbcTemplate.queryForObject(SQL_FIND_USER_BY_USERNAME,
-                new BeanPropertyRowMapper<>(User.class),
-                new Object[] { username });
+    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM USER WHERE username = ?";
+
+    // feature: show information user
+    public User findUserById(String id) {
+        User result = (User) jdbcTemplate.queryForObject(SQL_FIND_USER_BY_ID, new BeanPropertyRowMapper<>(User.class),
+                new Object[] { id });
         return result;
     }
 
+    // feature: use login
+    public User findUserByUsername(String username) {
+
+        User result = (User) jdbcTemplate.queryForObject(SQL_FIND_USER_BY_USERNAME,
+                new UserMapper(),
+                username);
+        return result;
+    }
+
+    // feature: use register User
     public void insertUser(User user) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();

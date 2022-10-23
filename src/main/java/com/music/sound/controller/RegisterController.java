@@ -28,7 +28,6 @@ public class RegisterController {
         String pathFile = "/page/register/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         try {
-            System.out.println(userRegisterDTO.getUsername());
             userService.create(userRegisterDTO);
         } catch (Exception ex) {
             modelAndView.addObject("errorMessage", ex.getMessage());

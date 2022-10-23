@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.music.sound.DAO.UserDAO;
-import com.music.sound.DTO.UserDTO.ConvertUserDTO;
+import com.music.sound.DTO.UserDTO.ConvertUser;
 import com.music.sound.DTO.UserDTO.UserDTO;
 import com.music.sound.DTO.UserDTO.UserRegisterDTO;
 import com.music.sound.model.User;
@@ -16,7 +16,7 @@ public class UserService {
     private UserDAO userDAO;
 
     @Autowired
-    private ConvertUserDTO convertUserDTO;
+    private ConvertUser convertUserDTO;
 
     public UserDTO runConvertEntityToDTO() {
         String username = "votiendatf";
@@ -25,7 +25,6 @@ public class UserService {
         return userDTO;
     }
 
-    @Transactional
     public void create(UserRegisterDTO userRegisterDTO) {
         String username = userRegisterDTO.getUsername();
         String password = userRegisterDTO.getPassword();

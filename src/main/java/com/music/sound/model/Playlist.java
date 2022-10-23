@@ -2,14 +2,16 @@ package com.music.sound.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Value;
+import java.util.UUID;
 import lombok.Data;
-
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "PLAYLIST")
@@ -17,21 +19,28 @@ import lombok.Data;
 
 public class Playlist {
     @Id
-    @Column(name = "id_playlist")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    @Column(name = "id_playlist", columnDefinition = "VARCHAR(40)")
+    private UUID id;
 
-    @Column(name = "name_playlist", unique = true)
+    @Column(name = "name_playlist")
     private String namePlaylist;
 
-    @Column(name = "number_view", nullable = false)
-    private Long numberView;
+    @Column(name = "path_image")
+    private String pathImage;
 
-    @Column(name = "number_sound", nullable = false)
+    @Value("0")
+    @Column(name = "number_viewer")
+    private Long numberViewer;
+
+    @Value("0")
+    @Column(name = "number_sound")
     private Long numberSound;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_user")
     private User user;
 
 }
