@@ -18,6 +18,7 @@ public class AlbumMapper implements RowMapper<Album> {
         String nameAlbum = rs.getString("name_album");
         Long numberSound = rs.getLong("number_sound");
         Long numberViewer = rs.getLong("number_view");
+        String pathImage = rs.getString("path_image");
         String idUser = rs.getString("id_user");
 
         User user = userDAO.findUserById(idUser);
@@ -26,6 +27,7 @@ public class AlbumMapper implements RowMapper<Album> {
         album.setNameAlbum(nameAlbum);
         album.setNumberSound(numberSound);
         album.setNumberViewer(numberViewer);
+        album.setPathImage(pathImage);
         album.setUser(user);
 
         return album;

@@ -3,6 +3,7 @@ package com.music.sound.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,7 +58,7 @@ public class PlaylistController {
     }
 
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)
-    public ModelAndView getPlaylistId() {
+    public ModelAndView getPlaylistId(@PathVariable("id") String idPlaylist) {
         String pathFile = "/page/playlist_id/index";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         return modelAndView;

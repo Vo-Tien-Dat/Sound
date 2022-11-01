@@ -10,13 +10,16 @@ import org.hibernate.annotations.Type;
 import java.util.UUID;
 import lombok.Data;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
+import java.util.List;
 
 @Entity
 @Table(name = "PLAYLIST")
 @Data
 
 public class Playlist {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -36,8 +39,11 @@ public class Playlist {
     @Column(name = "number_sound")
     private Long numberSound;
 
+    @OneToMany(mappedBy = "playlist")
+    private List<Sound> sounds;
+
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
     private User user;
 
     public Playlist() {

@@ -42,6 +42,10 @@ public class Sound {
     private Album album;
 
     @ManyToOne
+    @JoinColumn(name = "id_playlist", referencedColumnName = "id_playlist", nullable = true)
+    private Playlist playlist;
+
+    @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = true)
     private User user;
 

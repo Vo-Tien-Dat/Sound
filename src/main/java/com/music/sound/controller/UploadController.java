@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import com.music.sound.DAO.TypeSoundDAO;
 import com.music.sound.DTO.AlbumDTO.AlbumDTO;
 import com.music.sound.DTO.SoundDTO.SoundDTO;
 import com.music.sound.model.Sound;
+import com.music.sound.model.TypeSound;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +18,6 @@ import java.util.UUID;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
 import com.music.sound.service.SoundService;
 import com.music.sound.service.UploadService;
 
@@ -28,6 +29,9 @@ public class UploadController {
 
     @Autowired
     private SoundService soundService;
+
+    @Autowired
+    private TypeSoundDAO typeSoundDAO;
 
     @RequestMapping(value = "/upload/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
@@ -54,6 +58,8 @@ public class UploadController {
         ModelAndView modelAndView = new ModelAndView(path);
 
         List<SoundDTO> sounds = new ArrayList<SoundDTO>();
+
+        List<TypeSound> typeSounds = typeSoundDAO.findAllTypeSound();
 
         int numberFile = Integer.valueOf(files.size());
 
@@ -84,6 +90,7 @@ public class UploadController {
             album.setSounds(sounds);
 
             modelAndView.addObject("album", album);
+            modelAndView.addObject("typesounds", typeSounds);
         }
 
         return modelAndView;
@@ -100,12 +107,17 @@ public class UploadController {
             if (sound != null) {
                 String id = sound.getId();
                 String nameSound = sound.getNameSound();
+                Long typeSound = sound.getTypeSound();
+                System.out.println(typeSound);
+                TypeSound typeSoundObject = new TypeSound();
+                typeSoundObject.setId(typeSound);
 
                 Sound soundUpdate = new Sound();
                 soundUpdate.setId(UUID.fromString(id));
                 soundUpdate.setNameSound(nameSound);
+                soundUpdate.setTypeSound(typeSoundObject);
 
-                soundService.updateSoundBy(soundUpdate);
+                soundService.updateSoundById(soundUpdate);
             }
         }
         modelAndView.addObject("sounds", sounds);

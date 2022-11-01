@@ -23,22 +23,31 @@ public class LibraryController {
     @RequestMapping(value = "/library", method = RequestMethod.GET)
     public ModelAndView getLibrary() {
         String pathRedirect = "redirect:/library/overview";
+
         ModelAndView modelAndView = new ModelAndView(pathRedirect);
+
         return modelAndView;
     }
 
     @RequestMapping(value = "/library/overview", method = RequestMethod.GET)
     public ModelAndView getOverview() {
+
         String pathFile = "/page/library/overview/index";
+
         ModelAndView modelAndView = new ModelAndView(pathFile);
+
         return modelAndView;
     }
 
     @RequestMapping(value = "/library/albums", method = RequestMethod.GET)
     public ModelAndView getAlbum() {
+
         String pathFile = "/page/library/album/index";
+
         ModelAndView modelAndView = new ModelAndView(pathFile);
+
         List<AlbumDTORead> albums = new ArrayList<>();
+
         albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello", "hello"));
         albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello", "hello"));
         albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello", "hello"));

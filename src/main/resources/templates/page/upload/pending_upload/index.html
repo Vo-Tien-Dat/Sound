@@ -64,7 +64,11 @@
                                                                                 <p class="text-start fs-5 fw-semibold">Type Sound</p>
                                                                             </div>
                                                                             <div class="d-block">
-                                                                                <input class="w-100" />
+                                                                                <select class = "w-100" th:field = "${album.sounds[__${state.index}__].typeSound}">
+                                                                                    <th:block th:each = "typesound: ${typesounds}">
+                                                                                        <option th:value = "${typesound.id}" th:text = "${typesound.nameType}"></option>
+                                                                                    </th:block>
+                                                                                </select>
                                                                             </div>
                                                                         </div>
                                                                     </div>

@@ -30,7 +30,7 @@ public class UserDAO {
         return result;
     }
 
-    // feature: use login
+    // tinhs năng: lấy thông tin của user qua tên
     public User findUserByUsername(String username) {
 
         User result = (User) jdbcTemplate.queryForObject(SQL_FIND_USER_BY_USERNAME,

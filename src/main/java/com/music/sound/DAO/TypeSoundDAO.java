@@ -3,8 +3,6 @@ package com.music.sound.DAO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
 import com.music.sound.model.TypeSound;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,24 +12,28 @@ public class TypeSoundDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // sql
+
     private final String SQL_FIND_ALL_TYPE_SOUND = "SELECT * FROM TYPE_SOUND";
+
+    private final String SQL_FIND_TYPE_SOUND_BY_ID_TYPE_SOUND = "SELECT * FROM TYPE_SOUND WHERE id_type_sound = ?";
 
     public List<TypeSound> findAllTypeSound() {
 
-        List<TypeSound> result = new ArrayList<>();
+        List<TypeSound> records = jdbcTemplate.query(
+                SQL_FIND_ALL_TYPE_SOUND,
+                new TypeSoundMapper());
 
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_FIND_ALL_TYPE_SOUND);
+        return records;
+    }
 
-        for (Map<String, Object> row : rows) {
-            TypeSound typeSound = new TypeSound();
+    public TypeSound findTypeSoundByIdTypeSound(Long idTypeSound) {
 
-            String nameType = row.get("name_type").toString();
+        TypeSound record = jdbcTemplate.queryForObject(
+                SQL_FIND_TYPE_SOUND_BY_ID_TYPE_SOUND,
+                new TypeSoundMapper(),
+                idTypeSound);
 
-            typeSound.setNameType(nameType);
-
-            result.add(typeSound);
-        }
-
-        return result;
+        return record;
     }
 }

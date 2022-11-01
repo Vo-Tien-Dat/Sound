@@ -8,12 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.music.sound.model.Sound;
-import com.music.sound.model.User;
+import com.music.sound.model.TypeSound;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
-import com.music.sound.model.Album;
 
 @Repository
 public class SoundDAO {
@@ -24,93 +20,52 @@ public class SoundDAO {
         @Autowired
         private EntityManagerFactory entityManagerFactory;
 
-        @Autowired
-        private UserDAO userDAO;
-
-        @Autowired
-        private AlbumDAO albumDAO;
-
         // sql
         private final String SQL_FIND_ALL_SOUND = "SELECT * FROM SOUND";
 
         private final String SQL_FIND_ALL_SOUND_BY_ID_USER = "SELECT * FROM SOUND WHERE id_user = ?";
 
-        // private final String SQL_INSERT_SOUND = "INSERT INTO SOUND(id_sound,
-        // name_sound, number_viewer, path_audio, path_image, id_album, id_user) VALUES
-        // (?, ?, ?, ?, ?, ?, ?)";
+        private final String SQL_FIND_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM SOUND WHERE id_album = ?";
 
-        private final String SQL_UPDATE_SOUND = "UPDATE SOUND SET name_sound = ?  WHERE id_sound = ? ";
+        private final String SQL_FIND_ALL_SOUND_BY_ID_ALBUM = "SELECT * FROM SOUND WHERE id_album = ?";
+
+        private final String SQL_UPDATE_SOUND = "UPDATE SOUND SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
 
         public List<Sound> findAllSound() {
-                List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_FIND_ALL_SOUND);
 
-                List<Sound> result = new ArrayList<>();
+                List<Sound> records = jdbcTemplate.query(SQL_FIND_ALL_SOUND, new SoundMapper());
 
-                for (Map<String, Object> row : rows) {
-                        Sound sound = new Sound();
-
-                        UUID idSound = UUID.fromString(row.get("id_sound").toString());
-                        String nameSound = row.get("name_sound") != null
-                                        ? row.get("name_sound").toString()
-                                        : "";
-                        Long numberViewer = row.get("number_viewer") != null
-                                        ? Long.parseLong(row.get("number_viewer").toString())
-                                        : Long.valueOf(0);
-                        String pathImage = row.get("path_image") != null
-                                        ? row.get("path_image").toString()
-                                        : "";
-                        String pathAudio = row.get("path_audio") != null
-                                        ? row.get("path_auido").toString()
-                                        : "";
-                        String idUser = row.get("id_user") != null
-                                        ? row.get("id_user").toString()
-                                        : "";
-                        String idAlbum = row.get("id_album") != null
-                                        ? row.get("id_album").toString()
-                                        : "";
-
-                        User user = userDAO.findUserById(idUser);
-                        Album album = albumDAO.findAlbumByIdAlbum(idAlbum);
-
-                        sound.setId(idSound);
-                        sound.setNameSound(nameSound);
-                        sound.setNumberViewer(numberViewer);
-                        sound.setPathAudio(pathAudio);
-                        sound.setPathImage(pathImage);
-                        sound.setUser(user);
-                        sound.setAlbum(album);
-
-                        result.add(sound);
-
-                }
-                return result;
+                return records;
         }
 
-        public List<Sound> findSoundByIdUser(String idUser) {
-                List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_FIND_ALL_SOUND_BY_ID_USER, idUser);
+        public List<Sound> findAllSoundByIdUser(String idUser) {
 
-                List<Sound> result = new ArrayList<>();
+                List<Sound> records = jdbcTemplate.query(
+                                SQL_FIND_ALL_SOUND_BY_ID_USER,
+                                new SoundMapper(),
+                                idUser);
 
-                for (Map<String, Object> row : rows) {
-                        Sound sound = new Sound();
+                return records;
+        }
 
-                        UUID idSound = UUID.fromString(row.get("id_sound").toString());
-                        String nameSound = row.get("name_sound") != null
-                                        ? row.get("name_sound").toString()
-                                        : "";
+        public List<Sound> findAllSoundByIdPlaylist(String idPlaylist) {
 
-                        Long numberViewer = row.get("number_viewer") != null
-                                        ? Long.parseLong(row.get("number_viewer").toString())
-                                        : Long.valueOf(0);
+                List<Sound> records = jdbcTemplate.query(
+                                SQL_FIND_ALL_SOUND_BY_ID_PLAYLIST,
+                                new SoundMapper(),
+                                idPlaylist);
 
-                        sound.setId(idSound);
-                        sound.setNameSound(nameSound);
-                        sound.setNumberViewer(numberViewer);
+                return records;
+        }
 
-                        result.add(sound);
+        public List<Sound> findAllSoundByIdAlbum(String idAlbum) {
 
-                }
-                return result;
+                List<Sound> records = jdbcTemplate.query(
+                                SQL_FIND_ALL_SOUND_BY_ID_ALBUM,
+                                new SoundMapper(),
+                                idAlbum);
+
+                return records;
         }
 
         public void insertSound(Sound sound) {
@@ -150,11 +105,14 @@ public class SoundDAO {
 
         // tính năng: cập nhật các thông tin của sound
         public void updateSoundByIdSound(Sound sound) {
-                String id = sound.getId().toString();
+
+                String idSound = sound.getId().toString();
                 String nameSound = sound.getNameSound();
+                TypeSound typeSound = sound.getTypeSound();
+                Long idTypeSound = typeSound.getId();
 
                 try {
-                        jdbcTemplate.update(SQL_UPDATE_SOUND, nameSound, id);
+                        jdbcTemplate.update(SQL_UPDATE_SOUND, nameSound, idTypeSound, idSound);
                         System.out.println("update success");
                 } catch (Exception ex) {
                         System.out.println(ex.getMessage());

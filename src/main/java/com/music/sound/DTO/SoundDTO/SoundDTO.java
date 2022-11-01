@@ -13,4 +13,5 @@ public class SoundDTO {
     private String nameSound;
     private String pathImage;
     private String nameUser;
+    private Long typeSound;
 }

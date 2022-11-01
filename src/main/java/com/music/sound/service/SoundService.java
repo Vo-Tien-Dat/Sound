@@ -20,8 +20,11 @@ public class SoundService {
     private SoundDAO soundDAO;
 
     public List<SoundDTORead> getAllSound() {
-        List<SoundDTORead> soundDTOReads = new ArrayList<>();
+
         List<Sound> sounds = soundDAO.findAllSound();
+
+        List<SoundDTORead> soundDTOReads = new ArrayList<>();
+
         for (Sound sound : sounds) {
             SoundDTORead soundDTORead = convertSound.convertEntityToDTO(sound);
             soundDTOReads.add(soundDTORead);
@@ -39,7 +42,7 @@ public class SoundService {
         }
     }
 
-    public void updateSoundBy(Sound sound) {
+    public void updateSoundById(Sound sound) {
         soundDAO.updateSoundByIdSound(sound);
     }
 

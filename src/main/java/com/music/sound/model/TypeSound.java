@@ -15,7 +15,7 @@ import javax.persistence.CascadeType;
 public class TypeSound {
     @Id
     @Column(name = "id_type_sound")
-    Long id;
+    private Long id;
 
     @Column(name = "name_type", unique = true)
     private String nameType;

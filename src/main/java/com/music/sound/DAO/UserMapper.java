@@ -3,9 +3,7 @@ package com.music.sound.DAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
-
 import org.springframework.jdbc.core.RowMapper;
-
 import com.music.sound.model.User;
 
 public class UserMapper implements RowMapper<User> {
