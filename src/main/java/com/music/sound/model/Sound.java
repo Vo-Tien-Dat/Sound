@@ -34,7 +34,7 @@ public class Sound {
     @Column(name = "number_viewer")
     private Long numberViewer;
 
-    @Column(name = "path_audio", nullable = false)
+    @Column(name = "path_audio", nullable = true)
     private String pathAudio;
 
     @ManyToOne
@@ -42,6 +42,10 @@ public class Sound {
     private Album album;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = true)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_type_sound", referencedColumnName = "id_type_sound", nullable = true)
+    private TypeSound typeSound;
 }

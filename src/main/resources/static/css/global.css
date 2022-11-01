@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');  
+* {
+  box-sizing: border-box;
+}
+
 /* reset css */
 html {
   font-size: 62.5%;
@@ -435,4 +440,8 @@ input:focus {
   .cards {
       grid-template-columns: repeat(4, 1fr);
     }
+}
+
+.hidden{
+  display: none!important; 
 }

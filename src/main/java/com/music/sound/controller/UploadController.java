@@ -7,14 +7,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import com.music.sound.DTO.AlbumDTO.AlbumDTO;
 import com.music.sound.DTO.SoundDTO.SoundDTO;
+import com.music.sound.model.Sound;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.UUID;
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import com.music.sound.service.SoundService;
+import com.music.sound.service.UploadService;
 
 @Controller
 public class UploadController {
+
+    @Autowired
+    private UploadService uploadService;
+
+    @Autowired
+    private SoundService soundService;
 
     @RequestMapping(value = "/upload/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
@@ -23,39 +36,79 @@ public class UploadController {
         return modelAndView;
     }
 
-    // tính năng: bắt đầu upload file
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public ModelAndView getUpload() {
-        String path = "/page/upload/index";
+        String path = "/page/upload/start_upload/index";
         ModelAndView modelAndView = new ModelAndView(path);
         return modelAndView;
     }
 
-    // tính năng: upload lại form thay đổi tên bài hát
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ModelAndView postUpload(
+    @RequestMapping(value = "/pending_upload", method = RequestMethod.POST, consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ModelAndView postPendingUpload(
             @RequestParam("file") List<MultipartFile> files,
-            @RequestParam(name = "name-sound") String nameFile,
             @ModelAttribute("album") AlbumDTO albumDTO) {
+
         String path = "/page/upload/pending_upload/index";
+
         ModelAndView modelAndView = new ModelAndView(path);
+
         List<SoundDTO> sounds = new ArrayList<SoundDTO>();
+
+        int numberFile = Integer.valueOf(files.size());
+
         if (!files.isEmpty()) {
-            for (MultipartFile file : files) {
-                String nameSound = file.getOriginalFilename();
+            for (int index = 0; index < numberFile; ++index) {
+
+                Sound sound = new Sound();
                 SoundDTO soundDTO = new SoundDTO();
-                soundDTO.setNameSound(nameSound);
-                sounds.add(soundDTO);
+
+                String nameSound = files.get(index).getOriginalFilename();
+
+                try {
+                    String id = soundService.getIdSound(sound);
+                    uploadService.setNameFile(id);
+                    uploadService.setMultipartFile(files.get(index));
+                    uploadService.save();
+
+                    soundDTO.setId(id);
+                    soundDTO.setNameSound(nameSound);
+
+                    sounds.add(soundDTO);
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
 
             AlbumDTO album = new AlbumDTO();
             album.setSounds(sounds);
+
             modelAndView.addObject("album", album);
         }
-        if (albumDTO != null) {
-            System.out.println(albumDTO);
-        }
 
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/end_upload", method = RequestMethod.POST, consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ModelAndView postPendingUpload(@ModelAttribute("album") AlbumDTO albumDTO) {
+        String path = "/page/upload/end_upload/index";
+        ModelAndView modelAndView = new ModelAndView(path);
+        List<SoundDTO> sounds = albumDTO.getSounds();
+        System.out.println(sounds);
+        for (SoundDTO sound : sounds) {
+            if (sound != null) {
+                String id = sound.getId();
+                String nameSound = sound.getNameSound();
+
+                Sound soundUpdate = new Sound();
+                soundUpdate.setId(UUID.fromString(id));
+                soundUpdate.setNameSound(nameSound);
+
+                soundService.updateSoundBy(soundUpdate);
+            }
+        }
+        modelAndView.addObject("sounds", sounds);
         return modelAndView;
     }
 }

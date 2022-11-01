@@ -9,7 +9,9 @@ import com.music.sound.DTO.SoundDTO.SoundDTORead;
 import com.music.sound.model.Sound;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SoundService {
     @Autowired
     private ConvertSound convertSound;
@@ -26,5 +28,23 @@ public class SoundService {
         }
 
         return soundDTOReads;
+    }
+
+    public void save(Sound sound) {
+        try {
+            soundDAO.insertSound(sound);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void updateSoundBy(Sound sound) {
+        soundDAO.updateSoundByIdSound(sound);
+    }
+
+    public String getIdSound(Sound sound) {
+        String id = soundDAO.getIdSoundBeforeInsert(sound);
+        return id;
     }
 }

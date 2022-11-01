@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
       integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
@@ -20,25 +24,59 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="ContainerFullScreen">
-      <form th:action = "@{/login}" class="RootLogin"  th:method="post" th:object = "${userLoginDTO}">
-        <h1 th:text="${errorMessage}"></h1>
-        <input
-          class="BaseInput"
-          placeholder="user name"
-          name="username"
-          type="text"
-          
-        />
-        <input
-          class="BaseInput"
-          placeholder="password"
-          name="password"
-          type="pass"
-          
-        />
-        <button type="submit" class="BaseButton">Log In</button>
-      </form>
+    <div class="container" id="container">
+      <div class="form-container sign-up-container">
+        <form 
+          th:action="@{/register}" 
+          th:method = "post" 
+          th:object = "${userRegisterDTO}" >
+          <h1>Create Account</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>or use your email for registration</span>
+          <input type="text" th:field  = "*{username}" placeholder="Name" />
+          <input type="email" th:field = "*{email}" placeholder="Email" />
+          <input type="password" th:field = "*{password}" placeholder="Password" />
+          <input type="password"  placeholder="Re-enter password" />
+          <button>Sign Up</button>
+        </form>
+      </div>
+      <div class="form-container sign-in-container">
+        <form 
+          th:action="@{/login}" 
+          th:method = "post" 
+          th:object = "${userLoginDTO}">
+          <h1>Sign in</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>or use your account</span>
+          <input type="text" th:field = "*{username}" placeholder="username" />
+          <input type="password" th:field = "*{password}" placeholder="Password" />
+          <a href="#">Forgot your password?</a>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Welcome Back!</h1>
+            <p>To keep connected with us please login with your personal info</p>
+            <button class="ghost" id="signIn">Sign In</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>Hello, Friend!</h1>
+            <p>Enter your personal details and start journey with us</p>
+            <button class="ghost" id="signUp">Sign Up</button>
+          </div>
+        </div>
+      </div>
     </div>
+    <script type="text/javascript" th:src="@{/js/login.js}"></script>
   </body>
 </html>

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Data
 public class SoundDTO {
+    private String id;
     private String nameSound;
     private String pathImage;
     private String nameUser;

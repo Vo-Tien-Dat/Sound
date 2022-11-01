@@ -45,4 +45,12 @@ public class Album {
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user;
+
+    public Album() {
+        this.id = null;
+        this.nameAlbum = null;
+        this.numberViewer = Long.valueOf(0);
+        this.numberSound = Long.valueOf(0);
+        this.pathImage = null;
+    }
 }

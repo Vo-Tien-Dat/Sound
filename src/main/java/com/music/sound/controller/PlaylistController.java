@@ -1,5 +1,6 @@
 package com.music.sound.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +10,16 @@ import java.util.ArrayList;
 
 import com.music.sound.DTO.PlaylistDTO.PlaylistDTOInsert;
 import com.music.sound.DTO.PlaylistDTO.PlaylistDTORead;
+import com.music.sound.model.Playlist;
+import com.music.sound.service.PlaylistService;
 
 import java.util.List;
 
 @Controller
 public class PlaylistController {
+
+    @Autowired
+    private PlaylistService playlistService;
 
     @RequestMapping(value = "/playlist/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
@@ -30,16 +36,23 @@ public class PlaylistController {
 
         List<PlaylistDTORead> playlists = new ArrayList<>();
         playlists.add(new PlaylistDTORead("hello", "hello", "hello", "hello"));
+
         modelAndView.addObject("playlists", playlists);
         return modelAndView;
     }
 
     @RequestMapping(value = "/playlist", method = RequestMethod.POST)
     public ModelAndView postPlaylist(@ModelAttribute("playlistDTOInsert") PlaylistDTOInsert playlistDTOInsert) {
-        String pathRedirect = "redirect:/playlist/";
+
         String namePlaylist = playlistDTOInsert.getNamePlaylist();
-        pathRedirect = pathRedirect + namePlaylist;
-        ModelAndView modelAndView = new ModelAndView(pathRedirect);
+
+        Playlist playlist = new Playlist();
+
+        playlist.setNamePlaylist(namePlaylist);
+
+        String urlRedirect = playlistService.getUrlToRedirect(playlist);
+
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
         return modelAndView;
     }
 

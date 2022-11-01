@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import org.springframework.beans.factory.annotation.Value;
 import java.util.UUID;
 import lombok.Data;
 import javax.persistence.ManyToOne;
@@ -31,11 +30,9 @@ public class Playlist {
     @Column(name = "path_image")
     private String pathImage;
 
-    @Value("0")
     @Column(name = "number_viewer")
     private Long numberViewer;
 
-    @Value("0")
     @Column(name = "number_sound")
     private Long numberSound;
 
@@ -43,4 +40,12 @@ public class Playlist {
     @JoinColumn(name = "id_user")
     private User user;
 
+    public Playlist() {
+        this.id = null;
+        this.namePlaylist = null;
+        this.pathImage = null;
+        this.numberSound = Long.valueOf(0);
+        this.numberViewer = Long.valueOf(0);
+        this.user = null;
+    }
 }

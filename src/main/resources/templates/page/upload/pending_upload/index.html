@@ -33,14 +33,14 @@
                 <div class="d-block container p-0">
                     <!-- chức năng upload file âm nhạc, cập nhật tên những file upload  -->
                     <div class="d-block container p-0 d-none" id="container-upload-file-details ">
-                        <form th:action="@{/upload}" th:method="post" enctype="multipart/form-data" id="auto-upload-file"  th:object = "${album}">
-                            <input th:field = "${album.nameAlbum}"/>
+                        <form th:action="@{/end_upload}" th:method="post" enctype="multipart/form-data" id="auto-upload-file"  th:object = "${album}">
                             <div class="d-flex flex-column gap-3" id="playlist-upload">
                                 
                                 <!-- từng form nhạc được upload lên  -->
                                 <div th:block th:each = "sound, state: ${album.sounds}">
-                                    <div class="container  form-upload-file-sound">
+                                    <div class="container  form-upload-file-sound" >
                                         <fieldset>
+                                            <input  class="d-block px-3 py-1 w-100"  type = "hidden" th:field="${album.sounds[__${state.index}__].id}" />
                                             <div class="row">
                                                 <div class="col-sm-4"></div>
                                                 <div class="col-sm-8">

@@ -41,6 +41,15 @@ public class User {
     @Column(name = "location")
     private String location;
 
+    @Column(name = "number_album")
+    private Long numberAlbum;
+
+    @Column(name = "number_follower")
+    private Long numberFollower;
+
+    @Column(name = "number_sound")
+    private Long numberSound;
+
     @Column(name = "path_img_avatar")
     private String pathImgAvatar;
 
@@ -55,4 +64,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Album> albums;
+
 }

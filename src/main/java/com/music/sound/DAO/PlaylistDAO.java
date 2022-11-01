@@ -92,7 +92,7 @@ public class PlaylistDAO {
         return result;
     }
 
-    // feature: add new playlist
+    // tính năng: thêm một playlist
     public void insertPlaylist(Playlist playlist) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -102,12 +102,34 @@ public class PlaylistDAO {
 
         try {
             entityManager.persist(playlist);
+
             entityTransaction.commit();
         } catch (Exception ex) {
             entityTransaction.rollback();
         } finally {
             entityManager.close();
         }
+    }
+
+    // tính năng: lấy ra id của một playlist
+    public String getIdPlaylistBeforeInsert(Playlist playlist) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        try {
+            entityManager.persist(playlist);
+            entityTransaction.commit();
+
+            String id = playlist.getId().toString();
+            return id;
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            entityTransaction.rollback();
+        } finally {
+            entityManager.close();
+        }
+        return null;
     }
 
 }

@@ -35,6 +35,12 @@ public class SoundDAO {
 
         private final String SQL_FIND_ALL_SOUND_BY_ID_USER = "SELECT * FROM SOUND WHERE id_user = ?";
 
+        // private final String SQL_INSERT_SOUND = "INSERT INTO SOUND(id_sound,
+        // name_sound, number_viewer, path_audio, path_image, id_album, id_user) VALUES
+        // (?, ?, ?, ?, ?, ?, ?)";
+
+        private final String SQL_UPDATE_SOUND = "UPDATE SOUND SET name_sound = ?  WHERE id_sound = ? ";
+
         public List<Sound> findAllSound() {
                 List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_FIND_ALL_SOUND);
 
@@ -113,11 +119,45 @@ public class SoundDAO {
                 entityTransaction.begin();
                 try {
                         entityManager.persist(sound);
+                        System.out.println(sound.getId().toString());
                         entityTransaction.commit();
                 } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
                         entityTransaction.rollback();
                 } finally {
                         entityManager.close();
+                }
+        }
+
+        // tính năng: lấy id trước khi lưu vào cơ sở dữ liệu
+        public String getIdSoundBeforeInsert(Sound sound) {
+                EntityManager entityManager = entityManagerFactory.createEntityManager();
+                EntityTransaction entityTransaction = entityManager.getTransaction();
+                entityTransaction.begin();
+                try {
+                        entityManager.persist(sound);
+                        entityTransaction.commit();
+                        String id = sound.getId().toString();
+                        return id;
+                } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                        entityTransaction.rollback();
+                } finally {
+                        entityManager.close();
+                }
+                return null;
+        }
+
+        // tính năng: cập nhật các thông tin của sound
+        public void updateSoundByIdSound(Sound sound) {
+                String id = sound.getId().toString();
+                String nameSound = sound.getNameSound();
+
+                try {
+                        jdbcTemplate.update(SQL_UPDATE_SOUND, nameSound, id);
+                        System.out.println("update success");
+                } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
                 }
         }
 

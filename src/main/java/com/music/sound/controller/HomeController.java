@@ -43,8 +43,8 @@ public class HomeController {
 
         // hiện thị 10 bài hát
         List<SoundDTO> sounds = new ArrayList<>();
-        sounds.add(new SoundDTO("Hồi duyên", "", "Khởi Vũ"));
-        sounds.add(new SoundDTO("Ngưởi có còn thương", "", "Dee Trần"));
+        sounds.add(new SoundDTO("hello", "Hồi duyên", "", "Khởi Vũ"));
+        sounds.add(new SoundDTO("test", "Ngưởi có còn thương", "", "Dee Trần"));
 
         // hiện thị gợi ý 10 người chưa được theo dõi
         List<UserDTOHome> users = new ArrayList<>();

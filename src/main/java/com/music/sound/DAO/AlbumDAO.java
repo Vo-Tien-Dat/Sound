@@ -43,7 +43,7 @@ public class AlbumDAO {
         for (Map<String, Object> row : rows) {
             Album album = new Album();
 
-            UUID idPlaylist = UUID.fromString(row.get("id_album").toString());
+            UUID idAlbum = UUID.fromString(row.get("id_album").toString());
             String nameAlbum = row.get("name_album") != null
                     ? row.get("name_album").toString()
                     : "";
@@ -54,7 +54,7 @@ public class AlbumDAO {
                     ? Long.parseLong(row.get("number_sound").toString())
                     : Long.valueOf(0);
 
-            album.setId(idPlaylist);
+            album.setId(idAlbum);
             album.setNameAlbum(nameAlbum);
             album.setNumberViewer(numberView);
             album.setNumberSound(numberSound);
