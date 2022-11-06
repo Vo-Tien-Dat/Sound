@@ -49,6 +49,7 @@ public class UserDAO {
             entityTransaction.commit();
         } catch (Exception ex) {
             entityTransaction.rollback();
+            System.out.println(ex.getMessage());
         } finally {
             entityManager.close();
         }

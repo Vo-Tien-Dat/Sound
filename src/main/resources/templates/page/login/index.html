@@ -27,7 +27,7 @@
     <div class="container" id="container">
       <div class="form-container sign-up-container">
         <form 
-          th:action="@{/register}" 
+          th:action="@{/login}" 
           th:method = "post" 
           th:object = "${userRegisterDTO}" >
           <h1>Create Account</h1>
@@ -41,7 +41,10 @@
           <input type="email" th:field = "*{email}" placeholder="Email" />
           <input type="password" th:field = "*{password}" placeholder="Password" />
           <input type="password"  placeholder="Re-enter password" />
-          <button>Sign Up</button>
+          <th:block th:if = "${messageSignUp != null}">
+            <span th:text = "${messageSignUp}"></span>
+          </th:block>
+          <button type = "submit" name = "button" value = "sign-up">Sign Up</button>
         </form>
       </div>
       <div class="form-container sign-in-container">
@@ -58,8 +61,11 @@
           <span>or use your account</span>
           <input type="text" th:field = "*{username}" placeholder="username" />
           <input type="password" th:field = "*{password}" placeholder="Password" />
+          <th:block th:if="${messageSignIn != null}">
+            <span th:text="${messageSignIn}"></span>
+          </th:block>
           <a href="#">Forgot your password?</a>
-          <button>Sign In</button>
+          <button type = "submit" name = "button" value = "sign-in">Sign In</button>
         </form>
       </div>
       <div class="overlay-container">

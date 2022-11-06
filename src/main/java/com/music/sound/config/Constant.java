@@ -12,4 +12,8 @@ public interface Constant {
 
     public final String URL_STATIC_ADD_PLAYLIST = "playlist\\";
 
+    public final String ACTION_SIGN_IN = "sign-in";
+
+    public final String ACTION_SIGN_UP = "sign-up";
+
 }

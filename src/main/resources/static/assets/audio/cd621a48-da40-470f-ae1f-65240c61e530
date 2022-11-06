@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <math.h>
+using namespace std;
+
+const int MAXN = 1e3;
+
+struct Data
+{
+    int earliestStart = 0;
+    int earliestEnd = 0;
+    int activityDuration = 0;
+    int lastestStart = 0;
+    int lastestFinish = 0;
+};
+
+struct Node
+{
+    Data data;
+    int numberNodePre = 0;
+    vector<int> nodeNext;
+};
+
+map<int, Node> tree;
+
+int main()
+{
+    int numberNodes;
+    cin >> numberNodes;
+    for (int i = 1; i <= numberNodes; ++i)
+    {
+        int activityDuration;
+        cin >> activityDuration;
+
+        tree[i].data.activityDuration = activityDuration;
+
+        int numberNodeNext;
+        cin >> numberNodeNext;
+        while (numberNodeNext--)
+        {
+            int valueNodeNext;
+            cin >> valueNodeNext;
+
+            tree[i].nodeNext.push_back(valueNodeNext);
+
+            tree[valueNodeNext].numberNodePre++;
+        }
+    }
+
+    for (int i = 1; i <= numberNodes; ++i)
+    {
+        //
+        tree[i].data.earliestEnd = tree[i].numberNodePre == 0 ? tree[i].data.activityDuration : tree[i].data.activityDuration + tree[i].data.earliestStart;
+
+        int sizeNextNode = tree[i].nodeNext.size();
+        for (int j = 0; j < sizeNextNode; ++j)
+        {
+            int valueNextNode = tree[i].nodeNext[j];
+
+            tree[valueNextNode].data.earliestStart = max(tree[valueNextNode].data.earliestStart, tree[i].data.earliestEnd);
+        }
+    }
+}

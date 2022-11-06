@@ -7,13 +7,14 @@ import com.music.sound.model.TypeSound;
 
 public class TypeSoundMapper implements RowMapper<TypeSound> {
     public TypeSound mapRow(ResultSet rs, int numRow) throws SQLException {
+
         TypeSound typeSound = new TypeSound();
 
-        Long id = Long.valueOf(rs.getString("id_type_sound"));
-        String nameType = rs.getString("name_type");
+        Long idTypeSound = Long.valueOf(rs.getString("id_type_sound"));
+        String nameTypeSound = rs.getString("name_type_sound");
 
-        typeSound.setId(id);
-        typeSound.setNameType(nameType);
+        typeSound.setIdTypeSound(idTypeSound);
+        typeSound.setNameTypeSound(nameTypeSound);
 
         return typeSound;
     }

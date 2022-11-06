@@ -5,29 +5,37 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityWebApplication {
 
     @Autowired
     private AuthenticationFilter authenticationFilter;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    // @Autowired
+    // private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("oke");
+        // httpSecurity
+        // .cors()
+        // .and()
+        // .csrf()
+        // .disable()
+        // .authorizeHttpRequests()
+        // .antMatchers("/login", "/home", "/css/**", "/register")
+        // .permitAll();
+
         httpSecurity
-            .cors()
+                .cors()
                 .and()
-            .csrf()
+                .csrf()
                 .disable()
-            .authorizeHttpRequests()
-            .antMatchers("/login", "/home", "/css/**", "/register")
-            .permitAll();
+                .authorizeHttpRequests().anyRequest().permitAll();
+        System.out.println("oke");
         return httpSecurity.build();
     }
 }

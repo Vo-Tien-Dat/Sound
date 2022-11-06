@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
-
 import com.music.sound.DTO.PlaylistDTO.PlaylistDTOInsert;
 import com.music.sound.DTO.PlaylistDTO.PlaylistDTORead;
+import com.music.sound.DTO.PlaylistDTO.PlaylistDTOReadByIdPlaylist;
 import com.music.sound.model.Playlist;
 import com.music.sound.service.PlaylistService;
-
 import java.util.List;
 
 @Controller
@@ -24,8 +23,8 @@ public class PlaylistController {
 
     @RequestMapping(value = "/playlist/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
-        String pathRedirect = "redirect:/playlist";
-        ModelAndView modelAndView = new ModelAndView(pathRedirect);
+        String urlRedirect = "redirect:/playlist";
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
         return modelAndView;
     }
 
@@ -59,8 +58,20 @@ public class PlaylistController {
 
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)
     public ModelAndView getPlaylistId(@PathVariable("id") String idPlaylist) {
+
         String pathFile = "/page/playlist_id/index";
+        String urlRedirect = "redirect:/playlist";
+
         ModelAndView modelAndView = new ModelAndView(pathFile);
+
+        PlaylistDTOReadByIdPlaylist playlist = playlistService.getPlaylistByIdPLaylist(idPlaylist);
+
+        if (playlist != null) {
+            modelAndView.addObject("playlist", playlist);
+        } else {
+            modelAndView.setViewName(urlRedirect);
+        }
+
         return modelAndView;
     }
 }

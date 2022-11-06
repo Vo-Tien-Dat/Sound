@@ -2,16 +2,21 @@ package com.music.sound.model;
 
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import java.util.List;
 
 @Entity
 @Table(name = "SOUND")
@@ -42,14 +47,16 @@ public class Sound {
     private Album album;
 
     @ManyToOne
-    @JoinColumn(name = "id_playlist", referencedColumnName = "id_playlist", nullable = true)
-    private Playlist playlist;
-
-    @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = true)
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_type_sound", referencedColumnName = "id_type_sound", nullable = true)
     private TypeSound typeSound;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "SOUND_PLAYLIST", joinColumns = {
+            @JoinColumn(name = "id_sound") }, inverseJoinColumns = {
+                    @JoinColumn(name = "id_playlist") })
+    private List<Playlist> playlists;
 }

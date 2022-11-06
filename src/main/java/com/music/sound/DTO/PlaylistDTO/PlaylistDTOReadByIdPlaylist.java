@@ -15,8 +15,6 @@ public class PlaylistDTOReadByIdPlaylist {
 
     private String pathImage;
 
-    private Long numberSound;
-
-    
+    private String nameUser;
 
 }

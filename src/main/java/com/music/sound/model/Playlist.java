@@ -10,8 +10,8 @@ import org.hibernate.annotations.Type;
 import java.util.UUID;
 import lombok.Data;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Entity
@@ -39,11 +39,11 @@ public class Playlist {
     @Column(name = "number_sound")
     private Long numberSound;
 
-    @OneToMany(mappedBy = "playlist")
+    @ManyToMany(mappedBy = "playlists")
     private List<Sound> sounds;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user;
 
     public Playlist() {

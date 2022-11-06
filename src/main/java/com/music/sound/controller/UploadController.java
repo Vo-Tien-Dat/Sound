@@ -110,7 +110,7 @@ public class UploadController {
                 Long typeSound = sound.getTypeSound();
                 System.out.println(typeSound);
                 TypeSound typeSoundObject = new TypeSound();
-                typeSoundObject.setId(typeSound);
+                typeSoundObject.setIdTypeSound(typeSound);
 
                 Sound soundUpdate = new Sound();
                 soundUpdate.setId(UUID.fromString(id));

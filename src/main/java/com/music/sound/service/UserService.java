@@ -2,8 +2,6 @@ package com.music.sound.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.music.sound.DAO.UserDAO;
 import com.music.sound.DTO.UserDTO.ConvertUser;
 import com.music.sound.DTO.UserDTO.UserDTO;

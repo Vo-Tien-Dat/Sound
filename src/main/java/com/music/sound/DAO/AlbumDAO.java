@@ -18,27 +18,27 @@ public class AlbumDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_FIND_ALL_ALBUM = "SELECT * FROM ALBUM";
+    private final String SQL_READ_ALL_ALBUM = "SELECT * FROM ALBUM";
 
-    private final String SQL_FIND_ALBUM_BY_ID_ALUBM = "SELECT * FROM ALBUM WHERE id_album = ?";
+    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "SELECT * FROM ALBUM WHERE id_album = ?";
 
-    private final String SQL_FIND_ALL_ALBUM_BY_ID_USER = "SELECT * FROM FROM ALBUM WHERE id_user = ? ";
+    private final String SQL_READ_ALBUM_BY_ID_USER = "SELECT * FROM FROM ALBUM WHERE id_user = ? ";
 
     public Album findAlbumByIdAlbum(String idAlbum) {
-        Album album = jdbcTemplate.queryForObject(SQL_FIND_ALBUM_BY_ID_ALUBM, new AlbumMapper(), idAlbum);
+        Album album = jdbcTemplate.queryForObject(SQL_READ_ALBUM_BY_ID_ALBUM, new AlbumMapper(), idAlbum);
         return album;
     }
 
     public List<Album> findAllAlbum() {
 
-        List<Album> records = jdbcTemplate.query(SQL_FIND_ALL_ALBUM, new AlbumMapper());
+        List<Album> records = jdbcTemplate.query(SQL_READ_ALL_ALBUM, new AlbumMapper());
 
         return records;
     }
 
     public List<Album> findAlbumByIdUser(String idUser) {
 
-        List<Album> records = jdbcTemplate.query(SQL_FIND_ALL_ALBUM_BY_ID_USER, new AlbumMapper(), idUser);
+        List<Album> records = jdbcTemplate.query(SQL_READ_ALBUM_BY_ID_USER, new AlbumMapper(), idUser);
 
         return records;
     }

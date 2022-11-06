@@ -15,21 +15,22 @@ public class PlaylistMapper implements RowMapper<Playlist> {
 
     public Playlist mapRow(ResultSet rs, int rowNum) throws SQLException {
         Playlist playlist = new Playlist();
+
         UUID idPlaylist = UUID.fromString(rs.getString("id_playlist"));
         String namePlaylist = rs.getString("name_playlist");
         Long numberSound = Long.valueOf(rs.getString("number_sound"));
-        Long numberView = Long.valueOf(rs.getString("number_view"));
+        Long numberView = Long.valueOf(rs.getString("number_viewer"));
         String pathImage = rs.getString("path_image");
         String idUser = rs.getString("id_user");
 
-        User user = userDAO.findUserById(idUser);
+        // User user = userDAO.findUserById(idUser);
 
         playlist.setId(idPlaylist);
         playlist.setNamePlaylist(namePlaylist);
         playlist.setNumberSound(numberSound);
         playlist.setNumberViewer(numberView);
         playlist.setPathImage(pathImage);
-        playlist.setUser(user);
+        // playlist.setUser(user);
 
         return playlist;
     }

@@ -66,7 +66,7 @@
                                                                             <div class="d-block">
                                                                                 <select class = "w-100" th:field = "${album.sounds[__${state.index}__].typeSound}">
                                                                                     <th:block th:each = "typesound: ${typesounds}">
-                                                                                        <option th:value = "${typesound.id}" th:text = "${typesound.nameType}"></option>
+                                                                                        <option th:value = "${typesound.idTypeSound}" th:text = "${typesound.nameTypeSound}"></option>
                                                                                     </th:block>
                                                                                 </select>
                                                                             </div>
@@ -118,12 +118,12 @@
                             <div class="d-block container">
                                 <div class="d-flex justify-content-end align-items-center gap-4">
                                     <div class="d-inline">
-                                        <button class="btn btn-primary px-3 py-1">
+                                        <button class="btn btn-primary px-3 py-1" type = "submit" name = "button" value = "cancel">
                                             <p class="text-center fs-4 fw-semibold mb-0">Cancel</p>
                                         </button>
                                     </div>
                                     <div class="d-inline">
-                                        <button class="btn btn-primary px-3 py-1" type="submit">
+                                        <button class="btn btn-primary px-3 py-1" type="submit" name = "button" value = "save">
                                             <p class="text-center fs-4 fw-semibold mb-0">Save</p>
                                         </button>
                                     </div>

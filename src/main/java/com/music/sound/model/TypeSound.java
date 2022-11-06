@@ -15,10 +15,10 @@ import javax.persistence.CascadeType;
 public class TypeSound {
     @Id
     @Column(name = "id_type_sound")
-    private Long id;
+    private Long idTypeSound;
 
-    @Column(name = "name_type", unique = true)
-    private String nameType;
+    @Column(name = "name_type_sound", unique = true)
+    private String nameTypeSound;
 
     @OneToMany(mappedBy = "typeSound", cascade = CascadeType.ALL)
     private Set<Sound> sounds;
