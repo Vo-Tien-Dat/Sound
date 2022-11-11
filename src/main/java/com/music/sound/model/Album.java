@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Table(name = "ALBUM")
@@ -45,6 +47,9 @@ public class Album {
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user;
+
+    @ManyToMany(mappedBy = "albums")
+    private List<Favorite> favorites;
 
     public Album() {
         this.id = null;

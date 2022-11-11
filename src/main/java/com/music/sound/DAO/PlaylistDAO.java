@@ -32,6 +32,12 @@ public class PlaylistDAO {
         return records;
     }
 
+    public List<PlaylistDTO> readAllPLaylist() {
+        List<PlaylistDTO> records = jdbcTemplate.query(SQL_READ_ALL_PLAYLIST, new PlaylistReadMapper());
+
+        return records;
+    }
+
     public Playlist findPlaylistByIdPlaylist(String idPlaylist) {
         Playlist record = new Playlist();
         record = jdbcTemplate.queryForObject(

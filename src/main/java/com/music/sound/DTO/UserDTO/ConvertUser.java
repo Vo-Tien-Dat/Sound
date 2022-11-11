@@ -14,7 +14,7 @@ public class ConvertUser {
         if (userDTO.getUsername() == null || userDTO.getPassword() == null || userDTO.getEmail() == null) {
             throw new NullPointerException(message);
         }
-        user.setUsername(userDTO.getUsername());
+        user.setUserName(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setEmail(userDTO.getEmail());
         return user;
@@ -23,7 +23,7 @@ public class ConvertUser {
     public User convertDTOToEntity(UserRegisterDTO userRegisterDTO) throws NullPointerException {
 
         User user = new User();
-        user.setUsername(userRegisterDTO.getUsername());
+        user.setUserName(userRegisterDTO.getUsername());
         user.setPassword(userRegisterDTO.getPassword());
         user.setEmail(userRegisterDTO.getEmail());
         return user;
@@ -32,10 +32,10 @@ public class ConvertUser {
     public UserDTO convertEntityToDTO(User user) throws UsernameNotFoundException {
         UserDTO userDTO = new UserDTO();
         String message = "Not Found User";
-        if (user.getUsername() == null) {
+        if (user.getUserName() == null) {
             throw new UsernameNotFoundException(message);
         }
-        userDTO.setUsername(user.getUsername());
+        userDTO.setUsername(user.getUserName());
         userDTO.setUsername(user.getPassword());
         return userDTO;
     }

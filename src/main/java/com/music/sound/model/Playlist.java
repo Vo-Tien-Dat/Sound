@@ -46,6 +46,9 @@ public class Playlist {
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user;
 
+    @ManyToMany(mappedBy = "playlists")
+    private List<Favorite> favorites;
+
     public Playlist() {
         this.id = null;
         this.namePlaylist = null;

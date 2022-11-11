@@ -42,6 +42,9 @@ public class Sound {
     @Column(name = "path_audio", nullable = true)
     private String pathAudio;
 
+    @Column(name = "name_singer", nullable = true)
+    private String nameSinger;
+
     @ManyToOne
     @JoinColumn(name = "id_album", referencedColumnName = "id_album", nullable = true)
     private Album album;
@@ -59,4 +62,7 @@ public class Sound {
             @JoinColumn(name = "id_sound") }, inverseJoinColumns = {
                     @JoinColumn(name = "id_playlist") })
     private List<Playlist> playlists;
+
+    @ManyToMany(mappedBy = "sounds")
+    private List<Favorite> favorites;
 }

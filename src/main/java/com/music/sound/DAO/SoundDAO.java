@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.music.sound.model.Sound;
 import com.music.sound.model.TypeSound;
 import java.util.List;
+import java.util.ArrayList;
 
 @Repository
 public class SoundDAO {
@@ -33,10 +34,18 @@ public class SoundDAO {
 
         private final String SQL_UPDATE_SOUND = "UPDATE SOUND SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
 
+        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM SOUND WHERE id_sound = ?";
+
         public List<Sound> findAllSound() {
 
-                List<Sound> records = jdbcTemplate.query(SQL_READ_ALL_SOUND, new SoundMapper());
+                List<Sound> records = new ArrayList<>();
+                records = jdbcTemplate.query(SQL_READ_ALL_SOUND, new SoundMapper());
+                return records;
+        }
 
+        public List<SoundDTO> readAllSound() {
+                List<SoundDTO> records = new ArrayList<>();
+                records = jdbcTemplate.query(SQL_READ_ALL_SOUND, new SoundReadMapper());
                 return records;
         }
 
@@ -110,6 +119,26 @@ public class SoundDAO {
                 return null;
         }
 
+        // tính năng lấy id Sound trước khi lưu Sound vào cở sở dữ liệu
+
+        public String readIdSoundBeforeCreateSound(Sound sound) {
+                EntityManager entityManager = entityManagerFactory.createEntityManager();
+                EntityTransaction entityTransaction = entityManager.getTransaction();
+                entityTransaction.begin();
+                try {
+                        entityManager.persist(sound);
+                        entityTransaction.commit();
+                        String id = sound.getId().toString();
+                        return id;
+                } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                        entityTransaction.rollback();
+                } finally {
+                        entityManager.close();
+                }
+                return null;
+        }
+
         // tính năng: cập nhật các thông tin của sound
         public void updateSoundByIdSound(Sound sound) {
 
@@ -124,6 +153,10 @@ public class SoundDAO {
                 } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                 }
+        }
+
+        public void deleteSoundByIdSound(String idSound) throws Exception {
+                jdbcTemplate.update(SQL_DELETE_SOUND_BY_ID_SOUND, idSound);
         }
 
 }

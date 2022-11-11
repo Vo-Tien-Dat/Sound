@@ -2,7 +2,6 @@ package com.music.sound.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,9 +10,8 @@ import java.util.List;
 import java.util.ArrayList;
 import com.music.sound.DTO.AlbumDTO.AlbumDTORead;
 import com.music.sound.DTO.PlaylistDTO.PlaylistDTORead;
-import com.music.sound.DTO.SoundDTO.SoundDTO;
 import com.music.sound.DTO.UserDTO.UserDTOHome;
-import java.util.Map;
+import com.music.sound.DTO.SoundDTO.SoundDTO;
 
 @Controller
 public class HomeController {
@@ -78,6 +76,14 @@ public class HomeController {
         playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello", "hello"));
         playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello", "hello"));
         modelAndView.addObject("playlists", playlists);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/home1", method = RequestMethod.GET)
+    public ModelAndView getHome1() {
+        String pathFile = "/page/home/index1";
+        ModelAndView modelAndView = new ModelAndView(pathFile);
+
         return modelAndView;
     }
 }

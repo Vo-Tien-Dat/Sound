@@ -20,7 +20,7 @@ public class UserDTO {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
 
-        user.setUsername(username);
+        user.setUserName(username);
         user.setPassword(password);
 
         return user;
@@ -33,7 +33,7 @@ public class UserDTO {
         String password = userRegisterDTO.getPassword();
         String email = userRegisterDTO.getEmail();
 
-        user.setUsername(username);
+        user.setUserName(username);
         user.setPassword(password);
         user.setEmail(email);
 

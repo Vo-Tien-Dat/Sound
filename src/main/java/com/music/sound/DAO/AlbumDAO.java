@@ -36,6 +36,11 @@ public class AlbumDAO {
         return records;
     }
 
+    public List<AlbumDTO> readAllAlbum() {
+        List<AlbumDTO> records = jdbcTemplate.query(SQL_READ_ALL_ALBUM, new AlbumReadMapper());
+        return records;
+    }
+
     public List<Album> findAlbumByIdUser(String idUser) {
 
         List<Album> records = jdbcTemplate.query(SQL_READ_ALBUM_BY_ID_USER, new AlbumMapper(), idUser);

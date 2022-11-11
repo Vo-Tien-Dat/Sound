@@ -32,6 +32,12 @@ public class TypeSoundDAO {
         return records;
     }
 
+    public List<TypeSoundDTO> readAllTypeSound() {
+        List<TypeSoundDTO> records = new ArrayList<>();
+        records = jdbcTemplate.query(SQL_READ_ALL_TYPE_SOUND, new TypeSoundReadMapper());
+        return records;
+    }
+
     public TypeSound findTypeSoundByIdTypeSound(Long idTypeSound) {
         TypeSound record = new TypeSound();
 

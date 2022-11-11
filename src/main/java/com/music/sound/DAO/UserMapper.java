@@ -16,7 +16,7 @@ public class UserMapper implements RowMapper<User> {
         String pathImgAvatar = rs.getString("path_img_avatar");
 
         user.setId(idUser);
-        user.setUsername(username);
+        user.setUserName(username);
         user.setEmail(email);
         user.setPassword(password);
         user.setPathImgAvatar(pathImgAvatar);

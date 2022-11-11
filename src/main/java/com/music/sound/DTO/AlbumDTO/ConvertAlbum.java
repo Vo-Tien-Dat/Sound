@@ -9,7 +9,7 @@ public class ConvertAlbum {
     public AlbumDTORead convertEntityToDTO(Album album) {
         AlbumDTORead albumDTORead = new AlbumDTORead();
         String nameAlbum = album.getNameAlbum();
-        String nameUser = album.getUser().getUsername();
+        String nameUser = album.getUser().getUserName();
         String idAlbum = album.getId().toString();
 
         albumDTORead.setNameAlbum(nameAlbum);

@@ -11,10 +11,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.UUID;
 import lombok.Data;
+
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.JoinTable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "USER")
@@ -28,17 +35,25 @@ public class User {
     @Column(name = "id_user", columnDefinition = "VARCHAR(40)")
     private UUID id;
 
-    @Column(name = "username", nullable = false, length = 50, unique = true)
-    private String username;
+    @Column(name = "user_name", nullable = false, length = 50, unique = true)
+    private String userName;
 
     @Column(name = "name_user", nullable = true, length = 40)
     private String nameUser;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "birthday")
+    private Date birthday;
 
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "number_album")
     private Long numberAlbum;
@@ -63,6 +78,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Album> albums;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Favorite> favorites;
 
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id_role"))
