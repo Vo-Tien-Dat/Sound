@@ -2,6 +2,7 @@ package com.music.sound.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -83,7 +84,27 @@ public class HomeController {
     public ModelAndView getHome1() {
         String pathFile = "/page/home/index1";
         ModelAndView modelAndView = new ModelAndView(pathFile);
+        return modelAndView;
+    }
 
+    @RequestMapping(value = "/favorite/album/{id}", method = RequestMethod.GET)
+    public ModelAndView getFavorite() {
+        String fileView = "/page/home/index1";
+        ModelAndView modelAndView = new ModelAndView(fileView);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/favorite/playlist/{id}", method = RequestMethod.GET)
+    public ModelAndView getFavoritePlaylist() {
+        String fileView = "/page/home/index1";
+        ModelAndView modelAndView = new ModelAndView(fileView);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/favorite/sound/{id}", method = RequestMethod.GET)
+    public ModelAndView getFavoriteSound() {
+        String fileView = "/page/home/index1";
+        ModelAndView modelAndView = new ModelAndView(fileView);
         return modelAndView;
     }
 }
