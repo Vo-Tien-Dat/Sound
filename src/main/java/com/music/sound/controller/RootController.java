@@ -10,8 +10,23 @@ public class RootController {
 
     @RequestMapping(value = "/*", method = RequestMethod.GET)
     public ModelAndView getIndex() {
+
         String pathRedirect = "redirect:/home";
         ModelAndView modelAndView = new ModelAndView(pathRedirect);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView getRoot() {
+        String pathRedirect = "redirect:/home";
+        ModelAndView modelAndView = new ModelAndView(pathRedirect);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public ModelAndView redirectAdmin() {
+        String urlRedirect = "redirect:/home";
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
         return modelAndView;
     }
 }

@@ -117,15 +117,16 @@
                         <div class="container p-0 w-75">
                             <label>
                                 <p class="fs-3">
-                                    Form Add Album
+                                    Form Update Album
                                 </p>
                             </label>
                         </div>
 
                     </div>
                     <div class="p-0">
-                        <form class="container p-0" th:action="@{/admin/album/add}" th:method="post"
-                            th:object="${album}" enctype="multipart/form-data">
+                        <form class="container p-0" th:action="@{/admin/album/editor}" th:method="post" th:object="${album}"
+                            enctype="multipart/form-data">
+                            <input class = "d-none" th:field = "${album.idAlbum}"/>
                             <div class="p-0">
                                 <div class="container bg-white w-75 rounded border p-4">
                                     <div class="row">
@@ -150,20 +151,20 @@
                                                     <div class="col-md-12">
                                                         <div class="mb-2 d-flex flex-column justify-content-start">
                                                             <label class="form-label text-start">Name Album</label>
-                                                            <input type="text" class="form-control" th:field = "${album.nameAlbum}">
+                                                            <input type="text" class="form-control" th:field="${album.nameAlbum}">
                                                         </div>
                                                     </div>
                                                 </div>
-
+                        
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="mb-2 d-flex flex-column justify-content-start">
                                                             <label class="form-label text-start">Name Singer</label>
-                                                            <input type="text" class="form-control" th:field = "${album.nameSinger}">
+                                                            <input type="text" class="form-control" th:field="${album.nameSinger}">
                                                         </div>
                                                     </div>
                                                 </div>
-
+                        
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="mb-2 d-flex flex-column justify-content-start">
@@ -175,15 +176,14 @@
                                             </div>
                                         </div>
                                     </div>
-
+                        
                                 </div>
                             </div>
                             <div class="py-2">
                                 <div class="container w-75">
                                     <div class="row">
                                         <div class="container p-2 bg-white rounded" style="height: 15rem">
-                                            <div class="p-0 w-100 h-100 rounded opacity-25"
-                                                style="border: 2px dashed black; ">
+                                            <div class="p-0 w-100 h-100 rounded opacity-25" style="border: 2px dashed black; ">
                                                 <label for="file_audio"
                                                     class="w-100 h-100 d-flex flex-row justify-content-center align-items-center">
                                                     <div class="p-0">
@@ -205,10 +205,8 @@
                             <div class="py-2">
                                 <div class="container p-0 w-75">
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button type="submit" class="btn btn-secondary me-md-2" name="button"
-                                            value="cancel">Cancel</button>
-                                        <button type="submit" class="btn btn-success" name="button"
-                                            value="add">Add</button>
+                                        <button type="submit" class="btn btn-secondary me-md-2" name="button" value="cancel">Cancel</button>
+                                        <button type="submit" class="btn btn-success" name="button" value="update">Update</button>
                                     </div>
                                 </div>
                             </div>

@@ -3,7 +3,6 @@ package com.music.sound.DAO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -36,6 +35,10 @@ public class SoundDAO {
 
         private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM SOUND WHERE id_sound = ?";
 
+        private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "SELECT * FROM FAVORITE_SOUND_USER WHERE id_user = ? ";
+
+        private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM SOUND ORDER BY RAND() LIMIT ? ";
+
         public List<Sound> findAllSound() {
 
                 List<Sound> records = new ArrayList<>();
@@ -46,6 +49,33 @@ public class SoundDAO {
         public List<SoundDTO> readAllSound() {
                 List<SoundDTO> records = new ArrayList<>();
                 records = jdbcTemplate.query(SQL_READ_ALL_SOUND, new SoundReadMapper());
+                return records;
+        }
+
+        public List<SoundDTO> readAllSoundHaveLimit(int rowLimit) {
+                List<SoundDTO> records = new ArrayList<>();
+                records = jdbcTemplate.query(SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM, new SoundReadMapper(),
+                                new Object[] { rowLimit });
+                return records;
+        }
+
+        public List<SoundDTO> readAllAlbumByIdUserFromFavoriteAlbumUser(String idUser) {
+                List<SoundDTO> records = jdbcTemplate.query(
+                                SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_SOUND_USER,
+                                new FavoriteSoundUserReadMapper(), new Object[] { idUser });
+                return records;
+        }
+
+        public SoundDTO readSoundByIdSound(String idSound) {
+                SoundDTO record = jdbcTemplate.queryForObject(SQL_READ_SOUND_BY_ID_SOUND, new SoundReadMapper(),
+                                new Object[] { idSound });
+                return record;
+        }
+
+        public List<SoundDTO> readAllSoundByIdAlbum(String idAlbum) {
+                List<SoundDTO> records = new ArrayList<>();
+                records = jdbcTemplate.query(SQL_READ_ALL_SOUND_BY_ID_ALBUM, new SoundReadMapper(),
+                                new Object[] { idAlbum });
                 return records;
         }
 

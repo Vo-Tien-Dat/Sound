@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,6 +33,9 @@ public class Album {
     @Column(name = "name_album")
     private String nameAlbum;
 
+    @Column(name = "name_singer")
+    private String nameSinger;
+
     @Column(name = "number_viewer")
     private Long numberViewer;
 
@@ -44,12 +48,9 @@ public class Album {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     private Set<Sound> sounds;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    private User user;
-
-    @ManyToMany(mappedBy = "albums")
-    private List<Favorite> favorites;
+    @ManyToMany
+    @JoinTable(name = "favorite_album_user", joinColumns = @JoinColumn(name = "id_album", referencedColumnName = "id_album"), inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"))
+    private List<User> users;
 
     public Album() {
         this.id = null;

@@ -50,10 +50,6 @@ public class Sound {
     private Album album;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = true)
-    private User user;
-
-    @ManyToOne
     @JoinColumn(name = "id_type_sound", referencedColumnName = "id_type_sound", nullable = true)
     private TypeSound typeSound;
 
@@ -63,6 +59,7 @@ public class Sound {
                     @JoinColumn(name = "id_playlist") })
     private List<Playlist> playlists;
 
-    @ManyToMany(mappedBy = "sounds")
-    private List<Favorite> favorites;
+    @ManyToMany
+    @JoinTable(name = "favorite_sound_user", joinColumns = @JoinColumn(name = "id_sound", referencedColumnName = "id_sound"), inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"))
+    private List<User> users;
 }

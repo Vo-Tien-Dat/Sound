@@ -5,9 +5,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.catalina.startup.Catalina;
+import org.apache.jasper.tagplugins.jstl.core.Catch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.music.sound.DAO.AlbumDAO;
+import com.music.sound.DAO.AlbumDTO;
+import com.music.sound.DAO.PlaylistDAO;
+import com.music.sound.DAO.PlaylistDTO;
 import com.music.sound.DAO.SoundDAO;
 import com.music.sound.DAO.SoundDTO;
 import com.music.sound.DAO.TypeSoundDAO;
@@ -19,6 +26,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.music.sound.model.Album;
+import com.music.sound.model.Playlist;
 import com.music.sound.model.Sound;
 import com.music.sound.model.TypeSound;
 import java.util.ArrayList;
@@ -38,6 +47,12 @@ public class AdminController {
     @Autowired
     private SoundDAO soundDAO;
 
+    @Autowired
+    private AlbumDAO albumDAO;
+
+    @Autowired
+    private PlaylistDAO playlistDAO;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView index() {
 
@@ -53,6 +68,17 @@ public class AdminController {
     public ModelAndView getIndexAlbum() {
         String fileView = "/page/admin/album/index";
         ModelAndView modelAndView = new ModelAndView(fileView);
+        List<AlbumDTO> albums = new ArrayList<>();
+        try {
+            albums = albumDAO.readAllAlbum();
+            if (albums.size() == 0) {
+                albums = null;
+            }
+            modelAndView.addObject("albums", albums);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
         return modelAndView;
     }
 
@@ -60,11 +86,13 @@ public class AdminController {
     public ModelAndView getAddAlbum() {
         String fileView = "/page/admin/album/add";
         ModelAndView modelAndView = new ModelAndView(fileView);
+        Album album = new Album();
+        modelAndView.addObject("album", album);
         return modelAndView;
     }
 
     @RequestMapping(value = "album/add", method = RequestMethod.POST)
-    public ModelAndView postAddAlbum(HttpServletRequest request) {
+    public ModelAndView postAddAlbum(@ModelAttribute("album") Album album, HttpServletRequest request) {
         String fileView = "/page/admin/album/add";
         String urlRedirect = "redirect:/admin/album";
         ModelAndView modelAndView = new ModelAndView(fileView);
@@ -75,6 +103,14 @@ public class AdminController {
                 modelAndView.setViewName(urlRedirect);
                 break;
             case "add":
+                try {
+                    String idAlbum = albumDAO.getIdAlbumBeforeCreateAlbum(album);
+                    System.out.println(idAlbum);
+                    modelAndView.setViewName(urlRedirect);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
                 break;
 
             default:
@@ -83,23 +119,43 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "album/edit", method = RequestMethod.GET)
-    public ModelAndView getEditAlbum() {
-        String fileView = "page/admin/album/edit";
+    @RequestMapping(value = "album/editor/{id}", method = RequestMethod.GET)
+    public ModelAndView getEditAlbum(@PathVariable("id") String idAlbum) {
+        String fileView = "page/admin/album/editor";
+        String urlRedirect = "redirect:/admin/album";
         ModelAndView modelAndView = new ModelAndView(fileView);
+
+        try {
+            AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
+            if (album == null) {
+                modelAndView.setViewName(urlRedirect);
+            }
+            modelAndView.addObject("album", album);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+
         return modelAndView;
     }
 
-    @RequestMapping(value = "album/edit", method = RequestMethod.POST)
-    public ModelAndView postEditAlbum(HttpServletRequest request) {
-        String fileView = "/page/admin/album/add";
+    @RequestMapping(value = "album/editor", method = RequestMethod.POST)
+    public ModelAndView postEditAlbum(@ModelAttribute("album") AlbumDTO album, HttpServletRequest request) {
+        String fileView = "/page/admin/album/editor";
+        String urlRedirect = "redirect:/admin/album";
         ModelAndView modelAndView = new ModelAndView(fileView);
         String valueActionButton = request.getParameter("button");
-
         switch (valueActionButton) {
             case "cancel":
+                modelAndView.setViewName(urlRedirect);
                 break;
-            case "add":
+            case "update":
+                try {
+                    albumDAO.updateAlbum(album);
+                    modelAndView.setViewName(urlRedirect);
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
                 break;
             default:
                 break;
@@ -113,6 +169,12 @@ public class AdminController {
     public ModelAndView postDeleteAlbum(@PathVariable(name = "id") String idAlbum) {
         String urlRedirect = "redirect:/admin/album";
         ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        try {
+            albumDAO.deleteAlbumByIdAlbum(idAlbum);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
         return modelAndView;
     }
 
@@ -122,27 +184,180 @@ public class AdminController {
     public ModelAndView getIndexPlaylist() {
         String fileView = "/page/admin/playlist/index";
         ModelAndView modelAndView = new ModelAndView(fileView);
+        List<PlaylistDTO> playlists = new ArrayList<>();
+        try {
+            playlists = playlistDAO.readAllPLaylist();
+            if (playlists.size() == 0) {
+                playlists = null;
+            }
+
+            modelAndView.addObject("playlists", playlists);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
         return modelAndView;
     }
 
     @RequestMapping(value = "playlist/add", method = RequestMethod.GET)
-    public ModelAndView getAddPlaylist() {
+    public ModelAndView getRedirectAddPlaylist() {
+        String urlRedirect = "redirect:/admin/playlist/add/";
+        String urlRedirectRoot = "redirect:/admin/playlist";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectRoot);
+        try {
+            String idPlaylist = playlistDAO.getIdPlaylistBeforeCreatePlaylist();
+            urlRedirect = urlRedirect + idPlaylist;
+            modelAndView.setViewName(urlRedirect);
+        } catch (Exception ex) {
+            modelAndView.setViewName(urlRedirectRoot);
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "playlist/add/{id}", method = RequestMethod.GET)
+    public ModelAndView getAddPlaylist(@PathVariable("id") String idPlaylist) {
         String fileView = "/page/admin/playlist/add";
         ModelAndView modelAndView = new ModelAndView(fileView);
+        PlaylistDTO playlist = new PlaylistDTO();
+
+        // object use to show all sound that is added in playlist
+        List<SoundDTO> soundAddedPlaylists = new ArrayList<>();
+
+        // object use to show all sound in database
+        List<SoundDTO> sounds = new ArrayList<>();
+
+        try {
+            playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
+            sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
+            soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+
+            modelAndView.addObject("playlist", playlist);
+            modelAndView.addObject("soundAddedPlaylists", soundAddedPlaylists);
+            modelAndView.addObject("sounds", sounds);
+
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "playlist/add/{id_playlist}/{id_sound}", method = RequestMethod.POST)
+    public ModelAndView postAddSoundIntoPlaylist(
+            @PathVariable("id_playlist") String idPlaylist,
+            @PathVariable("id_sound") String idSound) {
+        String urlRedirect = "redirect:/admin/playlist/add/";
+        urlRedirect = urlRedirect + idPlaylist;
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        try {
+            playlistDAO.createSoundPlaylistByIdSoundAndIdPlaylist(idSound, idPlaylist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "playlist/delete/{id_playlist}/{id_sound}", method = RequestMethod.POST)
+    public ModelAndView postDeleteSoundFromPlaylist(
+            @PathVariable("id_playlist") String idPlaylist,
+            @PathVariable("id_sound") String idSound) {
+        String urlRedirect = "redirect:/admin/playlist/add/";
+        urlRedirect = urlRedirect + idPlaylist;
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        try {
+            playlistDAO.deleteSoundPlaylistByIdSoundAndIdPlaylist(idSound, idPlaylist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+
         return modelAndView;
     }
 
     @RequestMapping(value = "playlist/add", method = RequestMethod.POST)
-    public ModelAndView postAddPlaylist() {
+    public ModelAndView postAddPlaylist(@ModelAttribute("playlist") PlaylistDTO playlist, HttpServletRequest request) {
         String fileView = "/page/admin/playlist/add";
+        String urlRedirect = "redirect:/admin/playlist";
+        String valueButtonAction = request.getParameter("button");
         ModelAndView modelAndView = new ModelAndView(fileView);
+        switch (valueButtonAction) {
+            case "cancel":
+                String idPlaylist = playlist.getIdPlaylist();
+                playlistDAO.deletePlaylist(idPlaylist);
+                playlistDAO.deleteSoundPlaylistByIdPlaylist(idPlaylist);
+                modelAndView.setViewName(urlRedirect);
+                break;
+            case "add":
+                try {
+                    playlistDAO.updatePlaylist(playlist);
+                    modelAndView.setViewName(urlRedirect);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+                break;
+            default:
+                break;
+        }
+        try {
+
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
         return modelAndView;
     }
 
-    @RequestMapping(value = "playlist/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "playlist/editor/{id}", method = RequestMethod.GET)
     public ModelAndView getEditPlaylist(@PathVariable(name = "id") String idPlaylist) {
-        String fileView = "/page/admin/playlist/edit";
+        String fileView = "/page/admin/playlist/editor";
         ModelAndView modelAndView = new ModelAndView(fileView);
+        try {
+            PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
+            // for (SoundDTO sound : sounds) {
+            // System.out.println(sound.getIdSound() + " " + sound.getNameSound());
+            // }
+            modelAndView.addObject("playlist", playlist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "playlist/editor", method = RequestMethod.POST)
+    public ModelAndView postEditPlaylist(@ModelAttribute("playlist") PlaylistDTO playlist, HttpServletRequest request) {
+        String urlRedirect = "redirect:/admin/playlist";
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        String valueActionButton = request.getParameter("button");
+        switch (valueActionButton) {
+            case "cancel":
+                modelAndView.setViewName(urlRedirect);
+                break;
+            case "update":
+                try {
+                    modelAndView.setViewName(urlRedirect);
+                    playlistDAO.updatePlaylist(playlist);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+                break;
+            default:
+                break;
+        }
+        try {
+
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
         return modelAndView;
     }
 
@@ -150,6 +365,13 @@ public class AdminController {
     public ModelAndView postDeletePlaylist(@PathVariable(name = "id") String idPlaylist) {
         String urlRedirect = "redirect:/admin/playlist";
         ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        try {
+            playlistDAO.deletePlaylist(idPlaylist);
+            playlistDAO.deleteSoundPlaylistByIdPlaylist(idPlaylist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
         return modelAndView;
     }
 
@@ -222,7 +444,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "sound/editor/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditSound(@PathVariable("id") String idSound) {
+    public ModelAndView getEditorSound(@PathVariable("id") String idSound) {
         String fileView = "/page/admin/sound/editor";
         ModelAndView modelAndView = new ModelAndView(fileView);
         Sound sound = soundDAO.findSoundByIdSound(idSound);
@@ -232,7 +454,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "sound/editor", method = RequestMethod.POST)
-    public ModelAndView postEditSound(@ModelAttribute("sound") Sound sound) {
+    public ModelAndView postEditorSound(@ModelAttribute("sound") Sound sound) {
         String fileView = "/page/admin/sound/editor";
         ModelAndView modelAndView = new ModelAndView(fileView);
         return modelAndView;
@@ -310,6 +532,7 @@ public class AdminController {
             modelAndView.addObject("user", user);
         } catch (Exception ex) {
             String message = ex.getMessage();
+            System.out.println(message);
         }
         return modelAndView;
     }
@@ -350,7 +573,6 @@ public class AdminController {
             String message = ex.getMessage();
             modelAndView.addObject("message", message);
         }
-        System.out.println("oke");
         return modelAndView;
     }
 

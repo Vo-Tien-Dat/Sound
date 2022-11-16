@@ -16,4 +16,10 @@ public interface Constant {
 
     public final String ACTION_SIGN_UP = "sign-up";
 
+    public final int LIMIT_ALBUM_HOME = 8;
+
+    public final int LIMIT_PLAYLIST_HOME = 8;
+
+    public final int LIMIT_SOUND_HOME = 8;
+
 }

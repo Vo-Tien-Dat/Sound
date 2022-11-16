@@ -19,7 +19,6 @@ public class SecurityWebApplication {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        System.out.println("oke");
         // httpSecurity
         // .cors()
         // .and()
@@ -35,7 +34,6 @@ public class SecurityWebApplication {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests().anyRequest().permitAll();
-        System.out.println("oke");
         return httpSecurity.build();
     }
 }

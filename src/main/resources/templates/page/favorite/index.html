@@ -89,25 +89,25 @@
             <div class="container text-center">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active border-nav-link" aria-current="page" th:href="@{/favorite/album}">
+                        <div class="nav-link border-nav-link active" aria-current="page" id = "tab" data-tab = "0">
                             <p class="fs-6 mb-0">Album</p>
-                        </a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link border-nav-link"  aria-current="page" th:href="@{/favorite/playlist}">
+                        <div class="nav-link border-nav-link"  aria-current="page" id = "tab" data-tab = "1">
                             <p class="fs-6 mb-0">Playlist</p>
-                        </a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link border-nav-link" aria-current="page" th:href="@{/favorite/sound}">
+                        <div class="nav-link border-nav-link" aria-current="page" id = "tab" data-tab = "2">
                             <p class="fs-6 mb-0">Sound</p>
-                        </a>
+                        </div>
                     </li>
                 </ul>
             </div>
             <div class="container text-center rounded p-0">
                 <div class="tab-content">
-                    <div class="tab-pane h-100 ">
+                    <div class="tab-pane tab-pane-active h-100" id = "tab-pane">
                         <div class="container px-4 py-3 h-100">
                             <th:block th:if="${albums != null}">
                                 <th:block th:if="${#lists.size(albums) != 0}">
@@ -141,7 +141,7 @@
                                                     <i class="fa-solid fa-folder fs-1 opacity-25"></i>
                                                 </div>
                                                 <div class="p-2">
-                                                    <p class="fs-6 text-center opacity-25">You have not liked any stations yet</p>
+                                                    <p class="fs-6 text-center opacity-25">Your Album is empty</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +156,7 @@
                                                 <i class="fa-solid fa-folder fs-1 opacity-25"></i>
                                             </div>
                                             <div class="p-2">
-                                                <p class="fs-6 text-center opacity-25">You have not liked any stations yet</p>
+                                                <p class="fs-6 text-center opacity-25">Your Album is empty </p>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                         
                         </div>
                     </div>
-                    <div class="tab-pane tab-pane-active h-100 ">
+                    <div class="tab-pane h-100 " id = "tab-pane">
                         <div class="container px-4 py-3 h-100">
                             <th:block th:if = "${playlists != null}">
                                 <th:block th:if="${#lists.size(playlists) != 0}">
@@ -199,7 +199,7 @@
                                                     <i class="fa-solid fa-folder fs-1 opacity-25"></i>
                                                 </div>
                                                 <div class="p-2">
-                                                    <p class="fs-6 text-center opacity-25">You have not liked any stations yet</p>
+                                                    <p class="fs-6 text-center opacity-25">Your playlist is emtpy</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -214,7 +214,7 @@
                                                 <i class="fa-solid fa-folder fs-1 opacity-25"></i>
                                             </div>
                                             <div class="p-2">
-                                                <p class="fs-6 text-center opacity-25">You have not liked any stations yet</p>
+                                                <p class="fs-6 text-center opacity-25">Your playlist is emtpy</p>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +223,7 @@
                             
                         </div>
                     </div>
-                    <div class="tab-pane">
+                    <div class="tab-pane h-100" id = "tab-pane">
                         <div class="container px-4 py-3 h-100">
                             <div class="container p-0 w-100 h-100 d-flex justify-content-center align-items-center">
                                 <div class="d-inline">
@@ -232,7 +232,7 @@
                                             <i class="fa-solid fa-folder fs-1 opacity-25"></i>
                                         </div>
                                         <div class="p-2">
-                                            <p class="fs-6 text-center opacity-25">You have not liked any stations yet</p>
+                                            <p class="fs-6 text-center opacity-25">Your sound is empty</p>
                                         </div>
                                     </div>
                                 </div>
@@ -244,6 +244,7 @@
         </div>
     </main>
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+    <script type="text/javascript" th:src="@{/js/favorite.js}"></script>
 </body>
 
 </html>

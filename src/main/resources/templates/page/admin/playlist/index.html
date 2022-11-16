@@ -122,6 +122,63 @@
                             <button type="button" class="btn btn-primary">Add Playlist</button>
                         </a>
                     </div>
+                    <div class="p-0">
+                        <th:block th:if="${playlists != null}">
+                            <div class="container p-0">
+                                <div class="row">
+                                    <th:block th:each="playlist : ${playlists}">
+                                        <div class="col-3 p-2 mb-2">
+                                            <div class="card w-100 p-0" style="width: 18rem;">
+                                                <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="d-flex flex-column align-item-center">
+                                                            <div class="px-1">
+                                                                <div class="d-inline">
+                                                                    <p class="card-title fs-4 mb-0 fw-semibold" th:text="${playlist.namePlaylist}"></p>
+                                                                    <!-- <p class="card-title fw-5" th:text="${album.nameSinger}"></p> -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="px-1">
+                                                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                                    <a th:href="@{'/admin/playlist/editor/' + ${playlist.idPlaylist}}">
+                                                                        <button class="btn btn-warning me-md-2" type="button">
+                                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                                            Editor</button>
+                                                                    </a>
+                                                                    <form th:method="post"
+                                                                        th:action="@{'/admin/playlist/delete/' + ${playlist.idPlaylist}}">
+                                                                        <button class="btn btn-danger" type="submit">
+                                                                            <i class="fa-solid fa-trash-can"></i>
+                                                                            Delete</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${playlists == null}">
+                            <div class="container text-center w-100 d-flex justify-content-center align-items-center rounded"
+                                style="background-color: white; height: 30rem;">
+                                <div class="d-inline">
+                                    <div class="d-flex flex-column">
+                                        <div class="p-2">
+                                            <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                        </div>
+                                        <div class="p-2">
+                                            <p class="fs-6 text-center opacity-25">You have not upload playlists</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@ import com.music.sound.model.Sound;
 public class SoundPlaylistMapper implements RowMapper<Sound> {
 
     @Autowired
-    private SoundDAO soundDAO;
+    public SoundDAO soundDAO;
 
     public Sound mapRow(ResultSet rs, int numRow) throws SQLException {
         Sound sound = soundDAO.findSoundByIdSound(null);

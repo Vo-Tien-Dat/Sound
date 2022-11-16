@@ -70,21 +70,12 @@ public class User {
     @Column(name = "path_image")
     private String pathImg;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Sound> sounds;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Playlist> playlists;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Album> albums;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Favorite> favorites;
-
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id_role"))
     private List<Role> roles;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Album> albums;
 
     public User() {
         this.numberAlbum = Long.valueOf(0);

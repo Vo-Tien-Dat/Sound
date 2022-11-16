@@ -1,18 +1,19 @@
 package com.music.sound.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import java.util.UUID;
 import lombok.Data;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import java.util.List;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "PLAYLIST")
@@ -42,12 +43,9 @@ public class Playlist {
     @ManyToMany(mappedBy = "playlists")
     private List<Sound> sounds;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
-    private User user;
-
-    @ManyToMany(mappedBy = "playlists")
-    private List<Favorite> favorites;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "favorite_album_user", joinColumns = @JoinColumn(name = "id_playlist", referencedColumnName = "id_playlist"), inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"))
+    private List<User> users;
 
     public Playlist() {
         this.id = null;
@@ -55,6 +53,5 @@ public class Playlist {
         this.pathImage = null;
         this.numberSound = Long.valueOf(0);
         this.numberViewer = Long.valueOf(0);
-        this.user = null;
     }
 }
