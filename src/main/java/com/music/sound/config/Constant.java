@@ -22,4 +22,8 @@ public interface Constant {
 
     public final int LIMIT_SOUND_HOME = 8;
 
+    public final String ROLE_ADMIN = "ROLE_ADMIN";
+
+    public final String ROLE_USER = "ROLE_USER";
+
 }

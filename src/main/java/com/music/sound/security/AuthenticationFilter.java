@@ -12,13 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
-import java.util.Enumeration;
-
 import javax.servlet.ServletException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import com.music.sound.Exception.NotMatchPassword;
 import com.music.sound.utils.AppConstants;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Component
 @Order(100)
@@ -35,8 +32,8 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         // Cookie cookie[] = httpServletRequest.getCookies();
         // System.out.println(cookie[0].getValue());

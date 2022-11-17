@@ -21,18 +21,17 @@ import com.music.sound.DAO.TypeSoundDAO;
 import com.music.sound.DAO.TypeSoundDTO;
 import com.music.sound.DAO.UserDAO;
 import com.music.sound.DAO.UserDTO;
-
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import com.music.sound.model.Album;
-import com.music.sound.model.Playlist;
 import com.music.sound.model.Sound;
 import com.music.sound.model.TypeSound;
 import java.util.ArrayList;
 import com.music.sound.model.User;
 import org.springframework.web.bind.annotation.RequestParam;
+import javax.servlet.http.HttpSession;
+import com.music.sound.DAO.RoleDTO;
+import com.music.sound.config.Constant;
 
 @Controller
 @RequestMapping(value = "/admin/")
@@ -53,41 +52,93 @@ public class AdminController {
     @Autowired
     private PlaylistDAO playlistDAO;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "*", method = RequestMethod.GET)
     public ModelAndView index() {
-
-        String fileView = "/page/admin/index";
-
-        ModelAndView modelAndView = new ModelAndView(fileView);
+        String urlRedirect = "redirect:/admin/album";
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
         return modelAndView;
     }
 
     // all feature CRUD Album
 
     @RequestMapping(value = "album", method = RequestMethod.GET)
-    public ModelAndView getIndexAlbum() {
+    public ModelAndView getIndexAlbum(HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/album/index";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
-        List<AlbumDTO> albums = new ArrayList<>();
-        try {
-            albums = albumDAO.readAllAlbum();
-            if (albums.size() == 0) {
-                albums = null;
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                List<AlbumDTO> albums = new ArrayList<>();
+                String idUser = roleDTO.getIdUser();
+                try {
+                    albums = albumDAO.readAllAlbum();
+                    if (albums.size() == 0) {
+                        albums = null;
+                    }
+
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+
+                    modelAndView.addObject("albums", albums);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
             }
-            modelAndView.addObject("albums", albums);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
+
         return modelAndView;
     }
 
     @RequestMapping(value = "album/add", method = RequestMethod.GET)
-    public ModelAndView getAddAlbum() {
+    public ModelAndView getAddAlbum(HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/album/add";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
-        Album album = new Album();
-        modelAndView.addObject("album", album);
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                String idUser = roleDTO.getIdUser();
+
+                UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                String nameUser = user.getNameUser();
+
+                modelAndView.addObject("session_id", idSession);
+                modelAndView.addObject("name_user", nameUser);
+
+                Album album = new Album();
+                modelAndView.addObject("album", album);
+
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
@@ -120,20 +171,43 @@ public class AdminController {
     }
 
     @RequestMapping(value = "album/editor/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditAlbum(@PathVariable("id") String idAlbum) {
+    public ModelAndView getEditAlbum(@PathVariable("id") String idAlbum, HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "page/admin/album/editor";
         String urlRedirect = "redirect:/admin/album";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
         ModelAndView modelAndView = new ModelAndView(fileView);
 
-        try {
-            AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
-            if (album == null) {
-                modelAndView.setViewName(urlRedirect);
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                String idUser = roleDTO.getIdUser();
+                try {
+                    AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
+                    if (album == null) {
+                        modelAndView.setViewName(urlRedirect);
+                    }
+
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("album", album);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
             }
-            modelAndView.addObject("album", album);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
 
         return modelAndView;
@@ -181,35 +255,60 @@ public class AdminController {
     // all feature CRUD PLaylist
 
     @RequestMapping(value = "playlist", method = RequestMethod.GET)
-    public ModelAndView getIndexPlaylist() {
-        String fileView = "/page/admin/playlist/index";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        List<PlaylistDTO> playlists = new ArrayList<>();
-        try {
-            playlists = playlistDAO.readAllPLaylist();
-            if (playlists.size() == 0) {
-                playlists = null;
-            }
+    public ModelAndView getIndexPlaylist(HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
 
-            modelAndView.addObject("playlists", playlists);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+        String fileView = "/page/admin/playlist/index";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
+        ModelAndView modelAndView = new ModelAndView(fileView);
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                String idUser = roleDTO.getIdUser();
+
+                List<PlaylistDTO> playlists = new ArrayList<>();
+                try {
+                    playlists = playlistDAO.readAllPLaylist();
+                    if (playlists.size() == 0) {
+                        playlists = null;
+                    }
+
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("playlists", playlists);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
+
         return modelAndView;
     }
 
     @RequestMapping(value = "playlist/add", method = RequestMethod.GET)
-    public ModelAndView getRedirectAddPlaylist() {
+    public ModelAndView getIdPlaylist() {
+
         String urlRedirect = "redirect:/admin/playlist/add/";
-        String urlRedirectRoot = "redirect:/admin/playlist";
-        ModelAndView modelAndView = new ModelAndView(urlRedirectRoot);
+        ModelAndView modelAndView = new ModelAndView();
         try {
             String idPlaylist = playlistDAO.getIdPlaylistBeforeCreatePlaylist();
             urlRedirect = urlRedirect + idPlaylist;
             modelAndView.setViewName(urlRedirect);
         } catch (Exception ex) {
-            modelAndView.setViewName(urlRedirectRoot);
             String message = ex.getMessage();
             System.out.println(message);
         }
@@ -218,29 +317,51 @@ public class AdminController {
     }
 
     @RequestMapping(value = "playlist/add/{id}", method = RequestMethod.GET)
-    public ModelAndView getAddPlaylist(@PathVariable("id") String idPlaylist) {
+    public ModelAndView getAddPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/playlist/add";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
-        PlaylistDTO playlist = new PlaylistDTO();
 
-        // object use to show all sound that is added in playlist
-        List<SoundDTO> soundAddedPlaylists = new ArrayList<>();
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                PlaylistDTO playlist = new PlaylistDTO();
+                List<SoundDTO> soundAddedPlaylists = new ArrayList<>();
+                List<SoundDTO> sounds = new ArrayList<>();
+                String idUser = roleDTO.getIdUser();
 
-        // object use to show all sound in database
-        List<SoundDTO> sounds = new ArrayList<>();
+                try {
+                    playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
+                    sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
+                    soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
 
-        try {
-            playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
-            sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
-            soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
 
-            modelAndView.addObject("playlist", playlist);
-            modelAndView.addObject("soundAddedPlaylists", soundAddedPlaylists);
-            modelAndView.addObject("sounds", sounds);
+                    String nameUser = user.getNameUser();
 
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("playlist", playlist);
+                    modelAndView.addObject("soundAddedPlaylists", soundAddedPlaylists);
+                    modelAndView.addObject("sounds", sounds);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
 
         return modelAndView;
@@ -378,42 +499,92 @@ public class AdminController {
     // all feature CRUD Sound
 
     @RequestMapping(value = "sound", method = RequestMethod.GET)
-    public ModelAndView getIndexSound() {
+    public ModelAndView getIndexSound(HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/sound/index1";
-        List<TypeSound> typeSounds = new ArrayList<TypeSound>();
-        // List<Sound> sounds = new ArrayList<Sound>();
-        List<SoundDTO> sounds = new ArrayList<>();
-        try {
-            typeSounds = typeSoundDAO.findAllTypeSound();
-            sounds = soundDAO.readAllSound();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
 
         ModelAndView modelAndView = new ModelAndView(fileView);
 
-        modelAndView.addObject("typeSounds", typeSounds);
-        modelAndView.addObject("sound", new Sound());
-        modelAndView.addObject("sounds", sounds);
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                String idUser = roleDTO.getIdUser();
+                List<TypeSound> typeSounds = new ArrayList<TypeSound>();
+                // List<Sound> sounds = new ArrayList<Sound>();
+                List<SoundDTO> sounds = new ArrayList<>();
+                try {
+                    typeSounds = typeSoundDAO.findAllTypeSound();
+                    sounds = soundDAO.readAllSound();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+
+                modelAndView.addObject("typeSounds", typeSounds);
+                modelAndView.addObject("sound", new Sound());
+                modelAndView.addObject("sounds", sounds);
+
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
 
         return modelAndView;
     }
 
     @RequestMapping(value = "sound/add", method = RequestMethod.GET)
-    public ModelAndView getAddSound() {
+    public ModelAndView getAddSound(HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/sound/add";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
 
-        List<TypeSoundDTO> typeSounds = new ArrayList<>();
-        Sound sound = new Sound();
-        try {
-            typeSounds = typeSoundDAO.readAllTypeSound();
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                String idUser = roleDTO.getIdUser();
+                List<TypeSoundDTO> typeSounds = new ArrayList<>();
+                Sound sound = new Sound();
+                try {
+                    typeSounds = typeSoundDAO.readAllTypeSound();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
 
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("typeSounds", typeSounds);
+                    modelAndView.addObject("sound", sound);
+
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
-        modelAndView.addObject("typeSounds", typeSounds);
-        modelAndView.addObject("sound", sound);
+
         return modelAndView;
     }
 
@@ -444,19 +615,70 @@ public class AdminController {
     }
 
     @RequestMapping(value = "sound/editor/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditorSound(@PathVariable("id") String idSound) {
-        String fileView = "/page/admin/sound/editor";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        Sound sound = soundDAO.findSoundByIdSound(idSound);
+    public ModelAndView getEditorSound(@PathVariable("id") String idSound, HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
 
-        modelAndView.addObject("sound", sound);
+        String fileView = "/page/admin/sound/editor";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
+        ModelAndView modelAndView = new ModelAndView(fileView);
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+
+                    Sound sound = soundDAO.findSoundByIdSound(idSound);
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("sound", sound);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
     @RequestMapping(value = "sound/editor", method = RequestMethod.POST)
-    public ModelAndView postEditorSound(@ModelAttribute("sound") Sound sound) {
+    public ModelAndView postEditorSound(@ModelAttribute("sound") Sound sound, HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/sound/editor";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
@@ -477,26 +699,76 @@ public class AdminController {
     // all feature CRUD User
 
     @RequestMapping(value = "user", method = RequestMethod.GET)
-    public ModelAndView getIndexUser() {
+    public ModelAndView getIndexUser(HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/user/index";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
-        List<UserDTO> users = new ArrayList<>();
-        try {
-            users = userDAO.readAllUser();
-            modelAndView.addObject("users", users);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                List<UserDTO> users = new ArrayList<>();
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    users = userDAO.readAllUser();
+                    modelAndView.addObject("users", users);
+
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
+
         return modelAndView;
     }
 
     @RequestMapping(value = "user/add", method = RequestMethod.GET)
-    public ModelAndView getAddUser() {
+    public ModelAndView getAddUser(HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/user/add";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
-        User user = new User();
-        modelAndView.addObject("user", user);
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                String idUser = roleDTO.getIdUser();
+                User user = new User();
+                UserDTO userDTO = userDAO.readUserByIdUser(idUser);
+
+                String nameUser = userDTO.getNameUser();
+
+                modelAndView.addObject("session_id", idSession);
+                modelAndView.addObject("name_user", nameUser);
+                modelAndView.addObject("user", user);
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
@@ -524,16 +796,35 @@ public class AdminController {
     }
 
     @RequestMapping(value = "user/editor/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditorUser(@PathVariable("id") String idUser) {
+    public ModelAndView getEditorUser(@PathVariable("id") String idUser, HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
         String fileView = "/page/admin/user/editor";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
-        try {
-            UserDTO user = userDAO.readUserByIdUser(idUser);
-            modelAndView.addObject("user", user);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+                    modelAndView.addObject("user", user);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
+
         return modelAndView;
     }
 

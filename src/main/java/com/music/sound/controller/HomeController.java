@@ -1,6 +1,5 @@
 package com.music.sound.controller;
 
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,11 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpSession;
 import com.music.sound.DAO.AlbumDAO;
 import com.music.sound.DAO.AlbumDTO;
 import com.music.sound.DAO.PlaylistDAO;
 import com.music.sound.DAO.PlaylistDTO;
+import com.music.sound.DAO.RoleDTO;
 import com.music.sound.DAO.SoundDAO;
 import com.music.sound.DAO.SoundDTO;
 import com.music.sound.DAO.UserDAO;
@@ -40,112 +40,58 @@ public class HomeController {
     @Autowired
     private UserDAO userDAO;
 
-    // @RequestMapping(value = "/home/*", method = RequestMethod.GET)
-    // public ModelAndView getIndex() {
-    // String pathRedirect = "redirect:/home";
-    // ModelAndView modelAndView = new ModelAndView(pathRedirect);
-    // return modelAndView;
-    // }
-
-    // @RequestMapping(value = "/home", method = RequestMethod.GET)
-    // public ModelAndView getHome() {
-    // String pathFile = "/page/home/index";
-    // ModelAndView modelAndView = new ModelAndView(pathFile);
-
-    // try {
-    // List<AlbumDTORead> albumDTOReads = albumService.getAllAlbum();
-    // for (AlbumDTORead albumDTORead : albumDTOReads) {
-    // System.out.println(albumDTORead.getNameAlbum());
-    // System.out.println(albumDTORead.getPathUrl());
-    // }
-    // } catch (Exception ex) {
-    // System.out.println(ex.getMessage());
-    // }
-
-    // // hiện thị 10 bài hát
-    // List<SoundDTO> sounds = new ArrayList<>();
-    // // sounds.add(new SoundDTO("hello", "Hồi duyên", "", "Khởi Vũ",
-    // // Long.valueOf(1)));
-    // // sounds.add(new SoundDTO("test", "Ngưởi có còn thương", "", "Dee Trần",
-    // // Long.valueOf(0)));
-
-    // // hiện thị gợi ý 10 người chưa được theo dõi
-    // List<UserDTOHome> users = new ArrayList<>();
-    // users.add(new UserDTOHome("Seii LuiiBao", "", "18", "20", "20"));
-    // users.add(new UserDTOHome("Seii LuiiBao", "", "18", "20", "20"));
-    // modelAndView.addObject("sounds", sounds);
-    // modelAndView.addObject("users", users);
-
-    // // hiển thị 10 albums
-    // List<AlbumDTORead> albums = new ArrayList<>();
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // albums.add(new AlbumDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu", "hello",
-    // "hello"));
-    // modelAndView.addObject("albums", albums);
-
-    // // hiện thị 10 playlist bất kì
-    // List<PlaylistDTORead> playlists = new ArrayList<>();
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // playlists.add(new PlaylistDTORead("Nỗi Đau kéo dài", "Hồ quang Hiếu",
-    // "hello", "hello"));
-    // modelAndView.addObject("playlists", playlists);
-    // return modelAndView;
-    // }
-
     // feature: show home page
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView getHome() {
-        String pathFile = "/page/home/index";
-        ModelAndView modelAndView = new ModelAndView(pathFile);
+    public ModelAndView getHome(HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
 
-        List<AlbumDTO> albums = new ArrayList<>();
-        List<PlaylistDTO> playlists = new ArrayList<>();
-        List<SoundDTO> sounds = new ArrayList<>();
+        String fileView = "/page/home/index";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
 
-        try {
-            albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
-            playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
-            sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
+        ModelAndView modelAndView = new ModelAndView(fileView);
 
-            modelAndView.addObject("albums", albums);
-            modelAndView.addObject("playlists", playlists);
-            modelAndView.addObject("sounds", sounds);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                List<AlbumDTO> albums = new ArrayList<>();
+                List<PlaylistDTO> playlists = new ArrayList<>();
+                List<SoundDTO> sounds = new ArrayList<>();
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+
+                    String nameUser = user.getNameUser();
+                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
+                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
+                    sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
+
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("albums", albums);
+                    modelAndView.addObject("playlists", playlists);
+                    modelAndView.addObject("sounds", sounds);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
         return modelAndView;
     }
 
     // feature: save album in your favorite
     @RequestMapping(value = "/favorite/create/album/{id}", method = RequestMethod.GET)
-    public ModelAndView postFavoriteAlbum(@RequestParam("id") String idAlbum) {
+    public ModelAndView postFavoriteAlbum(@RequestParam("id") String idAlbum,
+            HttpSession session) {
         String fileView = "/page/home/index1";
         ModelAndView modelAndView = new ModelAndView(fileView);
         return modelAndView;
@@ -275,6 +221,23 @@ public class HomeController {
                 break;
             default:
                 break;
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/logout/{id}", method = RequestMethod.POST)
+    public ModelAndView postLogout(@PathVariable("id") String idSession, HttpServletRequest request) {
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            HttpSession session = request.getSession();
+            session.removeAttribute(idSession);
+            modelAndView.setViewName(urlRedirectLogin);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+            modelAndView.setViewName(urlRedirectHome);
         }
         return modelAndView;
     }

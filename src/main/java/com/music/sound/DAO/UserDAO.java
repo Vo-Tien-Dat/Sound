@@ -23,9 +23,13 @@ public class UserDAO {
     // sql
     private final String SQL_ALL_USER = "SELECT * FROM USER";
 
+    private final String SQL_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE = "SELECT * FROM USER_ROLE WHERE id_user = ?";
+
     private final String SQL_FIND_USER_BY_ID_USER = "SELECT * FROM USER WHERE id_user = ?";
 
-    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM USER WHERE username = ?";
+    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM USER WHERE user_name = ?";
+
+    private final String SQL_READ_USER_BY_USERNAME = "SELECT * FROM USER WHERE user_name = ? ";
 
     private final String SQL_UPDATE_USER_BY_ID_USER = "UPDATE USER SET user_name = ?, password = ?,email = ?, name_user = ?, description = ? WHERE id_user = ?";
 
@@ -42,6 +46,20 @@ public class UserDAO {
         List<UserDTO> records = new ArrayList<>();
         records = jdbcTemplate.query(SQL_ALL_USER, new UserReadMapper());
         return records;
+    }
+
+    public List<RoleDTO> readAllRoleByIdUserFromUserRole(String idUser) {
+        List<RoleDTO> records = new ArrayList<>();
+        records = jdbcTemplate.query(SQL_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE, new UserRoleMapper(),
+                new Object[] { idUser });
+        return records;
+    }
+
+    public UserDTO readUserByUsername(String username) {
+        UserDTO record = new UserDTO();
+        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(),
+                username);
+        return record;
     }
 
     // feature: show information user

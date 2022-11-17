@@ -93,13 +93,14 @@
                 <div class="admin-profile hide">
                     <img src="./img/face-1.png" alt="">
                     <div class="admin-info">
-                        <h3>John Doe</h3>
-                        <h5>Admin</h5>
+                        <h3 th:text="${name_user}"></h3>
                     </div>
                 </div>
-                <a href="#" class="log-out">
-                    <i class='bx bx-log-out'></i>
-                </a>
+                <form th:action="@{'/logout/' + ${session_id}}" th:method="post">
+                    <button type="submit" class="logout btn btn-primary">
+                        <i class='bx bx-log-out'></i>
+                    </button>
+                </form>
             </div>
             <div class="tooltip">
                 <span class="show">John Doe</span>
