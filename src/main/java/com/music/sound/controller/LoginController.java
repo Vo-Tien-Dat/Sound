@@ -13,8 +13,6 @@ import com.music.sound.DTO.UserDTO.UserLoginDTO;
 import com.music.sound.DTO.UserDTO.UserRegisterDTO;
 import com.music.sound.config.Constant;
 import com.music.sound.service.AuthenticationService;
-
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -193,7 +191,6 @@ public class LoginController {
 
         String idUser = roleDTO.getIdUser();
         String roleUser = Constant.ROLE_USER;
-        System.out.println(idUser);
 
         switch (valueButtonAction) {
             case Constant.ROLE_ADMIN:

@@ -21,19 +21,19 @@ public class UserDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_ALL_USER = "SELECT * FROM USER";
+    private final String SQL_ALL_USER = "SELECT * FROM user";
 
-    private final String SQL_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE = "SELECT * FROM USER_ROLE WHERE id_user = ?";
+    private final String SQL_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE = "SELECT * FROM user_role WHERE id_user = ?";
 
-    private final String SQL_FIND_USER_BY_ID_USER = "SELECT * FROM USER WHERE id_user = ?";
+    private final String SQL_FIND_USER_BY_ID_USER = "SELECT * FROM user WHERE id_user = ?";
 
-    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM USER WHERE user_name = ?";
+    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name = ?";
 
-    private final String SQL_READ_USER_BY_USERNAME = "SELECT * FROM USER WHERE user_name = ? ";
+    private final String SQL_READ_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name = ? ";
 
-    private final String SQL_UPDATE_USER_BY_ID_USER = "UPDATE USER SET user_name = ?, password = ?,email = ?, name_user = ?, description = ? WHERE id_user = ?";
+    private final String SQL_UPDATE_USER_BY_ID_USER = "UPDATE user SET user_name = ?, password = ?,email = ?, name_user = ?, description = ? WHERE id_user = ?";
 
-    private final String SQL_DELETE_USER_BY_ID_USER = "DELETE FROM USER WHERE id_user = ? ";
+    private final String SQL_DELETE_USER_BY_ID_USER = "DELETE FROM user WHERE id_user = ? ";
     // feature: fina all user
 
     public List<User> findAllUser() {
@@ -98,6 +98,24 @@ public class UserDAO {
         } finally {
             entityManager.close();
         }
+    }
+
+    public String getIdUserWhileCreateUser(User user) {
+        String idUser = null;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        try {
+            entityManager.persist(user);
+            idUser = user.getId().toString();
+            entityTransaction.commit();
+        } catch (Exception ex) {
+            entityTransaction.rollback();
+            System.out.println(ex.getMessage());
+        } finally {
+            entityManager.close();
+        }
+        return idUser;
     }
 
     // feature: update User

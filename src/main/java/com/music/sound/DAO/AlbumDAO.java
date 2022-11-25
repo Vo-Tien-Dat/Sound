@@ -7,7 +7,9 @@ import com.music.sound.model.Album;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
 
 @Repository
 public class AlbumDAO {
@@ -18,21 +20,23 @@ public class AlbumDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_READ_ALL_ALBUM = "SELECT * FROM ALBUM";
+    private final String SQL_READ_ALL_ALBUM = "SELECT * FROM album";
 
-    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "SELECT * FROM ALBUM WHERE id_album = ?";
+    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "SELECT * FROM album WHERE id_album = ?";
 
-    private final String SQL_READ_ALBUM_BY_ID_USER = "SELECT * FROM FROM ALBUM WHERE id_user = ? ";
+    private final String SQL_READ_ALBUM_BY_ID_USER = "SELECT * FROM FROM album WHERE id_user = ? ";
 
-    private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER = "SELECT * FROM FAVORITE_ALBUM_USER WHERE id_user = ? ";
+    private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER = "SELECT * FROM  favorite_album_user WHERE id_user = ? ";
 
-    private final String SQL_CREATE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "INSERT INTO FAVORITE_ALBUM_USER VALUES (?,?)";
+    private final String SQL_CREATE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "INSERT INTO favorite_album_user(id_album, id_user) VALUES (?,?)";
 
-    private final String SQL_DELETE_ALBUM_BY_ID_ALBUM = "DELETE FROM ALBUM WHERE id_album = ? ";
+    private final String SQL_DELETE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "DELETE FROM favorite_album_user WHERE id_album = ? AND id_user = ? ";
 
-    private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM = "UPDATE ALBUM SET name_album = ?, name_singer = ?  WHERE id_album = ?";
+    private final String SQL_DELETE_ALBUM_BY_ID_ALBUM = "DELETE FROM album WHERE id_album = ? ";
 
-    private final String SQL_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM ALBUM LIMIT  ? ";
+    private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM = "UPDATE album SET name_album = ?, name_singer = ?  WHERE id_album = ?";
+
+    private final String SQL_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM album LIMIT  ? ";
 
     public Album findAlbumByIdAlbum(String idAlbum) {
         Album album = jdbcTemplate.queryForObject(SQL_READ_ALBUM_BY_ID_ALBUM, new AlbumMapper(), idAlbum);
@@ -65,13 +69,43 @@ public class AlbumDAO {
     }
 
     public List<AlbumDTO> readAllAlbumByIdUserFromFavoriteAlbumUser(String idUser) {
-        List<AlbumDTO> records = jdbcTemplate.query(SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER,
-                new FavoriteAlbumUserReadMapper(), new Object[] { idUser });
+        List<AlbumDTO> records = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate
+                .queryForList(SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER, idUser);
+        for (Map<String, Object> row : rows) {
+            AlbumDTO record = new AlbumDTO();
+            String idAlbum = row.get("id_album").toString();
+            record = readAlbumByIdAlbum(idAlbum);
+            records.add(record);
+        }
         return records;
     }
 
     public void createFavoriteAlbumUserByIdAlbumAndIdUser(String idAlbum, String idUser) {
         jdbcTemplate.update(SQL_CREATE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER, new Object[] { idAlbum, idUser });
+    }
+
+    public void deleteFavoriteAlbumUserByIdAlbumAndIdUser(String idAlbum, String idUser) {
+        jdbcTemplate.update(SQL_DELETE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER, new Object[] { idAlbum, idUser });
+    }
+
+    public String getIdAblbumBeforeCreateAlbum() {
+        Album album = new Album();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        try {
+            entityManager.persist(album);
+            entityTransaction.commit();
+            String id = album.getId().toString();
+            return id;
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            entityTransaction.rollback();
+        } finally {
+            entityManager.close();
+        }
+        return null;
     }
 
     public String getIdAlbumBeforeCreateAlbum(Album album) {

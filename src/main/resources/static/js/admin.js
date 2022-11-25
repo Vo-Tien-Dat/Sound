@@ -61,10 +61,10 @@ tooltip_elements.forEach((elem) => {
 });
 
 // xử lí upload file
-const input_image = document.querySelector("#image");
+const input_image = document.querySelector("#file_image");
 let uploaded_image = "";
 
-image_input.addEventListener("change", function () {
+input_image.addEventListener("change", function () {
   const reader = new FileReader();
   reader.addEventListener("load", function () {
     uploaded_image = reader.result;

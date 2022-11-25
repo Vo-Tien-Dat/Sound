@@ -12,6 +12,7 @@ import com.music.sound.DAO.UserDAO;
 import com.music.sound.DAO.UserDTO;
 import com.music.sound.DAO.PlaylistDTO;
 import com.music.sound.DAO.RoleDTO;
+import com.music.sound.DAO.SoundDAO;
 import com.music.sound.config.Constant;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
@@ -22,13 +23,16 @@ import javax.servlet.http.HttpSession;
 public class FavoriteController {
 
     @Autowired
-    private AlbumDAO albumDAO;
+    public AlbumDAO albumDAO;
 
     @Autowired
-    private PlaylistDAO playlistDAO;
+    public PlaylistDAO playlistDAO;
 
     @Autowired
-    private UserDAO userDAO;
+    public SoundDAO soundDAO;
+
+    @Autowired
+    public UserDAO userDAO;
 
     @RequestMapping(value = "/favorite", method = RequestMethod.GET)
     public ModelAndView getFavorite(HttpSession session) {
@@ -44,7 +48,9 @@ public class FavoriteController {
         ModelAndView modelAndView = new ModelAndView(fileView);
 
         if (loginSuccess) {
-            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0
+                    ? true
+                    : false;
             if (isRoleUser) {
                 String idUser = roleDTO.getIdUser();
                 List<PlaylistDTO> playlists = new ArrayList<>();
@@ -53,14 +59,21 @@ public class FavoriteController {
                 try {
 
                     UserDTO user = userDAO.readUserByIdUser(idUser);
-
                     String nameUser = user.getNameUser();
-
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+
+                    albums = albumDAO.readAllAlbumByIdUserFromFavoriteAlbumUser(idUser);
                     modelAndView.addObject("albums", albums);
-                    modelAndView.addObject("playlists", playlists);
+
+                    sounds = soundDAO.readAllSoundByIdUserFromFavoriteSoundUser(idUser);
                     modelAndView.addObject("sounds", sounds);
+
+
+                    playlists = playlistDAO.readAllPlaylistByIdUserFromFavoritePlaylistUser(idUser);
+                    modelAndView.addObject("playlists", playlists);
+                    
+
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);

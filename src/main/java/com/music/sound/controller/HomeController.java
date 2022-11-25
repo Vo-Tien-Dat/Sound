@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import com.music.sound.DAO.AlbumDAO;
@@ -32,15 +30,16 @@ public class HomeController {
     private AlbumDAO albumDAO;
 
     @Autowired
-    private SoundDAO soundDAO;
+    private PlaylistDAO playlistDAO;
 
     @Autowired
-    private PlaylistDAO playlistDAO;
+    private SoundDAO soundDAO;
 
     @Autowired
     private UserDAO userDAO;
 
-    // feature: show home page
+    /*-------------------------------------------- HOME PAGE --------------------------------------------------------------------- */
+
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView getHome(HttpSession session) {
         String idSession = session.getId();
@@ -89,27 +88,209 @@ public class HomeController {
     }
 
     // feature: save album in your favorite
-    @RequestMapping(value = "/favorite/create/album/{id}", method = RequestMethod.GET)
-    public ModelAndView postFavoriteAlbum(@RequestParam("id") String idAlbum,
+    @RequestMapping(value = "/favorite/create/album/{id}", method = RequestMethod.POST)
+    public ModelAndView postFavoriteAlbum(@PathVariable("id") String idAlbum,
             HttpSession session) {
-        String fileView = "/page/home/index1";
-        ModelAndView modelAndView = new ModelAndView(fileView);
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+
+        ModelAndView modelAndView = new ModelAndView(urlRedirectHome);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    albumDAO.createFavoriteAlbumUserByIdAlbumAndIdUser(idAlbum, idUser);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
     // feature: save playlist in your favorite
     @RequestMapping(value = "/favorite/create/playlist/{id}", method = RequestMethod.POST)
-    public ModelAndView postFavoritePlaylist(@RequestParam("id") String idPlaylist) {
-        String fileView = "/page/home/index1";
-        ModelAndView modelAndView = new ModelAndView(fileView);
+    public ModelAndView postFavoritePlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/home/index";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+
+        ModelAndView modelAndView = new ModelAndView(urlRedirectHome);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    playlistDAO.createFavoritePlaylistUserByIdPlaylistAndIdUser(idPlaylist, idUser);
+                    ;
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
     // feature: save sound in your favorite
-    @RequestMapping(value = "/favorite/create/sound/{id}", method = RequestMethod.GET)
-    public ModelAndView postFavoriteSound(@RequestParam("id") String idSound) {
-        String fileView = "/page/home/index1";
-        ModelAndView modelAndView = new ModelAndView(fileView);
+    @RequestMapping(value = "/favorite/create/sound/{id}", method = RequestMethod.POST)
+    public ModelAndView postFavoriteSound(@PathVariable("id") String idSound, HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/home/index";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+
+        ModelAndView modelAndView = new ModelAndView(urlRedirectHome);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    soundDAO.createFavoriteSoundUserByIdSoundAndIdUser(idSound, idUser);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "favorite/delete/album/{id}", method = RequestMethod.POST)
+    public ModelAndView postDeleteAlbumUserFromAlbumUser(@PathVariable(name = "id") String idAlbum,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/home/index";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+        String urlRedirectFavorite = "redirect:/favorite";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectFavorite);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    albumDAO.deleteFavoriteAlbumUserByIdAlbumAndIdUser(idAlbum, idUser);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/favorite/delete/playlist/{id}", method = RequestMethod.POST)
+    public ModelAndView postDeletePlaylistUserFromFavoriteAlbumUser(@PathVariable(name = "id") String idPlaylist,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/home/index";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+        String urlRedirectFavorite = "redirect:/favorite";
+
+        ModelAndView modelAndView = new ModelAndView(urlRedirectFavorite);
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    playlistDAO.deleteFavoritePlaylistUserByIdPlaylistAndIdUser(idPlaylist, idUser);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectFavorite);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/favorite/delete/sound/{id}", method = RequestMethod.POST)
+    public ModelAndView postDeleteSoundUserFromFavoriteSoundUser(@PathVariable(name = "id") String idSound,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/home/index";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+        String urlRedirectFavorite = "redirect:/favorite";
+
+        ModelAndView modelAndView = new ModelAndView(urlRedirectFavorite);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    soundDAO.deleteFavoriteSoundUserByIdSoundAndIdUser(idSound, idUser);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
         return modelAndView;
     }
 
@@ -172,21 +353,48 @@ public class HomeController {
 
     // feature: show item playlist
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)
-    public ModelAndView getPlaylist(@PathVariable("id") String idPlaylist) {
-        String fileView = "/page/playlist/index1";
-        String urlRedirect = "redirect:/home";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        try {
-            PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
-            if (playlist == null) {
-                modelAndView.setViewName(urlRedirect);
-            } else {
-                modelAndView.addObject("playlist", playlist);
-            }
+    public ModelAndView getPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
 
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            modelAndView.setViewName(urlRedirect);
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/playlist/index1";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+        String urlRedirectHome = "redirect:/home";
+        ModelAndView modelAndView = new ModelAndView(fileView);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+                    String nameUser = user.getNameUser();
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+
+                    PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
+
+                    if (playlist == null) {
+                        modelAndView.setViewName(urlRedirectHome);
+                    } else {
+                        List<SoundDTO> sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+                        modelAndView.addObject("sounds", sounds);
+                        modelAndView.addObject("playlist", playlist);
+                    }
+
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                    modelAndView.setViewName(urlRedirectHome);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
 
         return modelAndView;
@@ -241,5 +449,4 @@ public class HomeController {
         }
         return modelAndView;
     }
-
 }

@@ -10,6 +10,7 @@ import com.music.sound.model.Sound;
 import com.music.sound.model.TypeSound;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Repository
 public class SoundDAO {
@@ -21,23 +22,33 @@ public class SoundDAO {
         private EntityManagerFactory entityManagerFactory;
 
         // sql
-        private final String SQL_READ_ALL_SOUND = "SELECT * FROM SOUND";
+        private final String SQL_READ_ALL_SOUND = "SELECT * FROM sound";
 
-        private final String SQL_READ_SOUND_BY_ID_SOUND = "SELECT * FROM SOUND WHERE id_sound = ?";
+        private final String SQL_READ_SOUND_BY_ID_SOUND = "SELECT * FROM sound WHERE id_sound = ?";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_USER = "SELECT * FROM SOUND WHERE id_user = ?";
+        private final String SQL_READ_ALL_SOUND_BY_ID_USER = "SELECT * FROM sound WHERE id_user = ?";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM SOUND_ALBUM WHERE id_playlist = ?";
+        private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM sound_album WHERE id_playlist = ?";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM = "SELECT * FROM SOUND WHERE id_album = ?";
+        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM = "SELECT * FROM sound WHERE id_album = ?";
 
-        private final String SQL_UPDATE_SOUND = "UPDATE SOUND SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
+        private final String SQL_UPDATE_SOUND = "UPDATE sound SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
 
-        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM SOUND WHERE id_sound = ?";
+        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM sound WHERE id_sound = ?";
 
-        private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "SELECT * FROM FAVORITE_SOUND_USER WHERE id_user = ? ";
+        private final String SQL_READ_ALL_SOUND_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "SELECT * FROM favorite_sound_user WHERE id_user = ? ";
 
-        private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM SOUND ORDER BY RAND() LIMIT ? ";
+        private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM sound ORDER BY RAND() LIMIT ? ";
+
+        private final String SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "INSERT INTO favorite_sound_user VALUES (?,?)";
+
+        private final String SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "DELETE FROM favorite_sound_user WHERE id_sound = ? and id_user = ? ";
+
+        private final String SQL_UPDATE_ID_ALBUM_BY_ID_SOUND = "UPDATE sound  SET id_album = ?  where id_sound = ? ";
+
+        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "SELECT * FROM sound WHERE id_album IS NULL";
+
+        private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "UPDATE sound SET id_album = null BY id_album = ?";
 
         public List<Sound> findAllSound() {
 
@@ -52,6 +63,12 @@ public class SoundDAO {
                 return records;
         }
 
+        public List<SoundDTO> readAllSoundByIdAlbumIsNull() {
+                List<SoundDTO> records = new ArrayList<>();
+                records = jdbcTemplate.query(SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL, new SoundReadMapper());
+                return records;
+        }
+
         public List<SoundDTO> readAllSoundHaveLimit(int rowLimit) {
                 List<SoundDTO> records = new ArrayList<>();
                 records = jdbcTemplate.query(SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM, new SoundReadMapper(),
@@ -59,11 +76,29 @@ public class SoundDAO {
                 return records;
         }
 
-        public List<SoundDTO> readAllAlbumByIdUserFromFavoriteAlbumUser(String idUser) {
-                List<SoundDTO> records = jdbcTemplate.query(
-                                SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_SOUND_USER,
-                                new FavoriteSoundUserReadMapper(), new Object[] { idUser });
+        public List<SoundDTO> readAllSoundByIdUserFromFavoriteSoundUser(String idUser) {
+                List<SoundDTO> records = new ArrayList<>();
+                List<Map<String, Object>> rows = jdbcTemplate
+                                .queryForList(SQL_READ_ALL_SOUND_BY_ID_USER_FROM_FAVORITE_SOUND_USER, idUser);
+                for (Map<String, Object> row : rows) {
+                        SoundDTO record = new SoundDTO();
+                        String idSound = row.get("id_sound").toString();
+
+                        record = readSoundByIdSound(idSound);
+                        records.add(record);
+                }
                 return records;
+        }
+
+        public void createFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
+                jdbcTemplate.update(
+                                SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER,
+                                new Object[] { idSound, idUser });
+        }
+
+        public void deleteFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
+                jdbcTemplate.update(SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER,
+                                new Object[] { idSound, idUser });
         }
 
         public SoundDTO readSoundByIdSound(String idSound) {
@@ -77,6 +112,10 @@ public class SoundDAO {
                 records = jdbcTemplate.query(SQL_READ_ALL_SOUND_BY_ID_ALBUM, new SoundReadMapper(),
                                 new Object[] { idAlbum });
                 return records;
+        }
+
+        public void updateIdAlbumIsNullByIdAlbumFromSound(String idAlbum) {
+                jdbcTemplate.update(SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND, idAlbum);
         }
 
         public Sound findSoundByIdSound(String idSound) {
@@ -187,6 +226,10 @@ public class SoundDAO {
 
         public void deleteSoundByIdSound(String idSound) throws Exception {
                 jdbcTemplate.update(SQL_DELETE_SOUND_BY_ID_SOUND, idSound);
+        }
+
+        public void updateIdAlbumByIdSound(String idAlbum, String idSound) {
+                jdbcTemplate.update(SQL_UPDATE_ID_ALBUM_BY_ID_SOUND, idAlbum, idSound);
         }
 
 }

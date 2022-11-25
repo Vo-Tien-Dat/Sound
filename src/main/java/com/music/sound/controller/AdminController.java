@@ -5,12 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.catalina.startup.Catalina;
-import org.apache.jasper.tagplugins.jstl.core.Catch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.music.sound.DAO.AlbumDAO;
 import com.music.sound.DAO.AlbumDTO;
 import com.music.sound.DAO.PlaylistDAO;
@@ -23,11 +20,11 @@ import com.music.sound.DAO.UserDAO;
 import com.music.sound.DAO.UserDTO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import com.music.sound.model.Album;
 import com.music.sound.model.Sound;
 import com.music.sound.model.TypeSound;
 import java.util.ArrayList;
 import com.music.sound.model.User;
+import com.music.sound.service.SaveFileUpload;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import com.music.sound.DAO.RoleDTO;
@@ -52,6 +49,8 @@ public class AdminController {
     @Autowired
     private PlaylistDAO playlistDAO;
 
+    private SaveFileUpload saveFileUpload;
+
     @RequestMapping(value = "*", method = RequestMethod.GET)
     public ModelAndView index() {
         String urlRedirect = "redirect:/admin/album";
@@ -59,7 +58,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    // all feature CRUD Album
+    /*------------------------------------------------------- SOLVE: CRUD ALBUM--------------------------------------------- */
 
     @RequestMapping(value = "album", method = RequestMethod.GET)
     public ModelAndView getIndexAlbum(HttpSession session) {
@@ -107,7 +106,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "album/add", method = RequestMethod.GET)
-    public ModelAndView getAddAlbum(HttpSession session) {
+    public ModelAndView getIdAlbum(HttpSession session) {
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
@@ -115,93 +114,205 @@ public class AdminController {
         String fileView = "/page/admin/album/add";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectHome = "redirect:/home";
+        String urlRedirectAddAlbum = "redirect:/admin/album/add/";
+        String urlRedirectRootAlbum = "redirect:/admin/album";
 
         ModelAndView modelAndView = new ModelAndView(fileView);
+
         if (loginSuccess) {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
             if (isRoleAdmin) {
-                String idUser = roleDTO.getIdUser();
-
-                UserDTO user = userDAO.readUserByIdUser(idUser);
-
-                String nameUser = user.getNameUser();
-
-                modelAndView.addObject("session_id", idSession);
-                modelAndView.addObject("name_user", nameUser);
-
-                Album album = new Album();
-                modelAndView.addObject("album", album);
-
+                try {
+                    String idAlbum = albumDAO.getIdAblbumBeforeCreateAlbum();
+                    urlRedirectAddAlbum = urlRedirectAddAlbum + idAlbum;
+                    modelAndView.setViewName(urlRedirectAddAlbum);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                    modelAndView.setViewName(urlRedirectRootAlbum);
+                }
             } else {
                 modelAndView.setViewName(urlRedirectHome);
             }
         } else {
-            modelAndView.setViewName(urlRedirectLogin);
+
         }
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "album/add", method = RequestMethod.POST)
-    public ModelAndView postAddAlbum(@ModelAttribute("album") Album album, HttpServletRequest request) {
-        String fileView = "/page/admin/album/add";
-        String urlRedirect = "redirect:/admin/album";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-
-        String valueButtonAction = request.getParameter("button");
-        switch (valueButtonAction) {
-            case "cancel":
-                modelAndView.setViewName(urlRedirect);
-                break;
-            case "add":
-                try {
-                    String idAlbum = albumDAO.getIdAlbumBeforeCreateAlbum(album);
-                    System.out.println(idAlbum);
-                    modelAndView.setViewName(urlRedirect);
-                } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
-                }
-                break;
-
-            default:
-                break;
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "album/editor/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditAlbum(@PathVariable("id") String idAlbum, HttpSession session) {
+    @RequestMapping(value = { "album/add/{id}", "album/editor/{id}" }, method = RequestMethod.GET)
+    public ModelAndView getAddAlbum(@PathVariable(value = "id") String idAlbum, HttpSession session) {
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "page/admin/album/editor";
-        String urlRedirect = "redirect:/admin/album";
+        String fileView = "/page/admin/album/add";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectHome = "redirect:/home";
+
         ModelAndView modelAndView = new ModelAndView(fileView);
 
         if (loginSuccess) {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+
             if (isRoleAdmin) {
-                String idUser = roleDTO.getIdUser();
                 try {
-                    AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
-                    if (album == null) {
-                        modelAndView.setViewName(urlRedirect);
-                    }
 
+                    AlbumDTO album = new AlbumDTO();
+                    List<SoundDTO> soundAddedAlbums = new ArrayList<>();
+                    List<SoundDTO> sounds = new ArrayList<>();
+
+                    String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
-
                     String nameUser = user.getNameUser();
-
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+
+                    album = albumDAO.readAlbumByIdAlbum(idAlbum);
                     modelAndView.addObject("album", album);
+
+                    soundAddedAlbums = soundDAO.readAllSoundByIdAlbum(idAlbum);
+                    modelAndView.addObject("soundAddedAlbums", soundAddedAlbums);
+
+                    sounds = soundDAO.readAllSoundByIdAlbumIsNull();
+                    modelAndView.addObject("sounds", sounds);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
+        return modelAndView;
+
+    }
+
+    @RequestMapping(value = "album/add/", method = RequestMethod.POST, params = "add_sound")
+    public ModelAndView postAddSoundIntoAlbum(
+            @RequestParam(value = "id_album", required = false) String idAlbum,
+            @RequestParam(value = "name_album", required = false) String nameAlbum,
+            @RequestParam(value = "name_singer", required = false) String nameSinger,
+            @RequestParam(value = "add_sound", required = false) String idSound,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectAddAlbum = "redirect:/admin/album/add/";
+        String urlRedirectRootAlbum = "redirect:/admin/album";
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+
+                try {
+                    AlbumDTO album = new AlbumDTO();
+                    album.setIdAlbum(idAlbum);
+                    album.setNameAlbum(nameAlbum);
+                    album.setNameSinger(nameSinger);
+
+                    albumDAO.updateAlbum(album);
+
+                    soundDAO.updateIdAlbumByIdSound(idAlbum, idSound);
+                    urlRedirectAddAlbum = urlRedirectAddAlbum + idAlbum;
+                    modelAndView.setViewName(urlRedirectAddAlbum);
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
+                    modelAndView.setViewName(urlRedirectRootAlbum);
+                }
+
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "album/add/", method = RequestMethod.POST, params = "delete_sound")
+    public ModelAndView postDeleteSoundFromAlbum(@RequestParam(value = "id_album", required = false) String idAlbum,
+            @RequestParam(value = "name_album", required = false) String nameAlbum,
+            @RequestParam(value = "name_singer", required = false) String nameSinger,
+            @RequestParam(value = "delete_sound", required = false) String idSound,
+            HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+        ModelAndView modelAndView = new ModelAndView();
+
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectAddAlbum = "redirect:/admin/album/add/";
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                AlbumDTO album = new AlbumDTO();
+                album.setIdAlbum(idAlbum);
+                album.setNameAlbum(nameAlbum);
+                album.setNameSinger(nameSinger);
+
+                albumDAO.updateAlbum(album);
+                soundDAO.updateIdAlbumByIdSound(null, idSound);
+
+                urlRedirectAddAlbum = urlRedirectAddAlbum + idAlbum;
+                modelAndView.setViewName(urlRedirectAddAlbum);
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "album/add", method = RequestMethod.POST, params = "add_album")
+    public ModelAndView postAddAlbum(@RequestParam(value = "id_album", required = false) String idAlbum,
+            @RequestParam(value = "name_album", required = false) String nameAlbum,
+            @RequestParam(value = "name_singer", required = false) String nameSinger,
+            @RequestParam(value = "add_sound", required = false) String idSound,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/admin/playlist/add";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectRootAlbum = "redirect:/admin/album";
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+                    AlbumDTO album = new AlbumDTO();
+                    album.setIdAlbum(idAlbum);
+                    album.setNameAlbum(nameAlbum);
+                    album.setNameSinger(nameSinger);
+                    albumDAO.updateAlbum(album);
+
+                    modelAndView.setViewName(urlRedirectRootAlbum);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                    modelAndView.setViewName(urlRedirectRootAlbum);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectHome);
@@ -213,27 +324,38 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "album/editor", method = RequestMethod.POST)
-    public ModelAndView postEditAlbum(@ModelAttribute("album") AlbumDTO album, HttpServletRequest request) {
-        String fileView = "/page/admin/album/editor";
-        String urlRedirect = "redirect:/admin/album";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        String valueActionButton = request.getParameter("button");
-        switch (valueActionButton) {
-            case "cancel":
-                modelAndView.setViewName(urlRedirect);
-                break;
-            case "update":
-                try {
-                    albumDAO.updateAlbum(album);
-                    modelAndView.setViewName(urlRedirect);
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-                break;
-            default:
-                break;
+    @RequestMapping(value = "album/add", method = RequestMethod.POST, params = "cancel_album")
+    public ModelAndView postCancelAlbum(@RequestParam(value = "id_album", required = false) String idAlbum,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
 
+        String fileView = "/page/admin/playlist/add";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectRootAlbum = "redirect:/admin/album";
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+                    soundDAO.updateIdAlbumIsNullByIdAlbumFromSound(idAlbum);
+                    albumDAO.deleteAlbumByIdAlbum(idAlbum);
+
+                    modelAndView.setViewName(urlRedirectRootAlbum);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                    modelAndView.setViewName(urlRedirectRootAlbum);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
 
         return modelAndView;
@@ -252,8 +374,9 @@ public class AdminController {
         return modelAndView;
     }
 
-    // all feature CRUD PLaylist
+    /*------------------------------------------------------- SOLVE: CRUD PLAYLIST --------------------------------------------- */
 
+    // feature: add playlist
     @RequestMapping(value = "playlist", method = RequestMethod.GET)
     public ModelAndView getIndexPlaylist(HttpSession session) {
         String idSession = session.getId();
@@ -299,10 +422,12 @@ public class AdminController {
         return modelAndView;
     }
 
+    // feature: get id playlist and redirect to add playlist
     @RequestMapping(value = "playlist/add", method = RequestMethod.GET)
     public ModelAndView getIdPlaylist() {
 
         String urlRedirect = "redirect:/admin/playlist/add/";
+        String urlRedirectRootPlaylist = "redirect:/admin/playlist";
         ModelAndView modelAndView = new ModelAndView();
         try {
             String idPlaylist = playlistDAO.getIdPlaylistBeforeCreatePlaylist();
@@ -311,11 +436,13 @@ public class AdminController {
         } catch (Exception ex) {
             String message = ex.getMessage();
             System.out.println(message);
+            modelAndView.setViewName(urlRedirectRootPlaylist);
         }
 
         return modelAndView;
     }
 
+    // feature: show page playlist
     @RequestMapping(value = "playlist/add/{id}", method = RequestMethod.GET)
     public ModelAndView getAddPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
 
@@ -335,22 +462,152 @@ public class AdminController {
                 PlaylistDTO playlist = new PlaylistDTO();
                 List<SoundDTO> soundAddedPlaylists = new ArrayList<>();
                 List<SoundDTO> sounds = new ArrayList<>();
+
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+                    String nameUser = user.getNameUser();
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+
+                    playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
+                    modelAndView.addObject("playlist", playlist);
+
+                    sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
+                    modelAndView.addObject("sounds", sounds);
+
+                    soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+                    modelAndView.addObject("soundAddedPlaylists", soundAddedPlaylists);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
+        return modelAndView;
+    }
+
+    // feature: add sound into playlist
+    @RequestMapping(value = { "playlist/add/", "playlist/editor/" }, method = RequestMethod.POST, params = "add_sound")
+    public ModelAndView postAddSoundIntoPlaylist(
+            @RequestParam(value = "name_playlist", required = false) String namePlaylist,
+            @RequestParam(value = "id_playlist", required = false) String idPlaylist,
+            @RequestParam(value = "add_sound", required = false) String idSound) {
+        String urlRedirect = "redirect:/admin/playlist/add/";
+        urlRedirect = urlRedirect + idPlaylist;
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        try {
+            PlaylistDTO playlist = new PlaylistDTO();
+            playlist.setIdPlaylist(idPlaylist);
+            playlist.setNamePlaylist(namePlaylist);
+            playlistDAO.updatePlaylist(playlist);
+            playlistDAO.createSoundPlaylistByIdSoundAndIdPlaylist(idSound, idPlaylist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+
+        return modelAndView;
+    }
+
+    // feature: delete sound from playlist
+    @RequestMapping(value = { "playlist/add/",
+            "playlist/editor/" }, method = RequestMethod.POST, params = "delete_sound")
+    public ModelAndView postDeleteSoundFromPlaylist(@RequestParam("name_playlist") String namePlaylist,
+            @RequestParam("id_playlist") String idPlaylist,
+            @RequestParam("delete_sound") String idSound) {
+        String urlRedirect = "redirect:/admin/playlist/add/";
+        urlRedirect = urlRedirect + idPlaylist;
+        ModelAndView modelAndView = new ModelAndView(urlRedirect);
+        try {
+            PlaylistDTO playlist = new PlaylistDTO();
+            playlist.setIdPlaylist(idPlaylist);
+            playlist.setNamePlaylist(namePlaylist);
+            playlistDAO.updatePlaylist(playlist);
+            playlistDAO.deleteSoundPlaylistByIdSoundAndIdPlaylist(idSound, idPlaylist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+        return modelAndView;
+    }
+
+    // feature: cancel add playlist
+    @RequestMapping(value = "playlist/add/", method = RequestMethod.POST, params = "cancel_playlist")
+    public ModelAndView postCancelPlaylist(@RequestParam("id_playlist") String idPlaylist) {
+        String urlRedirectPlaylist = "redirect:/admin/playlist";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectPlaylist);
+        try {
+            playlistDAO.deletePlaylist(idPlaylist);
+            playlistDAO.deleteSoundPlaylistByIdPlaylist(idPlaylist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+        return modelAndView;
+    }
+
+    // feature: update final playlist and update editor playlist
+    @RequestMapping(value = { "playlist/add/",
+            "playlist/editor/" }, method = RequestMethod.POST, params = "add_playlist")
+    public ModelAndView postAddPlaylist(@RequestParam("name_playlist") String namePlaylist,
+            @RequestParam("id_playlist") String idPlaylist) {
+        String urlRedirectPlaylist = "redirect:/admin/playlist";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectPlaylist);
+        try {
+            PlaylistDTO playlist = new PlaylistDTO();
+            playlist.setIdPlaylist(idPlaylist);
+            playlist.setNamePlaylist(namePlaylist);
+            playlistDAO.updatePlaylist(playlist);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            System.out.println(message);
+        }
+        return modelAndView;
+    }
+
+    // feature: update playlist
+    @RequestMapping(value = { "playlist/editor/{id}" }, method = RequestMethod.GET)
+    public ModelAndView getEditorPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/admin/playlist/editor";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+
+        ModelAndView modelAndView = new ModelAndView(fileView);
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                PlaylistDTO playlist = new PlaylistDTO();
+                List<SoundDTO> soundAddedPlaylists = new ArrayList<>();
+                List<SoundDTO> sounds = new ArrayList<>();
                 String idUser = roleDTO.getIdUser();
 
                 try {
-                    playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
-                    sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
-                    soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
-
                     UserDTO user = userDAO.readUserByIdUser(idUser);
-
                     String nameUser = user.getNameUser();
-
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+
+                    playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
                     modelAndView.addObject("playlist", playlist);
-                    modelAndView.addObject("soundAddedPlaylists", soundAddedPlaylists);
+
+                    sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
                     modelAndView.addObject("sounds", sounds);
+
+                    soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+                    modelAndView.addObject("soundAddedPlaylists", soundAddedPlaylists);
 
                 } catch (Exception ex) {
                     String message = ex.getMessage();
@@ -367,121 +624,15 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "playlist/add/{id_playlist}/{id_sound}", method = RequestMethod.POST)
-    public ModelAndView postAddSoundIntoPlaylist(
-            @PathVariable("id_playlist") String idPlaylist,
-            @PathVariable("id_sound") String idSound) {
-        String urlRedirect = "redirect:/admin/playlist/add/";
-        urlRedirect = urlRedirect + idPlaylist;
-        ModelAndView modelAndView = new ModelAndView(urlRedirect);
-        try {
-            playlistDAO.createSoundPlaylistByIdSoundAndIdPlaylist(idSound, idPlaylist);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-        }
-
+    // feature: cancel editor playlist
+    @RequestMapping(value = "playlist/editor/", method = RequestMethod.POST, params = "cancel_playlist")
+    public ModelAndView postCancelEditorPlaylist(@RequestParam("id_playlist") String idPlaylist) {
+        String urlRedirectPlaylist = "redirect:/admin/playlist";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectPlaylist);
         return modelAndView;
     }
 
-    @RequestMapping(value = "playlist/delete/{id_playlist}/{id_sound}", method = RequestMethod.POST)
-    public ModelAndView postDeleteSoundFromPlaylist(
-            @PathVariable("id_playlist") String idPlaylist,
-            @PathVariable("id_sound") String idSound) {
-        String urlRedirect = "redirect:/admin/playlist/add/";
-        urlRedirect = urlRedirect + idPlaylist;
-        ModelAndView modelAndView = new ModelAndView(urlRedirect);
-        try {
-            playlistDAO.deleteSoundPlaylistByIdSoundAndIdPlaylist(idSound, idPlaylist);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-        }
-
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "playlist/add", method = RequestMethod.POST)
-    public ModelAndView postAddPlaylist(@ModelAttribute("playlist") PlaylistDTO playlist, HttpServletRequest request) {
-        String fileView = "/page/admin/playlist/add";
-        String urlRedirect = "redirect:/admin/playlist";
-        String valueButtonAction = request.getParameter("button");
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        switch (valueButtonAction) {
-            case "cancel":
-                String idPlaylist = playlist.getIdPlaylist();
-                playlistDAO.deletePlaylist(idPlaylist);
-                playlistDAO.deleteSoundPlaylistByIdPlaylist(idPlaylist);
-                modelAndView.setViewName(urlRedirect);
-                break;
-            case "add":
-                try {
-                    playlistDAO.updatePlaylist(playlist);
-                    modelAndView.setViewName(urlRedirect);
-                } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
-                }
-                break;
-            default:
-                break;
-        }
-        try {
-
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "playlist/editor/{id}", method = RequestMethod.GET)
-    public ModelAndView getEditPlaylist(@PathVariable(name = "id") String idPlaylist) {
-        String fileView = "/page/admin/playlist/editor";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        try {
-            PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
-            // for (SoundDTO sound : sounds) {
-            // System.out.println(sound.getIdSound() + " " + sound.getNameSound());
-            // }
-            modelAndView.addObject("playlist", playlist);
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "playlist/editor", method = RequestMethod.POST)
-    public ModelAndView postEditPlaylist(@ModelAttribute("playlist") PlaylistDTO playlist, HttpServletRequest request) {
-        String urlRedirect = "redirect:/admin/playlist";
-        ModelAndView modelAndView = new ModelAndView(urlRedirect);
-        String valueActionButton = request.getParameter("button");
-        switch (valueActionButton) {
-            case "cancel":
-                modelAndView.setViewName(urlRedirect);
-                break;
-            case "update":
-                try {
-                    modelAndView.setViewName(urlRedirect);
-                    playlistDAO.updatePlaylist(playlist);
-                } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
-                }
-                break;
-            default:
-                break;
-        }
-        try {
-
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-        }
-        return modelAndView;
-    }
-
+    // feature: delete playlist
     @RequestMapping(value = "playlist/delete/{id}", method = RequestMethod.POST)
     public ModelAndView postDeletePlaylist(@PathVariable(name = "id") String idPlaylist) {
         String urlRedirect = "redirect:/admin/playlist";
@@ -496,7 +647,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    // all feature CRUD Sound
+    /*------------------------------------------------------- SOLVE: CRUD SOUND --------------------------------------------- */
 
     @RequestMapping(value = "sound", method = RequestMethod.GET)
     public ModelAndView getIndexSound(HttpSession session) {
@@ -589,7 +740,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "sound/add", method = RequestMethod.POST)
-    public ModelAndView postAddSound(@RequestParam("audio") MultipartFile fileAudio,
+    public ModelAndView postAddSound(@RequestParam("avatar") MultipartFile fileImage,
+            @RequestParam("audio") MultipartFile fileAudio,
             @ModelAttribute("sound") Sound sound, HttpServletRequest request) {
 
         String urlRedirect = "redirect:/admin/sound";
@@ -601,8 +753,20 @@ public class AdminController {
                 break;
             case "add":
                 try {
-                    String nameFileAudio = soundDAO.readIdSoundBeforeCreateSound(sound);
-                    System.out.println(nameFileAudio);
+                    String nameFileImage = fileImage.getOriginalFilename();
+                    String nameFileAudio = fileAudio.getOriginalFilename();
+                    String idSound = soundDAO.getIdSoundBeforeInsert(sound);
+
+                    // feature: save file image (avatar sound)
+                    saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, nameFileImage, idSound,
+                            fileImage);
+                    saveFileUpload.save();
+
+                    // feature: save file audio (audo sound)
+                    saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_AUDIO, nameFileAudio, idSound,
+                            fileAudio);
+                    saveFileUpload.save();
+
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -756,11 +920,10 @@ public class AdminController {
                 String idUser = roleDTO.getIdUser();
                 User user = new User();
                 UserDTO userDTO = userDAO.readUserByIdUser(idUser);
-
                 String nameUser = userDTO.getNameUser();
-
                 modelAndView.addObject("session_id", idSession);
                 modelAndView.addObject("name_user", nameUser);
+
                 modelAndView.addObject("user", user);
             } else {
                 modelAndView.setViewName(urlRedirectHome);
@@ -773,19 +936,29 @@ public class AdminController {
     }
 
     @RequestMapping(value = "user/add", method = RequestMethod.POST)
-    public ModelAndView postAddUser(@ModelAttribute("user") User user, HttpServletRequest request) {
+    public ModelAndView postAddUser(@RequestParam(value = "avatar") MultipartFile file,
+            @ModelAttribute("user") User user, HttpServletRequest request) {
         String urlRedirect = "redirect:/admin/user";
         String valueActionButton = request.getParameter("button");
         ModelAndView modelAndView = new ModelAndView(urlRedirect);
+
+        String idUserRoot = null;
         switch (valueActionButton) {
             case "cancel":
                 break;
             case "add":
                 try {
-                    userDAO.insertUser(user);
+                    String idUser = userDAO.getIdUserWhileCreateUser(user);
+                    String nameFileOld = file.getOriginalFilename();
+
+                    saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, nameFileOld, idUser, file);
+                    saveFileUpload.save();
+                    idUserRoot = idUser;
+
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
+                    userDAO.deleteUserByIdUser(idUserRoot);
                 }
                 break;
             default:

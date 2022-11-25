@@ -44,7 +44,7 @@ public class Playlist {
     private List<Sound> sounds;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "favorite_album_user", joinColumns = @JoinColumn(name = "id_playlist", referencedColumnName = "id_playlist"), inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"))
+    @JoinTable(name = "favorite_playlist_user", joinColumns = @JoinColumn(name = "id_playlist", referencedColumnName = "id_playlist"), inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"))
     private List<User> users;
 
     public Playlist() {

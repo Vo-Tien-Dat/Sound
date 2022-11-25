@@ -101,22 +101,23 @@
                                                     <div class="card w-100 p-0" style="width: 18rem;">
                                                         <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
                                                         <div class="card-body">
-                                                            <div class="row">
+                                                            <div class="row" >
                                                                 <div class="d-flex align-item-center">
                                                                     <div class="px-1 flex-grow-1">
                                                                         <div class="d-inline">
                                                                             <a th:href="@{'/album/' + ${album.idAlbum}}" style="text-decoration: none;">
-                                                                                <p class="card-title fs-4 mb-0 fw-semibold" th:text = "${album.nameAlbum}"></p>
+                                                                                <p class="card-title fs-4 mb-0 fw-semibold text-start" th:text = "${album.nameAlbum}"></p>
                                                                             </a>
-                                                                            <p class="card-title fw-5" th:text = "${album.nameSinger}"></p>
+                                                                            <p class="card-title fw-5 text-start" th:text = "${album.nameSinger}"></p>
                                                                         </div>
-                                                
                                                                     </div>
                                                                     <div class="p-2">
                                                                         <div class="d-inline">
-                                                                            <a href="#" class="btn btn-light">
-                                                                                <i class="fa-solid fa-heart text-danger"></i>
-                                                                            </a>
+                                                                            <form th:action = "@{'/favorite/create/album/' + ${album.idAlbum}}" th:method = "post">
+                                                                                <button type = "submit" class="btn btn-light">
+                                                                                    <i class="fa-solid fa-heart text-danger"></i>
+                                                                                </button>
+                                                                            </form>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -162,9 +163,11 @@
                                                                         </div>
                                                                         <div class="p-2">
                                                                             <div class="d-inline">
-                                                                                <a href="#" class="btn btn-light">
-                                                                                    <i class="fa-solid fa-heart text-danger"></i>
-                                                                                </a>
+                                                                                <form th:action="@{'/favorite/create/playlist/' + ${playlist.idPlaylist}}" th:method="post">
+                                                                                    <button type="submit" class="btn btn-light">
+                                                                                        <i class="fa-solid fa-heart text-danger"></i>
+                                                                                    </button>
+                                                                                </form>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -194,6 +197,9 @@
                                             <th:block th:each = "sound : ${sounds}">
                                                 <div class="container bg-white border rounded px-4 py-2">
                                                     <div class="d-flex flex-row justify-content-between align-item-center">
+                                                        <audio controls class = "d-none">
+                                                            <source th:src="@{'/assets/audio/data/' + ${sound.idSound} + '.mp3'}">
+                                                        </audio>
                                                         <div class="p-0">
                                                             <div class="d-flex flex-row align-item-center gap-2">
                                                                 <div class="p-0 align-self-center h-100">
@@ -206,10 +212,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="d-inline p-0 align-self-center">
-                                                            <form>
-                                                                <a href="#" class="btn btn-light">
+                                                            <form th:action="@{'/favorite/create/sound/' + ${sound.idSound}}" th:method="post">
+                                                                <button type="submit" class="btn btn-light">
                                                                     <i class="fa-solid fa-heart text-danger"></i>
-                                                                </a>
+                                                                </button>
                                                             </form>
                                                         </div>
                                                     </div>

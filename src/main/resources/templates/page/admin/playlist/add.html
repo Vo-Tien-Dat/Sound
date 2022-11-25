@@ -125,40 +125,41 @@
 
                     </div>
                     <div class="p-0">
-                        <form class="container p-0" th:action="@{/admin/playlist/add}" th:method="post" th:object="${playlist}"
+                        <form class="container p-0" th:action="@{/admin/playlist/add/}" th:method="post"
                             enctype="multipart/form-data">
                             <div class="container w-75 p-0">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                            <input class = "d-none" th:field = "${playlist.idPlaylist}"/>
-                                            <div class="container rounded bg-white py-4 px-4">
-                                                <div class="d-flex flex-column gap-2">
-                                                    <div class="p-0">
-                                                        <div class="avatar" style="height: 15rem">
-                                                            <div class="avatar-icon">
-                                                                <input type="file" id="file_image" style="display: none" />
-                                                                <label for="file_image">
-                                                                    <i class='bx bxs-camera avatar-icon__icon'></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="avatar-preview" id="avatar-preview">
-                                                                <img src="" alt="image_empty" class="avatar-preview__image" accept="image/*" />
-                                                            </div>
+                                        <input class = "d-none" th:name = "id_playlist" th:value = "${playlist.idPlaylist}"/>
+                                        <div class="container rounded bg-white py-4 px-4">
+                                            <div class="d-flex flex-column gap-2">
+                                                <div class="p-0">
+                                                    <div class="avatar" style="height: 15rem">
+                                                        <div class="avatar-icon">
+                                                            <input type="file" id="file_image" style="display: none" />
+                                                            <label for="file_image">
+                                                                <i class='bx bxs-camera avatar-icon__icon'></i>
+                                                            </label>
+                                                        </div>
+                                                        <div class="avatar-preview" id="avatar-preview">
+                                                            <img src="" alt="image_empty" class="avatar-preview__image" accept="image/*" />
                                                         </div>
                                                     </div>
-                                                    <div class="p-0">
-                                                        <div class="container p-0">
-                                                            <div class="d-flex flex-column">
-                                                                <div class="p-0">
-                                                                    <label class="form-label text-start">Name playlist</label>
-                                                                    <input type="text" class="form-control" th:field="${playlist.namePlaylist}">
-                                                                </div>
+                                                </div>
+                                                <div class="p-0">
+                                                    <div class="container p-0">
+                                                        <div class="d-flex flex-column">
+                                                            <div class="p-0">
+                                                                <label class="form-label text-start">Name playlist</label>
+                                                                <input type="text" class="form-control" th:name = "name_playlist" th:value = "${playlist.namePlaylist}" id = "input_name_playlist">
+
+                                                                <p class="text-start mb-0 text-danger d-none" id = "text_message_name_playlist">Name Playlist is allowed null </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                     <div class="col-sm-8 p-0">
                                         <div class="container p-0">
@@ -188,9 +189,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="d-inline p-0 align-self-center">
-                                                                                <form th:action="@{'/admin/playlist/delete/' + ${playlist.idPlaylist} + '/' + ${soundAddedPlaylist.idSound}}" th:method="post">
-                                                                                    <button type="submit" class="btn btn-danger" name = "button">Remove</button>
-                                                                                </form>
+                                                                                <button type="submit" class="btn btn-danger" th:name="delete_sound" th:value = "${soundAddedPlaylist.idSound}">Delete</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -224,10 +223,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="d-inline p-0 align-self-center">
-                                                                                <form th:action="@{'/admin/playlist/add/' + ${playlist.idPlaylist} + '/' + ${sound.idSound}}" th:method = "post">
-                                                                                    <button type="submit" class="btn btn-success" name = "button">Add</button>
-                                                                                </form>
-                                                                                
+                                                                                <button type="submit" class="btn btn-success" th:name="add_sound" th:value = "${sound.idSound}">Add</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -239,8 +235,8 @@
                                                 </div>
                                                 <div class="p-0">
                                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-0">
-                                                        <button type="submit" class="btn btn-secondary me-md-2" name="button" value="cancel">Cancel</button>
-                                                        <button type="submit" class="btn btn-success" name="button" value="add">Add</button>
+                                                        <button type="submit" class="btn btn-secondary me-md-2" th:name="cancel_playlist" >Cancel</button>
+                                                        <button type="submit" class="btn btn-success" th:name="add_playlist" id = "button_add_playlist" >Add</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,94 +246,13 @@
                             </div>
                         </form>
                     </div>
-                    <div class="p-0">
-                        <!-- <form class="container p-0" th:action="@{/admin/playlist/add}" th:method="post"
-                            th:object="${playlist}" enctype="multipart/form-data">
-                            <div class="p-0">
-                                <div class="container bg-white w-75 rounded border p-4">
-
-                                    <div class="row">
-                                        <div class="col-md-4 py-2">
-                                            <div class="container w-100 h-100">
-                                                <div class="avatar">
-                                                    <div class="avatar-icon">
-                                                        <input type="file" id="file_image" style="display: none" />
-                                                        <label for="file_image">
-                                                            <i class='bx bxs-camera avatar-icon__icon'></i>
-                                                        </label>
-                                                    </div>
-                                                    <div class="avatar-preview" id="avatar-preview">
-                                                        <img src="" alt="image_empty" class="avatar-preview__image"
-                                                            accept="image/*" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="container p-0">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="mb-2 d-flex flex-column justify-content-start">
-                                                            <label class="form-label text-start">Name playlist</label>
-                                                            <input type="text" class="form-control" th:field = "${playlist.namePlaylist}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="mb-2 d-flex flex-column justify-content-start">
-                                                            <label class="form-label text-start">Date</label>
-                                                            <input type="date" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="py-2">
-                                <div class="container w-75">
-                                    <div class="row">
-                                        <div class="container p-2 bg-white rounded" style="height: 15rem">
-                                            <div class="p-0 w-100 h-100 rounded opacity-25"
-                                                style="border: 2px dashed black; ">
-                                                <label for="file_audio"
-                                                    class="w-100 h-100 d-flex flex-row justify-content-center align-items-center">
-                                                    <div class="p-0">
-                                                        <div class="p-0 text-center">
-                                                            <i class="fa-solid fa-music fs-2"></i>
-                                                        </div>
-                                                        <div class="p-0">
-                                                            <p class="text-center mb-0">Drag & Drop your file audio here
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <input type="file" name="audio" id="file_audio" class="d-none" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="py-2">
-                                <div class="container p-0 w-75">
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button type="submit" class="btn btn-secondary me-md-2" name="button"
-                                            value="cancel">Cancel</button>
-                                        <button type="submit" class="btn btn-success" name="button"
-                                            value="add">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form> -->
-                    </div>
                 </div>
             </div>
         </div>
     </main>
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
     <script type="text/javascript" th:src="@{/js/upload.js}"></script>
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
 </body>
 
 </html>

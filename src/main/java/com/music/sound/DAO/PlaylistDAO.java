@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.music.sound.model.Playlist;
-import com.music.sound.model.Sound;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
@@ -25,29 +23,33 @@ public class PlaylistDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_READ_ALL_PLAYLIST = "SELECT * FROM PLAYLIST";
+    private final String SQL_READ_ALL_PLAYLIST = "SELECT * FROM playlist";
 
-    private final String SQL_PLAYLIST_BY_ID_PLAYLIST = "SELECT * FROM PLAYLIST WHERE id_playlist = ?";
+    private final String SQL_PLAYLIST_BY_ID_PLAYLIST = "SELECT * FROM playlist WHERE id_playlist = ?";
 
-    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER = "SELECT * FROM PLAYLIST FROM id_user = ?";
+    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER = "SELECT * FROM playlist FROM id_user = ?";
 
-    private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "SELECT * FROM FAVORITE_PLAYLIST_USER WHERE id_user = ? ";
+    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER = "SELECT * FROM favorite_playlist_user WHERE id_user = ? ";
 
-    private final String SQL_DELETE_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM PLAYLIST WHERE id_playlist = ? ";
+    private final String SQL_DELETE_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM playlist WHERE id_playlist = ? ";
 
-    private final String SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST = "UPDATE PLAYLIST SET name_playlist = ? WHERE id_playlist = ? ";
+    private final String SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST = "UPDATE playlist SET name_playlist = ? WHERE id_playlist = ? ";
 
-    private final String SQL_CREATE_SOUND_PLAYLIST_BY_ID_PLAYLIST_AND_ID_SOUND = "INSERT INTO SOUND_PLAYLIST(id_sound, id_playlist) VALUES (?, ?)";
+    private final String SQL_CREATE_SOUND_PLAYLIST_BY_ID_PLAYLIST_AND_ID_SOUND = "INSERT INTO sound_playlist(id_sound, id_playlist) VALUES (?, ?)";
 
-    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST = "select SOUND.id_sound from SOUND RIGHT JOIN (SELECT id_sound from SOUND_PLAYLIST where id_playlist = ?) as PLAYLIST on SOUND.id_sound <> PLAYLIST.id_sound";
+    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST = "select sound.id_sound from sound LEFT JOIN (SELECT id_sound from sound_playlist where id_playlist = ?) as playlist on sound.id_sound = playlist.id_sound where playlist.id_sound is null";
 
-    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM SOUND_PLAYLIST WHERE id_playlist = ? ";
+    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM sound_playlist WHERE id_playlist = ? ";
 
-    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM SOUND_PLAYLIST WHERE id_playlist = ? ";
+    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM sound_playlist WHERE id_playlist = ? ";
 
-    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_SOUND_AND_ID_PLAYLIST = "DELETE FROM SOUND_PLAYLIST WHERE id_sound = ? and id_playlist = ? ";
+    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_SOUND_AND_ID_PLAYLIST = "DELETE FROM sound_playlist WHERE id_sound = ? and id_playlist = ? ";
 
-    private final String SQL_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM PLAYLIST ORDER BY RAND() LIMIT  ? ";
+    private final String SQL_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM playlist ORDER BY RAND() LIMIT  ? ";
+
+    private final String SQL_CREATE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER = "INSERT INTO favorite_playlist_user VALUES (?,?)";
+
+    private final String SQL_DELETE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER = "DELETE FROM favorite_playlist_user WHERE id_playlist = ? AND  id_user = ? ";
 
     public List<Playlist> findAllPlaylist() {
 
@@ -73,11 +75,27 @@ public class PlaylistDAO {
         return record;
     }
 
-    public List<AlbumDTO> readAllPlaylistByIdUserFromFavoritePlaylistUser(String idUser) {
-        List<AlbumDTO> records = jdbcTemplate.query(
-                SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_SOUND_USER,
-                new FavoriteAlbumUserReadMapper(), new Object[] { idUser });
+    public List<PlaylistDTO> readAllPlaylistByIdUserFromFavoritePlaylistUser(String idUser) {
+        List<PlaylistDTO> records = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate
+                .queryForList(SQL_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER, idUser);
+        for (Map<String, Object> row : rows) {
+            PlaylistDTO record = new PlaylistDTO();
+            String idPlaylist = row.get("id_playlist").toString();
+            record = readPlaylistByIdPlaylist(idPlaylist);
+            records.add(record);
+        }
         return records;
+    }
+
+    public void createFavoritePlaylistUserByIdPlaylistAndIdUser(String idPlaylist, String idUser) {
+        jdbcTemplate.update(
+                SQL_CREATE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER, new Object[] { idPlaylist, idUser });
+    }
+
+    public void deleteFavoritePlaylistUserByIdPlaylistAndIdUser(String idPlayist, String idUser) {
+        jdbcTemplate.update(SQL_DELETE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER,
+                new Object[] { idPlayist, idUser });
     }
 
     public void createSoundPlaylistByIdSoundAndIdPlaylist(String idSound, String idPlaylist) {
@@ -98,7 +116,8 @@ public class PlaylistDAO {
 
     public List<SoundDTO> readAllSoundByIdPlaylistFromSoundPlaylistFirst(String idPlaylist) {
         List<SoundDTO> records = new ArrayList<>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST, idPlaylist);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST,
+                idPlaylist);
         for (Map<String, Object> row : rows) {
             SoundDTO record = new SoundDTO();
             String idSound = row.get("id_sound").toString();
