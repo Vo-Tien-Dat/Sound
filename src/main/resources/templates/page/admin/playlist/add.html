@@ -136,13 +136,14 @@
                                                 <div class="p-0">
                                                     <div class="avatar" style="height: 15rem">
                                                         <div class="avatar-icon">
-                                                            <input type="file" id="file_image" style="display: none" />
+                                                            <input type="file" id="file_image" style="display: none" th:name = "avatar"/>
                                                             <label for="file_image">
                                                                 <i class='bx bxs-camera avatar-icon__icon'></i>
                                                             </label>
                                                         </div>
                                                         <div class="avatar-preview" id="avatar-preview">
-                                                            <img src="" alt="image_empty" class="avatar-preview__image" accept="image/*" />
+                                                            <img th:src="@{${urlAvatarImage}}" alt="image_empty" class="avatar-preview__image" accept="image/*"
+                                                                id="id_preview_avatar" />
                                                         </div>
                                                     </div>
                                                 </div>

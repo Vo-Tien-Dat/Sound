@@ -33,7 +33,7 @@ public class PlaylistDAO {
 
     private final String SQL_DELETE_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM playlist WHERE id_playlist = ? ";
 
-    private final String SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST = "UPDATE playlist SET name_playlist = ? WHERE id_playlist = ? ";
+    private final String SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST = "UPDATE playlist SET name_playlist = ?, path_image = ?  WHERE id_playlist = ? ";
 
     private final String SQL_CREATE_SOUND_PLAYLIST_BY_ID_PLAYLIST_AND_ID_SOUND = "INSERT INTO sound_playlist(id_sound, id_playlist) VALUES (?, ?)";
 
@@ -142,7 +142,8 @@ public class PlaylistDAO {
     public void updatePlaylist(PlaylistDTO playlist) {
         String idPlaylist = playlist.getIdPlaylist();
         String namePlaylist = playlist.getNamePlaylist();
-        jdbcTemplate.update(SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST, namePlaylist, idPlaylist);
+        String pathImage = playlist.getPathImage();
+        jdbcTemplate.update(SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST, namePlaylist, pathImage, idPlaylist);
     }
 
     public String getIdPlaylistBeforeCreatePlaylist() {

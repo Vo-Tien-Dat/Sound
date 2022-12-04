@@ -5,13 +5,7 @@ const previewContainer = document.getElementById("avatar-preview");
 
 const previewImage = previewContainer.querySelector(".avatar-preview__image");
 
-const fileAudio = document.getElementById("file_audio");
-
 const labelUploadFileAudio = document.getElementById("label_upload_file_audio");
-
-const inputNameSound = document.getElementById("input_name_sound");
-
-const inputNameSinger = document.getElementById("input_name_singer");
 
 const messageNameSound = document.getElementById("message_name_sound");
 
@@ -19,19 +13,73 @@ const messageNameSinger = document.getElementById("message_name_singer");
 
 const buttonAdd = document.getElementById("button_add");
 
-//
+const idPreviewAvatar = document.getElementById("id_preview_avatar");
+
+const urlCurrent = window.location.href;
+
+const urlUserDefault = "/assets/img/default/user_default.png";
+
+const urlPlaylistDefault = "/assets/img/default/sound_default.png";
+
+const urlAlbumDefault = "/assets/img/default/sound_default.png";
+
+const urlSoundDefault = "/assets/img/default/sound_default.png";
 
 if (previewImage.getAttribute("src") == "") {
-  previewImage.style.display = "none";
+  let urlImageDefault = null;
+  const items = [
+    {
+      id: "user",
+      url: "/assets/img/default/user_default.png",
+    },
+    { id: "playlist", url: "/assets/img/default/sound_default.png" },
+    {
+      id: "album",
+      url: "/assets/img/default/sound_default.png",
+    },
+    {
+      id: "sound",
+      url: "/assets/img/default/sound_default.png",
+    },
+  ];
+  items.map((value, index) => {
+    if (urlCurrent.search(value.id) !== -1) {
+      urlImageDefault = value.url;
+    }
+  });
+
+  idPreviewAvatar.src = urlImageDefault;
 }
 
 //feature: use to remove image
 previewContainer.addEventListener("click", function () {
-  const file = avatarFile.files[0];
-  if (file != undefined) {
-    previewImage.removeAttribute("src");
-    previewImage.style.display = "none";
+  let sizeFile = avatarFile.files.length;
+  if (sizeFile != 0) {
+    avatarFile.value = "";
   }
+  let urlImageDefault = null;
+  const items = [
+    {
+      id: "user",
+      url: "/assets/img/default/user_default.png",
+    },
+    { id: "playlist", url: "/assets/img/default/sound_default.png" },
+    {
+      id: "album",
+      url: "/assets/img/default/sound_default.png",
+    },
+    {
+      id: "sound",
+      url: "/assets/img/default/sound_default.png",
+    },
+  ];
+  items.map((value, index) => {
+    if (urlCurrent.search(value.id) !== -1) {
+      urlImageDefault = value.url;
+    }
+  });
+
+  idPreviewAvatar.src = urlImageDefault;
 });
 
 //feature: use to upload image
@@ -52,40 +100,19 @@ avatarFile.addEventListener("change", function () {
 
 // UPLOAD AUDIO
 
-if (fileAudio != null) {
-  // chdck file is empty
+// if (fileAudio != null) {
+//   const numberFile = fileAudio.files.length;
+//   if (numberFile == 0) {
+//     labelUploadFileAudio.classList.add("bg-info");
+//   }
 
-  const numberFile = fileAudio.files.length;
-  if (numberFile == 0) {
-    labelUploadFileAudio.classList.add("bg-info");
-  }
-
-  //listen event change upload file
-  fileAudio.addEventListener("change", function () {
-    const numberFile = this.files.length;
-    if (numberFile == 0) {
-      labelUploadFileAudio.classList.add("bg-info");
-    } else {
-      labelUploadFileAudio.classList.add("bg-danger");
-    }
-  });
-}
-
-// check field text is null in form add sound
-
-if (buttonAdd != null) {
-  buttonAdd.addEventListener("click", function (event) {
-    let nameSound = inputNameSound.value;
-    let nameSinger = inputNameSinger.value;
-    if (nameSound === "") {
-      messageNameSound.classList.remove("d-none");
-    }
-    if (nameSinger === "") {
-      messageNameSinger.classList.remove("d-none");
-    }
-
-    if (nameSound == "" || nameSinger == "") {
-      event.preventDefault();
-    }
-  });
-}
+//   //listen event change upload file
+//   fileAudio.addEventListener("change", function () {
+//     const numberFile = this.files.length;
+//     if (numberFile == 0) {
+//       labelUploadFileAudio.classList.add("bg-info");
+//     } else {
+//       labelUploadFileAudio.classList.add("bg-danger");
+//     }
+//   });
+// }

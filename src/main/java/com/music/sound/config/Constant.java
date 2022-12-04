@@ -8,7 +8,11 @@ public interface Constant {
 
     public final String PATH_STATIC_SAVE_IMG = "D:\\doan\\Sound\\src\\main\\resources\\static\\assets\\img\\data\\";
 
-    public final String URL_STATIC_AUDIO = "\\audio\\";
+    public final String URL_STATIC_IMAGE = "/assets/img/data/";
+
+    public final String URL_STATIC_AUDIO = "/assets/audio/data/";
+
+    // public final String URL_STATIC_AUDIO = "\\audio\\";
 
     public final String URL_STATIC_ADD_PLAYLIST = "playlist\\";
 
