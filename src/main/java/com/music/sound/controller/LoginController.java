@@ -60,7 +60,6 @@ public class LoginController {
             @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO, HttpServletRequest request) {
 
         String urlRedirectRole = "redirect:/role/";
-
         String urlRedirectHome = "redirect:/home";
 
         String pathFile = "/page/login/index";

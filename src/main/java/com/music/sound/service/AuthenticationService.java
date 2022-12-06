@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.music.sound.DAO.UserDAO;
-import com.music.sound.DTO.UserDTO.UserDTO;
+import com.music.sound.DTO.UserDTO.UserDTO;// ** 
 import com.music.sound.DTO.UserDTO.UserRegisterDTO;
 import com.music.sound.model.User;
 
 @Service
 public class AuthenticationService {
-
     private String message;
 
     private String urlRedirect;
