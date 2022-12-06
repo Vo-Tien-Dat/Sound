@@ -363,9 +363,12 @@ header .master_play .vol input{
     list-style-type: none;
     font-size: 13px;
     color: #4c5262;
-    margin-right: 25px;
+    margin-right: 35px;
     cursor: pointer;
     transition: .3s linear;
+ }
+ header .song_side nav ul li i{
+    font-size: 16px;
  }
  header .song_side nav ul li:hover{
    color: #fff;
@@ -383,6 +386,7 @@ header .master_play .vol input{
    border-radius: 20px;
  }
  header .song_side nav .search{
+   height: 30px;
    position: relative;
    width: 40%;
    padding: 1px 10px;
