@@ -130,7 +130,7 @@
                                     <th:block th:each = "album : ${albums}">
                                         <div class="col-3 p-2 mb-2">
                                             <div class="card w-100 p-0" style="width: 18rem;">
-                                                <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
+                                                <img th:src="@{'/assets/img/data/' + ${album.pathImage}}" class="card-img-top rounded" alt="...">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="d-flex flex-column align-item-center">

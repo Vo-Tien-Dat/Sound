@@ -34,6 +34,8 @@ public class UserDAO {
     private final String SQL_UPDATE_USER_BY_ID_USER = "UPDATE user SET user_name = ?, password = ?,email = ?, name_user = ?, description = ? WHERE id_user = ?";
 
     private final String SQL_DELETE_USER_BY_ID_USER = "DELETE FROM user WHERE id_user = ? ";
+
+    private final String SQL_UPDATE_PATH_IMAGE_BY_ID_USER = "UPDATE user set path_image = ? where id_user = ? ";
     // feature: fina all user
 
     public List<User> findAllUser() {
@@ -57,8 +59,7 @@ public class UserDAO {
 
     public UserDTO readUserByUsername(String username) {
         UserDTO record = new UserDTO();
-        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(),
-                username);
+        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(), username);
         return record;
     }
 
@@ -100,18 +101,18 @@ public class UserDAO {
         }
     }
 
-    public String getIdUserWhileCreateUser(User user) {
+    public String getIdUserWhileCreateUser(User user) throws Exception {
         String idUser = null;
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         try {
             entityManager.persist(user);
-            idUser = user.getId().toString();
             entityTransaction.commit();
+            idUser = user.getId().toString();
         } catch (Exception ex) {
             entityTransaction.rollback();
-            System.out.println(ex.getMessage());
+            throw new Exception();
         } finally {
             entityManager.close();
         }
@@ -131,5 +132,9 @@ public class UserDAO {
 
     public void deleteUserByIdUser(String idUser) {
         jdbcTemplate.update(SQL_DELETE_USER_BY_ID_USER, idUser);
+    }
+
+    public void updatePathImageByIdUser(String idUser, String pathImage) {
+        jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_USER, pathImage, idUser);
     }
 }

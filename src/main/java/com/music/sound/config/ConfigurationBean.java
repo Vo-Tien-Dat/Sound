@@ -4,22 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.music.sound.service.CustomUserDetailsService;
-import com.music.sound.DAO.AlbumDAO;
 import com.music.sound.security.AuthenticationFilter;
-// import com.music.sound.security.CustomAuthenticationManager;
-// import com.music.sound.security.CustomAuthenticationProvider;
-// import com.music.sound.security.JwtAuthenticationEntryPoint;
 import com.music.sound.security.JwtTokenUtil;
 
 @Configuration
 public class ConfigurationBean {
-
-    // @Bean
-    // public CustomAuthenticationManager getUsernamepasswordManager(){
-    // CustomAuthenticationManager customAuthenticationManager = new
-    // CustomAuthenticationManager();
-    // return customAuthenticationManager;
-    // }
 
     @Bean
     public CustomUserDetailsService getUserDetailsServiceOverview() {

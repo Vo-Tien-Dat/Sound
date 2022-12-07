@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="1">
-                    <a href="album" data-active="1">
+                    <a th:href="@{/admin/album}" data-active="1">
                         <div class="icon">
                             <i class='bx bx-folder'></i>
                             <i class='bx bxs-folder'></i>
@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="2">
-                    <a href="playlist" data-active="2">
+                    <a th:href="@{/admin/playlist}" data-active="2">
                         <div class="icon">
                             <i class='bx bx-list-ul'></i>
                             <i class='bx bxs-list-ul'></i>
@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="3">
-                    <a href="sound" data-active="3">
+                    <a th:href="@{/admin/sound}" data-active="3">
                         <div class="icon">
                             <i class='bx bx-music'></i>
                             <i class='bx bxs-music'></i>
@@ -68,7 +68,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="3">
-                    <a href="user" data-active="3">
+                    <a th:href="@{/admin/user}" data-active="3">
                         <div class="icon">
                             <i class='bx bx-user'></i>
                             <i class='bx bxs-user'></i>
@@ -112,116 +112,171 @@
 
     <main>
         <div class="container-fluid">
-            <div class="container  w-75">
-                <label>
-                    <p class="fs-3">
-                        Form Update Sound
-                    </p>
-                </label>
-            </div>
-            <div class="container w-75 text-center">
-                <form class="container p-0" th:action="@{/admin/sound/add}" th:method="post" th:object="${sound}"
-                    enctype="multipart/form-data">
+            <div class="container">
+                <div class="d-flex flex-column">
                     <div class="p-0">
-                        <div class="container bg-white rounded border p-4">
-                
-                            <div class="row">
-                                <div class="col-md-4 py-2">
-                                    <div class="container w-100 h-100">
-                                        <div class="avatar">
-                                            <div class="avatar-icon">
-                                                <input type="file" id="file_image" style="display: none" name="avatar" />
-                                                <label for="file_image">
-                                                    <i class='bx bxs-camera avatar-icon__icon'></i>
+                        <div class="container p-0 w-75">
+                            <label>
+                                <p class="fs-3">
+                                    Form Add Sound
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-0">
+                        <form class="container p-0" th:action="@{/admin/sound/editor}" th:method="post"
+                            th:object="${sound}" enctype="multipart/form-data">
+                            <div class="p-0">
+                                <div class="container bg-white w-75 rounded border p-4">
+                                    <div class="row">
+                                        <div class="col-md-4 py-2">
+                                            <div class="container w-100 h-100">
+                                                <div class="avatar">
+                                                    <div class="avatar-icon">
+                                                        <input type="file" id="file_image" style="display: none"
+                                                            th:name="avatar" />
+                                                        <label for="file_image">
+                                                            <i class='bx bxs-camera avatar-icon__icon'></i>
+                                                        </label>
+                                                    </div>
+                                                    <div class="avatar-preview" id="avatar-preview">
+                                                        <img th:src="@{${urlImage}}" alt="image_empty" class="avatar-preview__image"
+                                                            accept="image/*" id="id_preview_avatar" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="container p-0">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2 d-flex flex-column justify-content-start">
+                                                            <label class="form-label text-start">Name Sound</label>
+                                                            <input type="text" class="form-control"
+                                                                th:field="${sound.nameSound}" id="input_name_sound">
+                                                            <p class="text-start text-danger mb-0 d-none"
+                                                                id="text_message_name_sound">name sound is allowed empty
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2 d-flex flex-column justify-content-start">
+                                                            <label class="form-label text-start">Name Singer</label>
+                                                            <input type="text" class="form-control"
+                                                                th:field="${sound.nameSinger}" id="input_name_singer">
+                                                            <p class="text-start text-danger mb-0 d-none"
+                                                                id="text_message_name_singer">name singer is allowed
+                                                                empty</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-2 d-flex flex-column justify-content-start">
+                                                            <label class="form-label text-start">Type</label>
+                                                            <select class="form-select">
+                                                                <th:block th:each="typeSound : ${typeSounds}">
+                                                                    <option th:value="${typeSound.idTypeSound}"
+                                                                        th:text="${typeSound.nameTypeSound}"></option>
+                                                                </th:block>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="mb-2 d-flex flex-column justify-content-start">
+                                                            <label class="form-label text-start">Date</label>
+                                                            <input type="date" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="container p-0 w-75">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name = "isUpdateAudio">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Do you want change Audio</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2 d-none" id = "switch_upload_file">
+                                <div class="container w-75">
+                                    <div class="row">
+                                        <div class="container p-2 bg-white rounded" style="height: 15rem">
+                                            <div class="p-0 w-100 h-100 rounded" style="border: 2px dashed black;"
+                                                id="location_upload_file_audio">
+                                                <label for="file_audio"
+                                                    class="w-100 h-100 d-flex flex-row justify-content-center align-items-center"
+                                                    id="label_upload_file_audio">
+                                                    <div class="p-0">
+                                                        <div class="p-0 text-center">
+                                                            <i class="fa-solid fa-music fs-2"></i>
+                                                        </div>
+                                                        <div class="p-0">
+                                                            <p class="text-center mb-0">Do you want change audio ? You upload a new Audio 
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
                                                 </label>
+                                                <input type="file" th:name="audio" id="file_audio" class="d-none" />
                                             </div>
-                                            <div class="avatar-preview" id="avatar-preview">
-                                                <img src="" alt="image_empty" class="avatar-preview__image" accept="image/*" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="container p-0">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mb-2 d-flex flex-column justify-content-start">
-                                                    <label class="form-label text-start">Name Sound</label>
-                                                    <input type="text" class="form-control" th:field="${sound.nameSound}">
-                                                </div>
-                                            </div>
-                                        </div>
-                
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mb-2 d-flex flex-column justify-content-start">
-                                                    <label class="form-label text-start">Name Singer</label>
-                                                    <input type="text" class="form-control" th:field="${sound.nameSinger}">
-                                                </div>
-                                            </div>
-                                        </div>
-                
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-2 d-flex flex-column justify-content-start">
-                                                    <label class="form-label text-start">Type</label>
-                                                    <select class="form-select">
-                                                        <th:block th:each="typeSound : ${typeSounds}">
-                                                            <option th:value="${typeSound.idTypeSound}"
-                                                                th:text="${typeSound.nameTypeSound}"></option>
-                                                        </th:block>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2 d-flex flex-column justify-content-start">
-                                                    <label class="form-label text-start">Date</label>
-                                                    <input type="date" class="form-control">
+                                            <div class="p-0 h-100 w-100 d-none" id="location_show_file_audio">
+                                                <div class="d-flex flex-row align-items-center"
+                                                    style="background-color: rgb(186, 186, 186);padding: 4px 8px; border-radius: 4px;">
+                                                    <div class="p-1 fs-5 fw-semibold" id="file_name_audio">hello</div>
+                                                    <div class="p-1"
+                                                        style="background-color: white; border-radius: 4px;"
+                                                        id="delete_file_audio">
+                                                        <i class='bx bx-trash fs-5 fw-bold'></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                
-                        </div>
-                    </div>
-                    <div class="py-2">
-                        <div class="container">
-                            <div class="row">
-                                <div class="container p-2 bg-white rounded" style="height: 15rem">
-                                    <div class="p-0 w-100 h-100 rounded opacity-25" style="border: 2px dashed black; ">
-                                        <label for="file_audio"
-                                            class="w-100 h-100 d-flex flex-row justify-content-center align-items-center">
-                                            <div class="p-0">
-                                                <div class="p-0 text-center">
-                                                    <i class="fa-solid fa-music fs-2"></i>
-                                                </div>
-                                                <div class="p-0">
-                                                    <p class="text-center mb-0">Drag & Drop your file audio here</p>
-                                                </div>
+                            <div class="py-2">
+                                <div class="container p-0 w-75">
+                                    <th:block th:if="${message != null}">
+                                        <div class="row">
+                                            <div class="container">
+                                                <div class="text-bg-danger p-3 rounded" th:text="${message}"></div>
                                             </div>
-                                        </label>
-                                        <input type="file" name="audio" id="file_audio" class="d-none" />
+                                        </div>
+                                    </th:block>
+                                </div>
+                                <div class="container p-0 w-75 d-none" id="text_message_file_audio">
+                                    <div class="text-bg-danger p-3 rounded">File Audio is null</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="container p-0 w-75">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="submit" class="btn btn-secondary me-md-2" name="button"
+                                            value="cancel">Cancel</button>
+                                        <button type="submit" class="btn btn-success" name="button" value="add"
+                                            id="button_update_sound">Update</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                    <div class="py-2">
-                        <div class="container p-0">
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button type="submit" class="btn btn-secondary me-md-2" name="button" value="cancel">Cancel</button>
-                                <button type="submit" class="btn btn-success" name="button" value="add">Update</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </main>
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
     <script type="text/javascript" th:src="@{/js/upload.js}"></script>
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
 </body>
 
 </html>

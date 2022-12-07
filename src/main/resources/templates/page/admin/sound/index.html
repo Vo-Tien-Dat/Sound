@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="1">
-                    <a href="album" data-active="1">
+                    <a href="/admin/album" data-active="1">
                         <div class="icon">
                             <i class='bx bx-folder'></i>
                             <i class='bx bxs-folder'></i>
@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="2">
-                    <a href="playlist" data-active="2">
+                    <a href="/admin/playlist" data-active="2">
                         <div class="icon">
                             <i class='bx bx-list-ul'></i>
                             <i class='bx bxs-list-ul'></i>
@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="3">
-                    <a href="sound" data-active="3">
+                    <a href="/admin/sound" data-active="3">
                         <div class="icon">
                             <i class='bx bx-music'></i>
                             <i class='bx bxs-music'></i>
@@ -68,7 +68,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="3">
-                    <a href="user" data-active="3">
+                    <a href="/admin/user" data-active="3">
                         <div class="icon">
                             <i class='bx bx-user'></i>
                             <i class='bx bxs-user'></i>
@@ -93,13 +93,14 @@
                 <div class="admin-profile hide">
                     <img src="./img/face-1.png" alt="">
                     <div class="admin-info">
-                        <h3>John Doe</h3>
-                        <h5>Admin</h5>
+                        <h3 th:text="${name_user}"></h3>
                     </div>
                 </div>
-                <a href="#" class="log-out">
-                    <i class='bx bx-log-out'></i>
-                </a>
+                <form th:action="@{'/logout/' + ${session_id}}" th:method="post">
+                    <button type="submit" class="logout btn btn-primary">
+                        <i class='bx bx-log-out'></i>
+                    </button>
+                </form>
             </div>
             <div class="tooltip">
                 <span class="show">John Doe</span>
@@ -110,94 +111,94 @@
 
 
     <main>
-        <div class="container-fluid">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <form class = "w-100 d-block" 
-                            th:action = "@{/admin/sound}" 
-                            th:method = "post"
-                            th:object = "${sound}"
-                            enctype="multipart/form-data"
-                            >
-                            <div class="d-flex flex-column justify-content-start">
-                                    <p class="fs-4 text-start">Form Upload Sound</p>
-                            </div>  
-                            <div class="mb-2 d-flex flex-column justify-content-start" >
-                                <label for="exampleInputEmail1" class="form-label text-start">Name sound</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field = "${sound.nameSound}">
-                            </div>
-                            <div class="mb-2 d-flex flex-column justify-content-start">
-                                <label for="exampleInputEmail1" class="form-label text-start">Name singer</label>
-                                <input type="text" class="form-control" th:field = "${sound.nameSinger}">
-                            </div>
-                            <div class="mb-2 d-flex flex-column justify-content-start">
-                                <label for="exampleInputEmail1" class="form-label text-start">Type sound</label>
-                                <select class="form-select" th:field = "${sound.typeSound}">
-                                    <th:block th:each = "typeSound : ${typeSounds}">
-                                        <option th:value = "${typeSound.idTypeSound}" th:text = "${typeSound.nameTypeSound}"></option>
-                                    </th:block>
-                                </select>
-                            </div>
-                            <div class="mb-2 d-flex flex-column justify-content-start">
-                                <label for="exampleInputEmail1" class="form-label text-start">Date</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <div class="mb-2 d-flex flex-column justify-content-start">
-                                <input type="file" id = "image_input" class="form-control" style= "height: 100%; width: 100%" >
-                                <div id = "display_image" class  ="w-100 border border-secondary rounded" style = "height: 15rem"></div>
-                            </div>
-                            <div class="mb-2 d-flex flex-column justify-content-start">
-                                <input type="file" class="form-control">
-                                <button>Upload Audio</button>
-                            </div>
-                            <div class="mb-2 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary text-end">Add</button>
-                            </div>    
-                        </form>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="container">
-                            <div class="d-flex flex-column justify-content-start">
-                                <p class="fs-4 text-start">List Sound</p>
-                            </div>
-                            <div class="container p-0">
-                                <div class="player__playlist">
-                                    <th:block th:if = "${sounds != null}">
-                                        <th:block th:each="soundCurrent: ${sounds}">
-                                            <div class="song">
-                                                <div class="thumb"
-                                                    style="background-image: url('https://1.bp.blogspot.com/-kX21dGUuTdM/X85ij1SBeEI/AAAAAAAAKK4/feboCtDKkls19cZw3glZWRdJ6J8alCm-gCNcBGAsYHQ/s16000/Tu%2BAana%2BPhir%2BSe%2BRap%2BSong%2BLyrics%2BBy%2BRaftaar.jpg')">
-                                                </div>
-                                                <div class="body">
-                                                    <th:block th:if = "${soundCurrent.nameSound != null}">
-                                                        <h3 class="title" th:text="${soundCurrent.getNameSound()}"></h3>
-                                                    </th:blocK>
-                                                    <p class="author">son tung mtp </p>
-                                                </div>
-                                                <div class="option">
-                                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                        <a href = "editor">
-                                                            <button class="btn btn-warning me-md-2 mr-2" type="button" style="font-size: 12px;">
-                                                                <i class="fa-solid fa-pen-to-square"></i>
-                                                                Editor</button>
-                                                        </a>
-                                                        
-                                                        <button class="btn btn-danger d-flex flex-row" type="button" style="font-size: 12px;">
-                                                            <i class="fa-solid fa-trash-can"></i>
-                                                            Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+       <div class="container-fluid">
+        <div class="d-flex flex-column">
+            <div class="p-2">
+                <div class="container w-75">
+                    <label>
+                        <p class="fs-1 fw-bold mb-0">
+                            List Sound
+                        </p>
+                    </label>
+                </div>
+            </div>
+            <div class="p-2">
+                <div class="container w-75">
+                    <a th:href="@{/admin/sound/add}">
+                        <button type="button" class="btn btn-primary">Add Sound</button>
+                    </a>
+                </div>
+                
+            </div>
+            <div class="p-2">
+                <div class="container  w-75">
+                    <div class="player__playlist">
+                        <th:block th:if="${sounds != null}">
+                            <th:block th:each="soundCurrent: ${sounds}">
+                                <div class="song">
+                                    <img class="thumb"
+                                        th:src="@{${soundCurrent.pathImage}}"
+                                        alt="..." />
+                                    <div class="body">
+                                        <th:block th:if="${soundCurrent.nameSound != null}">
+                                            <h3 class="title" th:text="${soundCurrent.nameSound}"></h3>
                                         </th:block>
-                                    </th:block>
+                                        <th:block th:if = "${soundCurrent.nameSound == null} ">
+                                            <p class="card-text placeholder-glow">
+                                                <span class="placeholder col-4"></span>
+                                            </p>
+                                        </th:block>
+
+                                        <th:block th:if = "${soundCurrent.nameSinger != null}">
+                                            <p class="author" th:text = ${soundCurrent.nameSinger}></p>
+                                        </th:block>
+                                        <th:block th:if = "${soundCurrent.nameSinger == null}">
+                                            <p class="card-text placeholder-glow">
+                                                <span class="placeholder col-4"></span>
+                                            </p>
+                                        </th:block>
+                                       
+                                    </div>
+                                    <div class="option">
+                                        <div class="d-flex flex-row">
+                                            <a th:href="@{'/admin/sound/editor/' + ${soundCurrent.idSound}}">
+                                                <button class="btn btn-warning me-md-2" type="button">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    Editor</button>
+                                            </a>
+                                            <form th:method="post" th:action="@{'/admin/sound/delete/' + ${soundCurrent.idSound}}">
+                                                <button class="btn btn-danger" type="submit">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                    Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if = "${sounds == null}">
+                            <div class="container text-center w-100 d-flex justify-content-center align-items-center rounded"
+                                style="background-color: white; height: 30rem;">
+                                <div class="d-inline">
+                                    <div class="d-flex flex-column">
+                                        <div class="p-2">
+                                            <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                        </div>
+                                        <div class="p-2">
+                                            <p class="fs-6 text-center opacity-25">You have not liked any stations yet</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
+            <div class="p-2">
+                <div class="container"></div>
+            </div>
         </div>
+       </div>
     </main>
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
 </body>
