@@ -11,9 +11,7 @@ public class FavoriteSoundUserReadMapper implements RowMapper<SoundDTO> {
     private SoundDAO soundDAO;
 
     public SoundDTO mapRow(ResultSet rs, int numRow) throws SQLException {
-
         String idSound = rs.getString("id_sound");
-
         SoundDTO dto = soundDAO.readSoundByIdSound(idSound);
         return dto;
     }
