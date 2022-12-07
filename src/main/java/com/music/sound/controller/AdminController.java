@@ -71,7 +71,7 @@ public class AdminController {
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/admin/album/index";
+        String fileView = "/page/admin/album/index1";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectHome = "redirect:/home";
 
@@ -141,6 +141,46 @@ public class AdminController {
             }
         } else {
 
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "album/editor", method = RequestMethod.POST)
+    public ModelAndView postAddAndEditAlbum(
+            @RequestParam(value = "album_name", required = true) String nameAlbum,
+            @RequestParam(value = "singer_name", required = true) String nameSinger, HttpSession session) {
+
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectRootAlbum = "redirect:/admin/album";
+        String urlRedirectEditorAlbum = "redirect:/admin/album/editor/";
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+                    String idAlbum = albumDAO.getIdAblbumBeforeCreateAlbum();
+                    AlbumDTO album = new AlbumDTO();
+                    album.setNameAlbum(nameAlbum);
+                    album.setNameSinger(nameSinger);
+                    albumDAO.updateAlbum2Arg(album);
+                    urlRedirectEditorAlbum = urlRedirectEditorAlbum + idAlbum;
+                    modelAndView.setViewName(urlRedirectEditorAlbum);
+                } catch (Exception ex) {
+                    modelAndView.setViewName(urlRedirectRootAlbum);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
         }
 
         return modelAndView;
@@ -482,7 +522,7 @@ public class AdminController {
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/admin/playlist/index";
+        String fileView = "/page/admin/playlist/index1";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectHome = "redirect:/home";
 

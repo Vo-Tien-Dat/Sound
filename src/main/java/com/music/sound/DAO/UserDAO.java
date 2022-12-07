@@ -59,8 +59,7 @@ public class UserDAO {
 
     public UserDTO readUserByUsername(String username) {
         UserDTO record = new UserDTO();
-        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(),
-                username);
+        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(), username);
         return record;
     }
 
