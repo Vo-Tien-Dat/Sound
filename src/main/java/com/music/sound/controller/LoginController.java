@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.music.sound.DAO.RoleDTO;
@@ -16,9 +17,9 @@ import com.music.sound.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import com.music.sound.DAO.UserDTO;
 import java.util.List;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 @Controller
 public class LoginController {
@@ -30,11 +31,16 @@ public class LoginController {
     private UserDAO userDAO;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView getLogin(HttpSession session) {
+    public ModelAndView getLogin(
+            @RequestParam(value = "message", required = false) String message,
+            @RequestParam(value = "invalid_username", required = false) String invalidUsername,
+            @RequestParam(value = "invalid_password", required = false) String invalidPassword,
+            HttpSession session) {
         String pathFile = "/page/login/index";
         String urlRedirectHome = "redirect:/home";
         String urlRedirectAdmin = "redirect:/admin/sound";
         ModelAndView modelAndView = new ModelAndView(pathFile);
+        modelAndView.addObject("message", message);
         String idSession = session.getId();
         if (session.getAttribute(idSession) == null) {
             modelAndView.addObject("userLoginDTO", new UserLoginDTO());
@@ -42,7 +48,6 @@ public class LoginController {
         } else {
             RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
             String roleUser = roleDTO.getRoleUser();
-            System.out.println(roleUser);
             switch (roleUser) {
                 case Constant.ROLE_ADMIN:
                     modelAndView.setViewName(urlRedirectAdmin);
@@ -61,6 +66,7 @@ public class LoginController {
 
         String urlRedirectRole = "redirect:/role/";
         String urlRedirectHome = "redirect:/home";
+        String urlRedirectLogin = "redirect:/login";
 
         String pathFile = "/page/login/index";
 
@@ -72,37 +78,61 @@ public class LoginController {
 
             // case: login
             case Constant.ACTION_SIGN_IN:
-                String username = userLoginDTO.getUsername();
-                String password = userLoginDTO.getPassword();
 
-                UserDTO user = userDAO.readUserByUsername(username);
-                if (user.getPassword() != null) {
-                    String passwordOld = user.getPassword();
-                    // login is successed
-                    if (password.compareTo(passwordOld) == 0) {
+                try {
+                    String username = userLoginDTO.getUsername();
+                    String password = userLoginDTO.getPassword();
 
-                        String idUser = user.getIdUser();
-                        List<RoleDTO> roles = userDAO.readAllRoleByIdUserFromUserRole(idUser);
-                        // solve: role user
-                        if (roles.size() <= 0) {
+                    // kiêm tra tài khoàn bị trống hay không
+                    if (username == "" || password == "") {
+                        throw new NullPointerException();
+                    }
 
-                            HttpSession session = request.getSession();
+                    // kiểm tra sự tồn tại của tài khoản
+                    UserDTO user = userDAO.readUserByUsername(username);
 
-                            String idSession = session.getId();
+                    // kiêm tra mật khẩu có khớp không
+                    if (user.getPassword() != null) {
+                        String passwordOld = user.getPassword();
+                        // login is successed
+                        if (password.compareTo(passwordOld) == 0) {
 
-                            RoleDTO role = new RoleDTO();
-                            role.setIdUser(idUser);
-                            role.setRoleUser(Constant.ROLE_USER);
+                            String idUser = user.getIdUser();
+                            List<RoleDTO> roles = userDAO.readAllRoleByIdUserFromUserRole(idUser);
+                            // solve: role user
+                            if (roles.size() <= 0) {
 
-                            session.setAttribute(idSession, role);
+                                HttpSession session = request.getSession();
 
-                            modelAndView.setViewName(urlRedirectHome);
-                        } else {
-                            // solve: role admin and user
-                            urlRedirectRole = urlRedirectRole + idUser;
-                            modelAndView.setViewName(urlRedirectRole);
+                                String idSession = session.getId();
+
+                                RoleDTO role = new RoleDTO();
+                                role.setIdUser(idUser);
+                                role.setRoleUser(Constant.ROLE_USER);
+
+                                session.setAttribute(idSession, role);
+
+                                modelAndView.setViewName(urlRedirectHome);
+                            } else {
+                                // solve: role admin and user
+                                urlRedirectRole = urlRedirectRole + idUser;
+                                modelAndView.setViewName(urlRedirectRole);
+                            }
                         }
                     }
+
+                } catch (NullPointerException ex) {
+                    String message = "tải khoản hiện không tồn tại";
+                    modelAndView.addObject("message", message);
+                    modelAndView.setViewName(urlRedirectLogin);
+                } catch (EmptyResultDataAccessException ex) {
+                    String message = "tải khoản hiện không tồn tại";
+                    modelAndView.addObject("message", message);
+                    modelAndView.setViewName(urlRedirectLogin);
+                } catch (Exception ex) {
+                    String message = "lỗi không xác định";
+                    modelAndView.addObject("message", message);
+                    modelAndView.setViewName(urlRedirectLogin);
                 }
 
                 break;

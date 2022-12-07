@@ -22,6 +22,9 @@ public class SoundDAO {
         private EntityManagerFactory entityManagerFactory;
 
         // sql
+
+        private final String SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "INSERT INTO favorite_sound_user VALUES (?,?)";
+
         private final String SQL_READ_ALL_SOUND = "SELECT * FROM sound";
 
         private final String SQL_READ_SOUND_BY_ID_SOUND = "SELECT * FROM sound WHERE id_sound = ?";
@@ -32,23 +35,33 @@ public class SoundDAO {
 
         private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM = "SELECT * FROM sound WHERE id_album = ?";
 
-        private final String SQL_UPDATE_SOUND = "UPDATE sound SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
-
-        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM sound WHERE id_sound = ?";
-
         private final String SQL_READ_ALL_SOUND_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "SELECT * FROM favorite_sound_user WHERE id_user = ? ";
 
         private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM sound ORDER BY RAND() LIMIT ? ";
 
-        private final String SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "INSERT INTO favorite_sound_user VALUES (?,?)";
+        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "SELECT * FROM sound WHERE id_album IS NULL";
 
-        private final String SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "DELETE FROM favorite_sound_user WHERE id_sound = ? and id_user = ? ";
+        private final String SQL_UPDATE_SOUND = "UPDATE sound SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
+
+        private final String SQL_UPDATE_SOUND_3_ARGUMENT = "UPDATE , nameSingersound SET name_sound = ?, name_singer = ? WHERE id_sound = ?";
 
         private final String SQL_UPDATE_ID_ALBUM_BY_ID_SOUND = "UPDATE sound  SET id_album = ?  where id_sound = ? ";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "SELECT * FROM sound WHERE id_album IS NULL";
+        private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "UPDATE sound SET id_album = null WHERE id_album = ?";
 
-        private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "UPDATE sound SET id_album = null BY id_album = ?";
+        private final String SQL_UPDATE_PATH_IMAGE_BY_ID_SOUND = "UPDATE sound set path_image = ? where id_sound = ? ";
+
+        private final String SQL_UPDATE_PATH_AUDIO_BY_ID_SOUND = "UPDATE sound set path_audio = ? where id_sound = ? ";
+
+        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM sound WHERE id_sound = ?";
+
+        private final String SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "DELETE FROM favorite_sound_user WHERE id_sound = ? and id_user = ? ";
+
+        public void createFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
+                jdbcTemplate.update(
+                                SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER,
+                                new Object[] { idSound, idUser });
+        }
 
         public List<Sound> findAllSound() {
 
@@ -88,17 +101,6 @@ public class SoundDAO {
                         records.add(record);
                 }
                 return records;
-        }
-
-        public void createFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
-                jdbcTemplate.update(
-                                SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER,
-                                new Object[] { idSound, idUser });
-        }
-
-        public void deleteFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
-                jdbcTemplate.update(SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER,
-                                new Object[] { idSound, idUser });
         }
 
         public SoundDTO readSoundByIdSound(String idSound) {
@@ -159,10 +161,8 @@ public class SoundDAO {
                 entityTransaction.begin();
                 try {
                         entityManager.persist(sound);
-                        System.out.println(sound.getId().toString());
                         entityTransaction.commit();
                 } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
                         entityTransaction.rollback();
                 } finally {
                         entityManager.close();
@@ -218,18 +218,44 @@ public class SoundDAO {
 
                 try {
                         jdbcTemplate.update(SQL_UPDATE_SOUND, nameSound, idTypeSound, idSound);
-                        System.out.println("update success");
                 } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                 }
+        }
+
+        public void updateSoundByIdSound(SoundDTO sound) {
+                String idSound = sound.getIdSound();
+                String nameSound = sound.getNameSound();
+                String nameSinger = sound.getNameSinger();
+
+                try {
+                        jdbcTemplate.update(SQL_UPDATE_SOUND_3_ARGUMENT, nameSound, nameSinger, idSound);
+                } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                }
+        }
+
+        public void updateIdAlbumByIdSound(String idAlbum, String idSound) {
+                jdbcTemplate.update(SQL_UPDATE_ID_ALBUM_BY_ID_SOUND, idAlbum, idSound);
+        }
+
+        // cập nhật lại đường dẫn bài ảnh đại diện của bài hát
+        public void updatePathImageByIdSound(String idSound, String pathImage) {
+                jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_SOUND, pathImage, idSound);
+        }
+
+        // cập nhật lại đường dẫn của link audio
+        public void updatePathAudioByIdSound(String idSound, String pathAudio) {
+                jdbcTemplate.update(SQL_UPDATE_PATH_AUDIO_BY_ID_SOUND, pathAudio, idSound);
         }
 
         public void deleteSoundByIdSound(String idSound) throws Exception {
                 jdbcTemplate.update(SQL_DELETE_SOUND_BY_ID_SOUND, idSound);
         }
 
-        public void updateIdAlbumByIdSound(String idAlbum, String idSound) {
-                jdbcTemplate.update(SQL_UPDATE_ID_ALBUM_BY_ID_SOUND, idAlbum, idSound);
+        public void deleteFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
+                jdbcTemplate.update(SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER,
+                                new Object[] { idSound, idUser });
         }
 
 }

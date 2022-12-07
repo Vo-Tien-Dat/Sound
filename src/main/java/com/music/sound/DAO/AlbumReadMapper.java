@@ -14,12 +14,14 @@ public class AlbumReadMapper implements RowMapper<AlbumDTO> {
         Long numberSound = rs.getLong("number_sound");
         Long numberViewer = rs.getLong("number_viewer");
         String nameSinger = rs.getString("name_singer");
+        String pathImage = rs.getString("path_image");
 
         dto.setIdAlbum(idAlbum);
         dto.setNameAlbum(nameAlbum);
         dto.setNumberSound(numberSound);
         dto.setNumberViewer(numberViewer);
         dto.setNameSinger(nameSinger);
+        dto.setPathImage(pathImage);
 
         return dto;
     }

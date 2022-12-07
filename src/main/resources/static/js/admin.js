@@ -59,18 +59,3 @@ function showTooltip() {
 tooltip_elements.forEach((elem) => {
   elem.addEventListener("mouseover", showTooltip);
 });
-
-// xử lí upload file
-const input_image = document.querySelector("#file_image");
-let uploaded_image = "";
-
-input_image.addEventListener("change", function () {
-  const reader = new FileReader();
-  reader.addEventListener("load", function () {
-    uploaded_image = reader.result;
-    document.querySelector(
-      "#display_image"
-    ).style.backgroundImage = `url(${uploaded_image})`;
-  });
-  reader.readAsDataURL(this.files[0]);
-});
