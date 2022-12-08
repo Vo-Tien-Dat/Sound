@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,11 +27,9 @@ import com.music.sound.DAO.UserDAO;
 import com.music.sound.DAO.UserDTO;
 import com.music.sound.config.Constant;
 import com.music.sound.model.Sound;
-import com.music.sound.model.TypeSound;
 import com.music.sound.model.User;
 import com.music.sound.service.DeleteFile;
 import com.music.sound.service.SaveFileUpload;
-import org.springframework.dao.DuplicateKeyException;
 
 @Controller
 @RequestMapping(value = "/admin/")
@@ -86,6 +82,16 @@ public class AdminController {
                     albums = albumDAO.readAllAlbum();
                     if (albums.size() == 0) {
                         albums = null;
+                    } else {
+                        for (AlbumDTO album : albums) {
+                            String pathImage = album.getPathImage();
+                            String defaultPathImage = "/assets/img/default/sound_default.png";
+                            String newUrlPathImage = defaultPathImage;
+                            if (pathImage != null) {
+                                newUrlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                            }
+                            album.setPathImage(newUrlPathImage);
+                        }
                     }
 
                     UserDTO user = userDAO.readUserByIdUser(idUser);
@@ -146,10 +152,13 @@ public class AdminController {
         return modelAndView;
     }
 
+    // xử lí việc thêm album
+    // xử lí việc lưu tên bài hát và ca sĩ vào cơ sở dữ liệu và lấy ra được image
     @RequestMapping(value = "album/editor", method = RequestMethod.POST)
-    public ModelAndView postAddAndEditAlbum(
+    public ModelAndView postAddAlbum(
             @RequestParam(value = "album_name", required = true) String nameAlbum,
-            @RequestParam(value = "singer_name", required = true) String nameSinger, HttpSession session) {
+            @RequestParam(value = "singer_name", required = true) String nameSinger,
+            HttpSession session) {
 
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
@@ -166,11 +175,16 @@ public class AdminController {
             if (isRoleAdmin) {
                 try {
                     String idAlbum = albumDAO.getIdAblbumBeforeCreateAlbum();
+
+                    // lưu thay đổi tên album vs tên ca sĩ vào cở sở dữ liệu
                     AlbumDTO album = new AlbumDTO();
+                    album.setIdAlbum(idAlbum);
                     album.setNameAlbum(nameAlbum);
                     album.setNameSinger(nameSinger);
                     albumDAO.updateAlbum2Arg(album);
+
                     urlRedirectEditorAlbum = urlRedirectEditorAlbum + idAlbum;
+
                     modelAndView.setViewName(urlRedirectEditorAlbum);
                 } catch (Exception ex) {
                     modelAndView.setViewName(urlRedirectRootAlbum);
@@ -186,7 +200,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = { "album/add/{id}", "album/editor/{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = "album/editor/{id}", method = RequestMethod.GET)
     public ModelAndView getAddAlbum(@PathVariable(value = "id") String idAlbum, HttpSession session) {
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
@@ -208,21 +222,42 @@ public class AdminController {
                     List<SoundDTO> soundAddedAlbums = new ArrayList<>();
                     List<SoundDTO> sounds = new ArrayList<>();
 
+                    // hiển thị người dùng ở sidebar
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
 
+                    // hiển thị thông tin của album
                     album = albumDAO.readAlbumByIdAlbum(idAlbum);
                     modelAndView.addObject("album", album);
 
+                    // những bài hat được thêm vào album
                     soundAddedAlbums = soundDAO.readAllSoundByIdAlbum(idAlbum);
+                    for (SoundDTO sound : soundAddedAlbums) {
+                        String pathImage = sound.getPathImage();
+                        String newUrlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        if (pathImage != null) {
+                            newUrlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        sound.setPathImage(newUrlPathImage);
+                    }
                     modelAndView.addObject("soundAddedAlbums", soundAddedAlbums);
 
+                    // hiển thị tất các bài hát chưa thuộc album nào
                     sounds = soundDAO.readAllSoundByIdAlbumIsNull();
+                    for (SoundDTO sound : sounds) {
+                        String pathImage = sound.getPathImage();
+                        String newUrlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        if (pathImage != null) {
+                            newUrlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        sound.setPathImage(newUrlPathImage);
+                    }
                     modelAndView.addObject("sounds", sounds);
 
+                    // hiển thị ảnh đại diện của album
                     String pathImage = album.getPathImage();
                     String urlAvatarImage = null;
                     if (pathImage != null) {
@@ -245,13 +280,116 @@ public class AdminController {
 
     }
 
-    @RequestMapping(value = "album/add/", method = RequestMethod.POST, params = "add_sound")
+    // xử lí cập nhật thông tin album
+    @RequestMapping(value = "album/update/infor", method = RequestMethod.POST)
+    public ModelAndView postUpdateInforAlbum(
+            @RequestParam(value = "id_album", required = true) String idAlbum,
+            @RequestParam(value = "album_name", required = true) String nameAlbum,
+            @RequestParam(value = "singer_name", required = true) String nameSinger,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectAlbumEditor = "redirect:/admin/album/editor/";
+
+        ModelAndView modelAndView = new ModelAndView();
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+                    AlbumDTO album = new AlbumDTO();
+                    album.setIdAlbum(idAlbum);
+                    album.setNameAlbum(nameAlbum);
+                    album.setNameSinger(nameSinger);
+                    albumDAO.updateAlbum2Arg(album);
+
+                    // chuyển hướng về trang editor
+                    urlRedirectAlbumEditor = urlRedirectAlbumEditor + idAlbum;
+                    modelAndView.setViewName(urlRedirectAlbumEditor);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+        return modelAndView;
+    }
+
+    // xử lí việc upload ảnh đại diện
+    @RequestMapping(value = "album/update/image", method = RequestMethod.POST)
+    public ModelAndView postUploadImageAlbum(
+            @RequestParam("id_album") String idAlbum,
+            @RequestParam("avatar") MultipartFile fileImage,
+            HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectHome = "redirect:/home";
+        String urlRedirectAlbumEditor = "redirect:/admin/album/editor/";
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (loginSuccess) {
+            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
+            if (isRoleAdmin) {
+                try {
+
+                    AlbumDTO oldAlbum = albumDAO.readAlbumByIdAlbum(idAlbum);
+                    AlbumDTO album = new AlbumDTO();
+                    album.setIdAlbum(idAlbum);
+
+                    Long fileSize = fileImage.getSize();
+                    String oldPathImage = oldAlbum.getPathImage();
+
+                    // lưu file ảnh vào
+                    if (fileSize != 0) {
+                        String prefixFileName = idAlbum;
+                        saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, fileImage,
+                                prefixFileName);
+                        saveFileUpload.setFullFileName();
+                        String fullFileName = saveFileUpload.getFullFileName();
+                        album.setPathImage(fullFileName);
+                        saveFileUpload.commit();
+                    }
+
+                    if (oldPathImage != null) {
+                        album.setPathImage(oldPathImage);
+                    }
+
+                    albumDAO.updateImageAlbumByIdAlbum(album);
+
+                    // chuyển hướng về trang editor
+                    urlRedirectAlbumEditor = urlRedirectAlbumEditor + idAlbum;
+                    modelAndView.setViewName(urlRedirectAlbumEditor);
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectHome);
+            }
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "album/update/add/sound", method = RequestMethod.POST)
     public ModelAndView postAddSoundIntoAlbum(
-            @RequestParam(value = "avatar") MultipartFile fileImage,
-            @RequestParam(value = "id_album", required = false) String idAlbum,
-            @RequestParam(value = "name_album", required = false) String nameAlbum,
-            @RequestParam(value = "name_singer", required = false) String nameSinger,
-            @RequestParam(value = "add_sound", required = false) String idSound,
+            @RequestParam(value = "id_album", required = true) String idAlbum,
+            @RequestParam(value = "id_sound", required = true) String idSound,
             HttpSession session) {
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
@@ -259,52 +397,21 @@ public class AdminController {
 
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectHome = "redirect:/home";
-        String urlRedirectAddAlbum = "redirect:/admin/album/add/";
-        String urlRedirectRootAlbum = "redirect:/admin/album";
+        String urlRedirectEditorAlbum = "redirect:/admin/album/editor/";
 
         ModelAndView modelAndView = new ModelAndView();
-
         if (loginSuccess) {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
             if (isRoleAdmin) {
-
                 try {
-                    AlbumDTO oldAlbum = albumDAO.readAlbumByIdAlbum(idAlbum);
-                    AlbumDTO album = new AlbumDTO();
-                    album.setIdAlbum(idAlbum);
-                    album.setNameAlbum(nameAlbum);
-                    album.setNameSinger(nameSinger);
-
-                    Long fileSize = fileImage.getSize();
-                    String oldPathImage = oldAlbum.getPathImage();
-                    // lưu file ảnh vào
-
-                    if (fileSize != 0) {
-                        String prefixFileName = idAlbum;
-                        saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, fileImage, prefixFileName);
-                        saveFileUpload.setFullFileName();
-                        String fullFileName = saveFileUpload.getFullFileName();
-                        album.setPathImage(fullFileName);
-                        saveFileUpload.commit();
-                    }
-
-                    if (oldPathImage != null) {
-                        album.setPathImage(oldPathImage);
-                    }
-
-                    // cập nhật thông tin album
-                    albumDAO.updateAlbum(album);
-
-                    // cập nhật bài hát thuộc của album nay
                     soundDAO.updateIdAlbumByIdSound(idAlbum, idSound);
-                    urlRedirectAddAlbum = urlRedirectAddAlbum + idAlbum;
-                    modelAndView.setViewName(urlRedirectAddAlbum);
+                    urlRedirectEditorAlbum = urlRedirectEditorAlbum + idAlbum;
+                    modelAndView.setViewName(urlRedirectEditorAlbum);
+
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
-                    modelAndView.setViewName(urlRedirectRootAlbum);
                 }
-
             } else {
                 modelAndView.setViewName(urlRedirectHome);
             }
@@ -315,161 +422,31 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "album/add/", method = RequestMethod.POST, params = "delete_sound")
-    public ModelAndView postDeleteSoundFromAlbum(
-            @RequestParam(value = "avatar") MultipartFile fileImage,
-            @RequestParam(value = "id_album", required = false) String idAlbum,
-            @RequestParam(value = "name_album", required = false) String nameAlbum,
-            @RequestParam(value = "name_singer", required = false) String nameSinger,
-            @RequestParam(value = "delete_sound", required = false) String idSound,
+    @RequestMapping(value = "album/update/delete/sound", method = RequestMethod.POST)
+    public ModelAndView postDeleteSoundIntoAlbum(
+            @RequestParam(value = "id_album", required = true) String idAlbum,
+            @RequestParam(value = "id_sound", required = true) String idSound,
             HttpSession session) {
-
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
-        ModelAndView modelAndView = new ModelAndView();
 
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectHome = "redirect:/home";
-        String urlRedirectAddAlbum = "redirect:/admin/album/add/";
+        String urlRedirectEditorAlbum = "redirect:/admin/album/editor/";
 
+        ModelAndView modelAndView = new ModelAndView();
         if (loginSuccess) {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
             if (isRoleAdmin) {
                 try {
-                    AlbumDTO oldAlbum = albumDAO.readAlbumByIdAlbum(idAlbum);
-                    AlbumDTO album = new AlbumDTO();
-                    album.setIdAlbum(idAlbum);
-                    album.setNameAlbum(nameAlbum);
-                    album.setNameSinger(nameSinger);
-
-                    Long fileSize = fileImage.getSize();
-                    String oldPathImage = oldAlbum.getPathImage();
-
-                    // lưu file ảnh vào
-                    if (fileSize != 0) {
-                        String prefixFileName = idAlbum;
-                        saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, fileImage, prefixFileName);
-                        saveFileUpload.setFullFileName();
-                        String fullFileName = saveFileUpload.getFullFileName();
-                        album.setPathImage(fullFileName);
-                        saveFileUpload.commit();
-                    }
-
-                    if (oldPathImage != null) {
-                        album.setPathImage(oldPathImage);
-                    }
-
-                    albumDAO.updateAlbum(album);
                     soundDAO.updateIdAlbumByIdSound(null, idSound);
-
-                    urlRedirectAddAlbum = urlRedirectAddAlbum + idAlbum;
-                    modelAndView.setViewName(urlRedirectAddAlbum);
-                } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
-                }
-
-            } else {
-                modelAndView.setViewName(urlRedirectHome);
-            }
-        } else {
-            modelAndView.setViewName(urlRedirectLogin);
-        }
-
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "album/add", method = RequestMethod.POST, params = "add_album")
-    public ModelAndView postAddAlbum(
-            @RequestParam(value = "avatar") MultipartFile fileImage,
-            @RequestParam(value = "id_album", required = false) String idAlbum,
-            @RequestParam(value = "name_album", required = false) String nameAlbum,
-            @RequestParam(value = "name_singer", required = false) String nameSinger,
-            @RequestParam(value = "add_sound", required = false) String idSound,
-            HttpSession session) {
-        String idSession = session.getId();
-        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
-        Boolean loginSuccess = roleDTO != null ? true : false;
-
-        String urlRedirectLogin = "redirect:/login";
-        String urlRedirectHome = "redirect:/home";
-        String urlRedirectRootAlbum = "redirect:/admin/album";
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        if (loginSuccess) {
-            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
-            if (isRoleAdmin) {
-                try {
-                    AlbumDTO oldAlbum = albumDAO.readAlbumByIdAlbum(idAlbum);
-                    AlbumDTO album = new AlbumDTO();
-                    album.setIdAlbum(idAlbum);
-                    album.setNameAlbum(nameAlbum);
-                    album.setNameSinger(nameSinger);
-                    albumDAO.updateAlbum(album);
-
-                    Long fileSize = fileImage.getSize();
-                    String oldPathImage = oldAlbum.getPathImage();
-
-                    // lưu file ảnh vào
-                    if (fileSize != 0) {
-                        String prefixFileName = idAlbum;
-                        saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, fileImage, prefixFileName);
-                        saveFileUpload.setFullFileName();
-                        String fullFileName = saveFileUpload.getFullFileName();
-                        album.setPathImage(fullFileName);
-                        saveFileUpload.commit();
-                    }
-
-                    if (oldPathImage != null) {
-                        album.setPathImage(oldPathImage);
-                    }
-
-                    albumDAO.updateAlbum(album);
-
-                    modelAndView.setViewName(urlRedirectRootAlbum);
+                    urlRedirectEditorAlbum = urlRedirectEditorAlbum + idAlbum;
+                    modelAndView.setViewName(urlRedirectEditorAlbum);
 
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
-                    modelAndView.setViewName(urlRedirectRootAlbum);
-                }
-            } else {
-                modelAndView.setViewName(urlRedirectHome);
-            }
-        } else {
-            modelAndView.setViewName(urlRedirectLogin);
-        }
-
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "album/add", method = RequestMethod.POST, params = "cancel_album")
-    public ModelAndView postCancelAlbum(@RequestParam(value = "id_album", required = false) String idAlbum,
-            HttpSession session) {
-        String idSession = session.getId();
-        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
-        Boolean loginSuccess = roleDTO != null ? true : false;
-
-        String urlRedirectLogin = "redirect:/login";
-        String urlRedirectHome = "redirect:/home";
-        String urlRedirectRootAlbum = "redirect:/admin/album";
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        if (loginSuccess) {
-            Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
-            if (isRoleAdmin) {
-                try {
-                    soundDAO.updateIdAlbumIsNullByIdAlbumFromSound(idAlbum);
-                    albumDAO.deleteAlbumByIdAlbum(idAlbum);
-
-                    modelAndView.setViewName(urlRedirectRootAlbum);
-                } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
-                    modelAndView.setViewName(urlRedirectRootAlbum);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectHome);
@@ -512,6 +489,8 @@ public class AdminController {
 
         return modelAndView;
     }
+
+    // kết thúc phần xử lí album
 
     /*------------------------------------------------------- SOLVE: CRUD PLAYLIST --------------------------------------------- */
 

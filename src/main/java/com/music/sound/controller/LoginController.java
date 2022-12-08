@@ -30,6 +30,14 @@ public class LoginController {
     @Autowired
     private UserDAO userDAO;
 
+    @RequestMapping(value = "/login/**", method = RequestMethod.GET)
+    public ModelAndView getIndexRootLogin() {
+
+        String urlRedirectRootLogin = "redirect:/login";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectRootLogin);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView getLogin(
             @RequestParam(value = "message", required = false) String message,

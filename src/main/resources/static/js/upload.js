@@ -116,3 +116,16 @@ avatarFile.addEventListener("change", function () {
 //     }
 //   });
 // }
+
+// xử lí sự kiện submit sau khi upload ảnh
+
+const formUpdateImage = document.getElementById("form_update_image");
+
+if (formUpdateImage != null) {
+  avatarFile.addEventListener("change", function () {
+    const filesLength = this.files.length;
+    if (filesLength != 0) {
+      formUpdateImage.submit();
+    }
+  });
+}

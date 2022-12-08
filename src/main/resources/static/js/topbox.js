@@ -20,11 +20,7 @@ const buttonTopBoxCloseAlbum = document.getElementById(
   "button_top_box__close_album"
 );
 
-// nhận sử kiện hiển thị TOP_BOX
-showTopBox.addEventListener("click", function () {
-  backgroundTopBox.classList.remove("d-none");
-  formTopBoxAlbum.classList.remove("d-none");
-});
+// THÊM MỘT ALBUM
 
 // nhận sự kiện đóng TOP_BOX
 buttonTopBoxCloseAlbum.addEventListener("click", function (e) {
@@ -55,17 +51,25 @@ for (let i = 0; i < sizeListInputTopBox; ++i) {
   });
 }
 
+// nhận sử kiện hiển thị TOP_BOX
+showTopBox.addEventListener("click", function () {
+  console.log("oke");
+  backgroundTopBox.classList.remove("d-none");
+  formTopBoxAlbum.classList.remove("d-none");
+  let isActiveButton = ActiveButtonTopBoxCreateAlbum();
+  buttonTopBoxCreateAlbum.disabled = !isActiveButton;
+});
+
 // nhận sự kiện thêm mới TOP_BOX và kiểm tra các ô input ở trong TOP_BOX
 buttonTopBoxCreateAlbum.addEventListener("click", function () {
   formTopBoxAlbum.submit();
 });
 
 // THÊM MỘT PLAYLIST
-
 const buttonTopBoxCreatePlaylist = document.getElementById(
   "button_top_box__create_playlist"
 );
 
-buttonTopBoxCreatePlaylist.addEventListener("click", function(){
-  
-})
+// if (buttonTopBoxCreateAlbum !== null) {
+//   buttonTopBoxCreatePlaylist.addEventListener("click", function () {});
+// }

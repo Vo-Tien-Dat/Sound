@@ -36,6 +36,8 @@ public class AlbumDAO {
 
     private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM_2_ARGUMENT = "UPDATE album set name_album = ?, name_singer = ? WHERE id_album = ?";
 
+    private final String SQL_UPDATE_IMAGE_ALBUM_BY_ID_ALBUM = "UPDATE album set path_image = ? WHERE id_album = ? ";
+
     private final String SQL_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM album LIMIT  ? ";
 
     private final String SQL_DELETE_ALBUM_BY_ID_ALBUM = "DELETE FROM album WHERE id_album = ? ";
@@ -172,6 +174,14 @@ public class AlbumDAO {
         String nameAlbum = album.getNameAlbum();
         String nameSinger = album.getNameSinger();
         jdbcTemplate.update(SQL_UPDATE_ALBUM_BY_ID_ALBUM_2_ARGUMENT, nameAlbum, nameSinger, idAlbum);
+    }
+
+    public void updateImageAlbumByIdAlbum(AlbumDTO album) {
+        String idAlbum = album.getIdAlbum();
+        String pathImage = album.getPathImage();
+
+        jdbcTemplate.update(SQL_UPDATE_IMAGE_ALBUM_BY_ID_ALBUM, pathImage, idAlbum);
+
     }
 
     public void deleteAlbumByNameAlbumIsNullAndNameSingerIsNull() {
