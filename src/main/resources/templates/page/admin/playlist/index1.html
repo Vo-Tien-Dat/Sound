@@ -17,17 +17,17 @@
     <div class="container-fluid position-absolute w-100 h-100 d-flex flex-row justify-content-center d-none"
         style="z-index: 100; background-color: rgba(192,192,192,0.6);" id="background_top_box">
         <div class="d-inline align-self-center">
-            <form th:action="@{/admin/album/editor}"
+            <form th:action="@{/admin/playlist/editor}"
                 class="d-flex d-flex flex-column justify-content-center rounded gap-2 px-5 py-4 position-relative"
-                style="background-color: purple;" id="form_top_box_playlist" th:method="post">
+                style="background-color: purple;" id="form_top_box_album" th:method="post">
                 <i class="fa-solid fa-x position-absolute button_top_box_close" id="button_top_box__close_album"
                     style="left: 90%;top: 10%; color: white; "></i>
                 <p class="text-center fw-bold mb-0" style="color: white; ">THÊM MỘT PLAYLIST MỚI</p>
                 <div class="col-md-4 w-100">
-                    <input type="text" class="form-control input_top_box" placeholder="tên album" style="font-size: 16px;"
-                        id="input_top_box__album_name" th:name="album_name">
+                    <input type="text" class="form-control input_top_box" placeholder="tên playlist" style="font-size: 16px;"
+                        id="input_top_box__album_name" th:name="playlist_name">
                 </div>
-                <button type="button" class="btn btn-info" id="button_top_box__create_playlist">
+                <button type="button" class="btn btn-info" id="button_top_box__create_album">
                     <p class="text-center fw-semibold mb-0" style="font-size: 16px;color: white;">TẠO MỚI</p>
                 </button>
             </form>
@@ -147,7 +147,7 @@
                                     <th:block th:each="playlist : ${playlists}">
                                         <div class="col-3 p-2 mb-2">
                                             <div class="card w-100 p-0" style="width: 18rem;">
-                                                <img th:src="@{'/assets/img/data/' + ${playlist.pathImage}}"
+                                                <img th:src="@{${playlist.pathImage}}"
                                                     class="card-img-top rounded" alt="...">
                                                 <div class="card-body">
                                                     <div class="row">

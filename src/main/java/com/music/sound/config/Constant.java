@@ -20,6 +20,10 @@ public interface Constant {
 
     public final String URL_STATIC_ADD_PLAYLIST = "playlist\\";
 
+    public final String DEFAULT_SOUND_IMAGE = "/assets/img/default/sound_default.png";
+
+    public final String DEFAULT_USER_IMAGE = "/assets/img/default/user_default.png";
+
     public final String ACTION_SIGN_IN = "sign-in";
 
     public final String ACTION_SIGN_UP = "sign-up";

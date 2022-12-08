@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.music.sound.DAO.RoleDTO;
 import com.music.sound.DAO.UserDAO;
 import com.music.sound.DTO.UserDTO.UserLoginDTO;
@@ -29,6 +28,14 @@ public class LoginController {
 
     @Autowired
     private UserDAO userDAO;
+
+    @RequestMapping(value = "/login/**", method = RequestMethod.GET)
+    public ModelAndView getIndexRootLogin() {
+
+        String urlRedirectRootLogin = "redirect:/login";
+        ModelAndView modelAndView = new ModelAndView(urlRedirectRootLogin);
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView getLogin(

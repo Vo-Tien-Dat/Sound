@@ -357,12 +357,12 @@ public class HomeController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/playlist", method = RequestMethod.GET)
-    public ModelAndView getPlaylist() {
-        String fileView = "/page/playlist/index1";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        return modelAndView;
-    }
+    // @RequestMapping(value = "/playlist", method = RequestMethod.GET)
+    // public ModelAndView getPlaylist() {
+    // String fileView = "/page/playlist/index1";
+    // ModelAndView modelAndView = new ModelAndView(fileView);
+    // return modelAndView;
+    // }
 
     // feature: show item playlist
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)
