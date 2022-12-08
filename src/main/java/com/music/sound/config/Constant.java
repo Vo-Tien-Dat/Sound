@@ -12,6 +12,12 @@ public interface Constant {
 
     public final String URL_STATIC_AUDIO = "/assets/audio/data/";
 
+    public final String DEFAULT_SOUND_IMAGE = "/assets/img/default/sound_default.png";
+
+    public final String DEFAULT_USER_IMAGE = "/assets/img/default/user_default.png";
+
+    // public final String URL_STATIC_AUDIO = "\\audio\\";
+
     public final String URL_STATIC_ADD_PLAYLIST = "playlist\\";
 
     public final String DEFAULT_SOUND_IMAGE = "/assets/img/default/sound_default.png";
@@ -26,7 +32,7 @@ public interface Constant {
 
     public final int LIMIT_PLAYLIST_HOME = 8;
 
-    public final int LIMIT_SOUND_HOME = 8;
+    public final int LIMIT_SOUND_HOME = 10;
 
     public final String ROLE_ADMIN = "ROLE_ADMIN";
 

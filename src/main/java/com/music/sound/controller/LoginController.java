@@ -72,7 +72,6 @@ public class LoginController {
             @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO, HttpServletRequest request) {
 
         String urlRedirectRole = "redirect:/role/";
-
         String urlRedirectHome = "redirect:/home";
         String urlRedirectLogin = "redirect:/login";
 
