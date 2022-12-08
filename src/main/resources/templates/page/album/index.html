@@ -5,139 +5,160 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Menu</title>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/b36a60f224.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <title>Sound App</title>
 </head>
 
 <body>
-    <nav>
-        <div class="sidebar-top">
-            <span class="shrink-btn">
-                <i class='bx bx-chevron-left'></i>
-            </span>
-            <img src="./img/logo.png" class="logo" alt="">
-            <h3 class="hide">Aqumex</h3>
-        </div>
-
-        <div class="search">
-            <i class='bx bx-search'></i>
-            <input type="text" class="hide" placeholder="Quick Search ...">
-        </div>
-
-        <div class="sidebar-links">
-            <ul>
-                <!-- <div class="active-tab"></div> -->
-                <li class="tooltip-element" data-tooltip="0">
-                    <a href="/" class="active" data-active="0">
-                        <div class="icon">
-                            <i class='bx bx-home'></i>
-                            <i class='bx bxs-home'></i>
-                        </div>
-                        <span class="link hide">Home</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="1">
-                    <a href="/favorite" data-active="1">
-                        <div class="icon">
-                            <i class='bx bx-heart'></i>
-                            <i class='bx bxs-heart'></i>
-                        </div>
-                        <span class="link hide">Favorite</span>
-                    </a>
-                </li>
-                <div class="tooltip">
-                    <span class="show">Dashboard</span>
-                    <span>Projects</span>
-                    <span>Messages</span>
-                    <span>Analytics</span>
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="menu_side col-md-2">
+                <h1><strong>SOUND</strong></h1>
+                <div class="playlist">
+                    <h4 class="active"><span></span><i class="bi bi-music-note-beamed"></i> SOUND</h4>
+                    <h4 ><span></span><i class="bi bi-music-note-beamed"></i> Last Listening</h4>
+                    <h4 ><span></span><i class="bi bi-music-note-beamed"></i> Recommended</h4>
                 </div>
-            </ul>
-        </div>
-
-        <div class="sidebar-footer">
-            <a href="#" class="account tooltip-element" data-tooltip="0">
-                <i class='bx bx-user'></i>
-            </a>
-            <div class="admin-user tooltip-element" data-tooltip="1">
-                <div class="admin-profile hide">
-                    <img src="./img/face-1.png" alt="">
-                    <div class="admin-info">
-                        <h3>John Doe</h3>
-                        <h5>Admin</h5>
-                    </div>
-                </div>
-                <a href="#" class="log-out">
-                    <i class='bx bx-log-out'></i>
-                </a>
-            </div>
-            <div class="tooltip">
-                <span class="show">John Doe</span>
-                <span>Logout</span>
-            </div>
-        </div>
-    </nav>
-
-
-    <main>
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row">
-                    <div class="col-4" >
-                        <div class="container p-0 rounded overflow-hidden">
-                            <div class="d-flex flex-column gap-2">
-                                <div class="p-0">
-                                    <img th:src="@{/assets/img/test.jfif}" class="w-100 rounded">
-                                </div>
-                                <div class="p-0 ">
-                                    <p class="text-center mb-1 fs-5 fw-semibold" th:text = "${album.nameAlbum}"></p>
-                                    <p class="text-center opacity-50" style="font-size: 14px;" th:text="${album.nameSinger}"></p>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="container bg-white rounded" style = "height: 40rem">
-                            <th:block th:if = "${sounds != null}">
-                                <div class="d-flex flex-column gap-2">
-                                    <th:block th:each="sound : ${sounds}">
-                                        <div class="container bg-white border rounded px-4 py-2">
-                                            <div class="d-flex flex-row justify-content-between align-item-center">
-                                                <div class="p-0">
-                                                    <div class="d-flex flex-row align-item-center gap-2">
-                                                        <div class="p-0 align-self-center h-100">
-                                                            <img src="./img/test.jfif" class="img-thumbnail p-0" alt="..."
-                                                                style="height: 3rem; width: 3rem;">
-                                                        </div>
-                                                        <div class="p-0 align-self-center">
-                                                            <p class="text-start mb-0 fw-semibold" th:text="${sound.nameSound}"></p>
-                                                            <p class="text-start mb-0" th:text="${sound.nameSinger}"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-inline p-0 align-self-center">
-                                                    <form>
-                                                        <button type="submit" class="btn btn-success" name="button">Add</button>
-                                                    </form>
-                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </th:block>
-                                </div>
-                            </th:block>
-                        </div>
-                    </div>
+                <div class="menu_song">
+                <th:block th:if = "${sounds != null}">
+                    <th:block th:each = "sound : ${sounds}">
+                    <li class="songItem">
+                        <span>01</span>
+                        <img th:src="@{/assets/img/${sound.nameSound}}" alt="Alan">
+                        <h5 th:text = "${sound.nameSound}">
+                            <div class="subtitle" ><p th:text = "${sound.nameSinger}"></p></div>
+                            <p th:text = "${sound.nameSinger}"></p>
+                        </h5>
+                            <i class="bi playListPlay bi-play-circle-fill" id="1"></i>
+                    </li>
+                </th:block>
+                </th:block>
                 </div>
             </div>
-        </div>
         
-    </main>
-    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+            <div class="song_side col-md-10">
+                <nav>
+                    <ul>
+                        <li><i class="bi bi-music-note-list"></i> SOUND <span></span></li>
+                        <li><i class="bi bi-journal-album"></i> ALBUM</li>
+                        <li><i class="bi bi-card-checklist"></i> PLAYLIST</li>
+                    </ul>
+                    <div class="search">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search Music...">
+                    </div>
+                    <div class="user">
+                        <img src="./assets/img/KDS CODER.png" alt="User" title="KDS CODER (Jahid Khan)">
+                    </div>
+                </nav>
+
+                <!-- list Type Sound -->
+                <div class="popular-song-container">
+                    <div class="popular_song">
+                        <div class="h4">
+                            <h4>ALBUMS</h4>
+                            <div class="btn_s">
+                                <i id="left_scroll" class="bi bi-arrow-left-short"></i>
+                                <i id="right_scroll" class="bi bi-arrow-right-short"></i>
+                            </div>
+                        </div>
+                        <div class="pop_song">
+                            <li class="songItem">
+                                <div class="img_play">
+                                    <img src="./assets/img/1.jpg" alt="alan">
+                                    <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                </div>
+                                <h5>On My Way
+                                    <br>
+                                    <div class="subtitle">Alan Walker</div>
+                                </h5>
+                            </li>
+                            <li class="songItem">
+                                <div class="img_play">
+                                    <img src="./assets/img/1.jpg" alt="alan">
+                                    <i class="bi playListPlay bi-play-circle-fill" id="8"></i>
+                                    <!-- change All id  -->
+                                </div>
+                                <h5>On My Way
+                                    <br>
+                                    <div class="subtitle">Alan Walker</div>
+                                </h5>
+                            </li>
+                            <li class="songItem">
+                                <div class="img_play">
+                                    <img src="./assets/img/1.jpg" alt="alan">
+                                    <i class="bi playListPlay bi-play-circle-fill" id="8"></i>
+                                    <!-- change All id  -->
+                                </div>
+                                <h5>On My Way
+                                    <br>
+                                    <div class="subtitle">Alan Walker</div>
+                                </h5>
+                            </li>
+                            <li class="songItem">
+                                <div class="img_play">
+                                    <img src="./assets/img/1.jpg" alt="alan">
+                                    <i class="bi playListPlay bi-play-circle-fill" id="8"></i>
+                                    <!-- change All id  -->
+                                </div>
+                                <h5>On My Way
+                                    <br>
+                                    <div class="subtitle">Alan Walker</div>
+                                </h5>
+                            </li>
+                                                            
+
+                        </div>
+                    </div>      
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="master_play">
+                <div class="wave">
+                    <div class="wave1"></div>
+                    <div class="wave1"></div>
+                    <div class="wave1"></div>
+                </div>
+                <img src="./assets/img/26th.jpg" alt="Alan" id="poster_master_play">
+                <h5 id="title">Vande Mataram<br>
+                    <div class="subtitle">Bankim Chandra</div>
+                </h5>
+                <div class="icon">
+                    <i class="bi bi-skip-start-fill" id="back"></i>
+                    <i class="bi bi-play-fill" id="masterPlay"></i>
+                    <i class="bi bi-skip-end-fill" id="next"></i>
+                </div>
+                <span id="currentStart">0:00</span>
+                <div class="bar">
+                    <input type="range" id="seek" min="0" value="0" max="100">
+                    <div class="bar2" id="bar2"></div>
+                    <div class="dot"></div>
+                </div>
+                <span id="currentEnd">0:00</span>
+        
+                <div class="vol">
+                    <i class="bi bi-volume-down-fill" id="vol_icon"></i>
+                    <input type="range" id="vol" min="0" value="30" max="100">
+                    <div class="vol_bar"></div>
+                    <div class="dot" id="vol_dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</header>
+<script type="text/javascript" th:src="@{/js/home.js}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
