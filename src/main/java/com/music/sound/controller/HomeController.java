@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import com.music.sound.DAO.AlbumDAO;
@@ -22,6 +24,7 @@ import com.music.sound.DAO.UserDTO;
 import com.music.sound.config.Constant;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 public class HomeController {
@@ -46,7 +49,7 @@ public class HomeController {
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/home/index";
+        String fileView = "/page/home/home";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectAdmin = "redirect:/admin/*";
 
@@ -58,6 +61,7 @@ public class HomeController {
                 List<AlbumDTO> albums = new ArrayList<>();
                 List<PlaylistDTO> playlists = new ArrayList<>();
                 List<SoundDTO> sounds = new ArrayList<>();
+                Map<String, List<SoundDTO>> playlistsDetail = new HashMap<String, List<SoundDTO>>();
                 try {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
@@ -66,13 +70,22 @@ public class HomeController {
                     albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
                     playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
                     sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
+                    playlistsDetail = soundDAO.readAllSoundByIdListSound(playlists);
 
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
                     modelAndView.addObject("albums", albums);
                     modelAndView.addObject("playlists", playlists);
-                    modelAndView.addObject("sounds", sounds);
 
+                    String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                    for (SoundDTO sound : sounds) {
+                        String pathImage = sound.getPathImage();
+                        if (pathImage != null) {
+                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        sound.setPathImage(urlPathImage);
+                    }
+                    modelAndView.addObject("sounds", sounds);
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
@@ -198,7 +211,7 @@ public class HomeController {
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/home/index";
+        String fileView = "/page/home/home";
         String urlRedirectHome = "redirect:/home";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectAdmin = "redirect:/admin/*";
