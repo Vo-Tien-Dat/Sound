@@ -14,6 +14,26 @@
 </head>
 
 <body>
+    <div class="container-fluid position-absolute w-100 h-100 d-flex flex-row justify-content-center d-none"
+        style="z-index: 100; background-color: rgba(192,192,192,0.6);" id="background_top_box">
+        <div class="d-inline align-self-center">
+            <form th:action="@{/admin/playlist/update/infor}"
+                class="d-flex d-flex flex-column justify-content-center rounded gap-2 px-5 py-4 position-relative"
+                style="background-color: purple;" id="form_top_box_album" th:method="post">
+                <input type="hidden" th:name="id_playlist" th:value="${playlist.idPlaylist}" />
+                <i class="fa-solid fa-x position-absolute button_top_box_close" id="button_top_box__close_album"
+                    style="left: 90%;top: 10%; color: white; "></i>
+                <p class="text-center fw-bold mb-0" style="color: white; ">CÂP NHẬT THÔNG TIN PLAYLIST</p>
+                <div class="col-md-4 w-100">
+                    <input type="text" class="form-control input_top_box" placeholder="tên playlist" style="font-size: 16px;"
+                        id="input_top_box__album_name" th:name="playlist_name" th:value = "${playlist.namePlaylist}">
+                </div>
+                <button type="button" class="btn btn-info" id="button_top_box__create_album">
+                    <p class="text-center fw-semibold mb-0" style="font-size: 16px;color: white;">CẬP NHẬT</p>
+                </button>
+            </form>
+        </div>
+    </div>
     <nav>
         <div class="sidebar-top">
             <span class="shrink-btn">
@@ -91,7 +111,7 @@
             </a>
             <div class="admin-user tooltip-element" data-tooltip="1">
                 <div class="admin-profile hide">
-                    <img src="./img/face-1.png" alt="">
+                    <img th:src="@{${path_image_user}}" alt="hello">
                     <div class="admin-info">
                         <h3 th:text="${name_user}"></h3>
                     </div>
@@ -125,8 +145,7 @@
 
                     </div>
                     <div class="p-0">
-                        <form class="container p-0" th:action="@{/admin/playlist/add/}" th:method="post"
-                            enctype="multipart/form-data">
+                        <div class="container p-0" >
                             <div class="container w-75 p-0">
                                 <div class="row">
                                     <div class="col-sm-4">
@@ -134,27 +153,37 @@
                                         <div class="container rounded bg-white py-4 px-4">
                                             <div class="d-flex flex-column gap-2">
                                                 <div class="p-0">
-                                                    <div class="avatar" style="height: 15rem">
-                                                        <div class="avatar-icon">
-                                                            <input type="file" id="file_image" style="display: none" th:name = "avatar"/>
-                                                            <label for="file_image">
-                                                                <i class='bx bxs-camera avatar-icon__icon'></i>
-                                                            </label>
+                                                    <form class = "p-0"  th:action="@{/admin/playlist/update/image}" th:method="post" enctype="multipart/form-data" th:id = "form_update_image">
+                                                        <input type="hidden" th:name="id_playlist" th:value="${playlist.idPlaylist}" />
+                                                        <div class="avatar" style="height: 15rem">
+                                                            <div class="avatar-icon">
+                                                                <input type="file" id="file_image" style="display: none" th:name="avatar" />
+                                                                <label for="file_image">
+                                                                    <i class='bx bxs-camera avatar-icon__icon'></i>
+                                                                </label>
+                                                            </div>
+                                                            <div class="avatar-preview" id="avatar-preview">
+                                                                <img th:src="@{${urlAvatarImage}}" alt="image_empty" class="avatar-preview__image" accept="image/*"
+                                                                    id="id_preview_avatar" />
+                                                            </div>
                                                         </div>
-                                                        <div class="avatar-preview" id="avatar-preview">
-                                                            <img th:src="@{${urlAvatarImage}}" alt="image_empty" class="avatar-preview__image" accept="image/*"
-                                                                id="id_preview_avatar" />
-                                                        </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
                                                 <div class="p-0">
                                                     <div class="container p-0">
                                                         <div class="d-flex flex-column">
                                                             <div class="p-0">
                                                                 <label class="form-label text-start">Name playlist</label>
-                                                                <input type="text" class="form-control" th:name = "name_playlist" th:value = "${playlist.namePlaylist}" id = "input_name_playlist">
+                                                                <input type="text" class="form-control" th:name = "name_playlist" th:value = "${playlist.namePlaylist}" id = "input_name_playlist" disabled>
 
                                                                 <p class="text-start mb-0 text-danger d-none" id = "text_message_name_playlist">Name Playlist is allowed null </p>
+                                                            </div>
+                                                            <div class="p-2">
+                                                                <div class="d-flex flex-row justify-content-center">
+                                                                    <button type="button" class="btn btn-secondary" id="show_top_box">
+                                                                        <i class="fa-solid fa-pencil" id="button_editor"></i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -175,12 +204,17 @@
                                                         <div class = "container overflow-auto" style = "height: 13rem" >
                                                             <div class="d-flex flex-column gap-2">
                                                                 <th:block th:each="soundAddedPlaylist : ${soundAddedPlaylists}">
-                                                                    <div class="container bg-white border rounded px-4 py-2">
+                                                                    <form 
+                                                                        th:action = "@{/admin/playlist/update/delete/sound}"
+                                                                        th:method = "post"
+                                                                        class="container bg-white border rounded px-4 py-2">
+                                                                        <input type="hidden" th:name="id_playlist" th:value="${playlist.idPlaylist}" />
+                                                                        <input type="hidden" th:name="id_sound" th:value="${soundAddedPlaylist.idSound}" />
                                                                         <div class="d-flex flex-row justify-content-between align-item-center">
                                                                             <div class="p-0">
                                                                                 <div class="d-flex flex-row align-item-center gap-2">
                                                                                     <div class="p-0 align-self-center h-100">
-                                                                                        <img src="./img/test.jfif" class="img-thumbnail p-0" alt="..."
+                                                                                        <img th:src="@{${soundAddedPlaylist.pathImage}}" class="img-thumbnail p-0" alt="..."
                                                                                             style="height: 3rem; width: 3rem;">
                                                                                     </div>
                                                                                     <div class="p-0 align-self-center">
@@ -193,7 +227,7 @@
                                                                                 <button type="submit" class="btn btn-danger" th:name="delete_sound" th:value = "${soundAddedPlaylist.idSound}">Delete</button>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </form>
                                                                 </th:block>
                                                             </div>
                                                         </div>
@@ -209,35 +243,38 @@
                                                         </label>
                                                         <div class="container overflow-auto" style="height: 13rem">
                                                             <div class="d-flex flex-column gap-2">
-                                                                <th:block th:each = "sound : ${sounds}">
-                                                                    <div class="container bg-white border rounded px-4 py-2">
+                                                                <th:block th:each="sound : ${sounds}">
+                                                                    <form 
+                                                                        th:action="@{/admin/playlist/update/add/sound}" 
+                                                                        th:method="post"
+                                                                        class="container bg-white border rounded px-4 py-2">
+                                                                        <input type="hidden" th:name="id_playlist" th:value="${playlist.idPlaylist}" />
+                                                                        <input type="hidden" th:name="id_sound" th:value="${sound.idSound}" />
                                                                         <div class="d-flex flex-row justify-content-between align-item-center">
                                                                             <div class="p-0">
                                                                                 <div class="d-flex flex-row align-item-center gap-2">
                                                                                     <div class="p-0 align-self-center h-100">
-                                                                                        <img src="./img/test.jfif" class="img-thumbnail p-0" alt="..." style="height: 3rem; width: 3rem;">
+                                                                                        <img th:src="@{${sound.pathImage}}" class="img-thumbnail p-0" alt="..."
+                                                                                            style="height: 3rem; width: 3rem;">
                                                                                     </div>
                                                                                     <div class="p-0 align-self-center">
-                                                                                        <p class="text-start mb-0 fw-semibold" th:text = "${sound.nameSound}"></p>
-                                                                                        <p class="text-start mb-0" th:text = "${sound.nameSinger}"></p>
+                                                                                        <p class="text-start mb-0 fw-semibold" th:text="${sound.nameSound}">
+                                                                                        </p>
+                                                                                        <p class="text-start mb-0" th:text="${sound.nameSinger}">
+                                                                                        </p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="d-inline p-0 align-self-center">
-                                                                                <button type="submit" class="btn btn-success" th:name="add_sound" th:value = "${sound.idSound}">Add</button>
+                                                                                <button type="submit" class="btn btn-success" th:name="add_sound"
+                                                                                    th:value="${sound.idSound}">Add</button>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </form>
                                                                 </th:block>
                                                             </div>
                                                         </div>
                                                 
-                                                    </div>
-                                                </div>
-                                                <div class="p-0">
-                                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-0">
-                                                        <button type="submit" class="btn btn-secondary me-md-2" th:name="cancel_playlist" >Cancel</button>
-                                                        <button type="submit" class="btn btn-success" th:name="add_playlist" id = "button_add_playlist" >Add</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -245,7 +282,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -254,6 +291,7 @@
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
     <script type="text/javascript" th:src="@{/js/upload.js}"></script>
     <script type="text/javascript" th:src="@{/js/validation.js}"></script>
+    <script type="text/javascript" th:src="@{/js/topbox.js}"></script>
 </body>
 
 </html>

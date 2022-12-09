@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import com.music.sound.DAO.AlbumDAO;
@@ -22,6 +24,7 @@ import com.music.sound.DAO.UserDTO;
 import com.music.sound.config.Constant;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 public class HomeController {
@@ -58,6 +61,7 @@ public class HomeController {
                 List<AlbumDTO> albums = new ArrayList<>();
                 List<PlaylistDTO> playlists = new ArrayList<>();
                 List<SoundDTO> sounds = new ArrayList<>();
+                Map<String, List<SoundDTO>> playlistsDetail = new HashMap<String, List<SoundDTO>>();
                 try {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
@@ -66,60 +70,22 @@ public class HomeController {
                     albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
                     playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
                     sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
+                    playlistsDetail = soundDAO.readAllSoundByIdListSound(playlists);
 
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
                     modelAndView.addObject("albums", albums);
                     modelAndView.addObject("playlists", playlists);
+
+                    String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                    for (SoundDTO sound : sounds) {
+                        String pathImage = sound.getPathImage();
+                        if (pathImage != null) {
+                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        sound.setPathImage(urlPathImage);
+                    }
                     modelAndView.addObject("sounds", sounds);
-
-                } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
-                }
-            } else {
-                modelAndView.setViewName(urlRedirectAdmin);
-            }
-
-        } else {
-            modelAndView.setViewName(urlRedirectLogin);
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ModelAndView getTest(HttpSession session) {
-        String idSession = session.getId();
-        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
-        Boolean loginSuccess = roleDTO != null ? true : false;
-
-        String fileView = "/page/home/index";
-        String urlRedirectLogin = "redirect:/login";
-        String urlRedirectAdmin = "redirect:/admin/*";
-
-        ModelAndView modelAndView = new ModelAndView(fileView);
-
-        if (loginSuccess) {
-            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
-            if (isRoleUser) {
-                List<AlbumDTO> albums = new ArrayList<>();
-                List<PlaylistDTO> playlists = new ArrayList<>();
-                List<SoundDTO> sounds = new ArrayList<>();
-                try {
-                    String idUser = roleDTO.getIdUser();
-                    UserDTO user = userDAO.readUserByIdUser(idUser);
-
-                    String nameUser = user.getNameUser();
-                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
-                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
-                    sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
-
-                    modelAndView.addObject("session_id", idSession);
-                    modelAndView.addObject("name_user", nameUser);
-                    modelAndView.addObject("albums", albums);
-                    modelAndView.addObject("playlists", playlists);
-                    modelAndView.addObject("sounds", sounds);
-
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
@@ -391,12 +357,12 @@ public class HomeController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/playlist", method = RequestMethod.GET)
-    public ModelAndView getPlaylist() {
-        String fileView = "/page/playlist/index1";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        return modelAndView;
-    }
+    // @RequestMapping(value = "/playlist", method = RequestMethod.GET)
+    // public ModelAndView getPlaylist() {
+    // String fileView = "/page/playlist/index1";
+    // ModelAndView modelAndView = new ModelAndView(fileView);
+    // return modelAndView;
+    // }
 
     // feature: show item playlist
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)

@@ -108,7 +108,7 @@
             </a>
             <div class="admin-user tooltip-element" data-tooltip="1">
                 <div class="admin-profile hide">
-                    <img src="./img/face-1.png" alt="">
+                    <img th:src="@{${path_image_user}}" alt="hello">
                     <div class="admin-info">
                         <h3 th:text="${name_user}"></h3>
                     </div>
@@ -145,7 +145,7 @@
                                     <th:block th:each="album : ${albums}">
                                         <div class="col-3 p-2 mb-2">
                                             <div class="card w-100 p-0" style="width: 18rem;">
-                                                <img th:src="@{'/assets/img/data/' + ${album.pathImage}}"
+                                                <img th:src="@{${album.pathImage}}"
                                                     class="card-img-top rounded" alt="...">
                                                 <div class="card-body">
                                                     <div class="row">

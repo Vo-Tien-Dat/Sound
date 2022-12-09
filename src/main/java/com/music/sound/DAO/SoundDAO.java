@@ -10,6 +10,7 @@ import com.music.sound.model.Sound;
 import com.music.sound.model.TypeSound;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Repository
@@ -45,6 +46,8 @@ public class SoundDAO {
 
         private final String SQL_UPDATE_SOUND_3_ARGUMENT = "UPDATE , nameSingersound SET name_sound = ?, name_singer = ? WHERE id_sound = ?";
 
+        private final String SQL_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND = "UPDATE sound set name_sound = ?, name_singer = ? WHERE id_sound = ?";
+
         private final String SQL_UPDATE_ID_ALBUM_BY_ID_SOUND = "UPDATE sound  SET id_album = ?  where id_sound = ? ";
 
         private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "UPDATE sound SET id_album = null WHERE id_album = ?";
@@ -63,6 +66,8 @@ public class SoundDAO {
                                 new Object[] { idSound, idUser });
         }
 
+        private final String SQL_READ_ALL_SOUND_BY_ID_LIST_SOUND = "SELECT * FROM sound WHERE id_type_sound = ?";
+
         public List<Sound> findAllSound() {
 
                 List<Sound> records = new ArrayList<>();
@@ -80,6 +85,21 @@ public class SoundDAO {
                 List<SoundDTO> records = new ArrayList<>();
                 records = jdbcTemplate.query(SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL, new SoundReadMapper());
                 return records;
+        }
+
+        public Map<String, List<SoundDTO>> readAllSoundByIdListSound(List<PlaylistDTO> playLists) {
+                List<SoundDTO> records = new ArrayList<>();
+                Map<String, List<SoundDTO>> playlistDetail = new HashMap<String, List<SoundDTO>>();
+                for (PlaylistDTO playlist : playLists) {
+                        records = jdbcTemplate.query(
+                                        SQL_READ_ALL_SOUND_BY_ID_LIST_SOUND, new SoundReadMapper(),
+                                        new Object[] { playlist.getIdPlaylist() });
+                        if (records.size() > 0) {
+                                playlistDetail.put(playlist.getIdPlaylist(), records);
+                        }
+
+                }
+                return playlistDetail;
         }
 
         public List<SoundDTO> readAllSoundHaveLimit(int rowLimit) {
@@ -242,6 +262,13 @@ public class SoundDAO {
         // cập nhật lại đường dẫn bài ảnh đại diện của bài hát
         public void updatePathImageByIdSound(String idSound, String pathImage) {
                 jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_SOUND, pathImage, idSound);
+        }
+
+        public void updateNameSoundAndNameSingerByIdSound(SoundDTO sound) {
+                String idSound = sound.getIdSound();
+                String nameSound = sound.getNameSound();
+                String nameSinger = sound.getNameSinger();
+                jdbcTemplate.update(SQL_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND, nameSound, nameSinger, idSound);
         }
 
         // cập nhật lại đường dẫn của link audio

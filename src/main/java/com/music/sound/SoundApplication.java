@@ -15,5 +15,4 @@ public class SoundApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(SoundApplication.class, args);
 	}
-
 }
