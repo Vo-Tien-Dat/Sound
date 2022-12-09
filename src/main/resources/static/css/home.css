@@ -100,7 +100,7 @@ header .menu_side .menu_song {
 header .menu_side .menu_song li{
     position: relative;
     list-style-type: none;
-    padding: 5px 0px 5px 20px;
+    padding: 5px 20px;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -116,6 +116,7 @@ header .menu_side .menu_song li span{
     color: #4c5262;
 }
 header .menu_side .menu_song li img{
+    border-radius: 4px;
     width: 32px;
     height: 32px;
     margin-left: 25px;
@@ -370,6 +371,13 @@ header .master_play .vol input{
  header .song_side nav ul li i{
     font-size: 16px;
  }
+  header .song_side nav ul li a{
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    margin-left: 8px;
+    color: whitesmoke;
+ }
  header .song_side nav ul li:hover{
    color: #fff;
  }
@@ -564,7 +572,7 @@ header .master_play .vol input{
    bottom: 0;
    left: 0;
    right: 0;
-   /* width: 250px; */
+   width: 220px;
    height: 220px;
  }
  header .song_side .popular_song .pop_song li .img_play .bi{

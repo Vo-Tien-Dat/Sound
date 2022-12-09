@@ -21,6 +21,7 @@ import com.music.sound.DAO.SoundDAO;
 import com.music.sound.DAO.SoundDTO;
 import com.music.sound.DAO.UserDAO;
 import com.music.sound.DAO.UserDTO;
+import com.music.sound.DTO.AlbumDTO.AlbumDTORead;
 import com.music.sound.config.Constant;
 
 import java.util.ArrayList;
@@ -61,7 +62,6 @@ public class HomeController {
                 List<AlbumDTO> albums = new ArrayList<>();
                 List<PlaylistDTO> playlists = new ArrayList<>();
                 List<SoundDTO> sounds = new ArrayList<>();
-                Map<String, List<SoundDTO>> playlistsDetail = new HashMap<String, List<SoundDTO>>();
                 try {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
@@ -70,21 +70,11 @@ public class HomeController {
                     albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
                     playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
                     sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
-                    playlistsDetail = soundDAO.readAllSoundByIdListSound(playlists);
 
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
                     modelAndView.addObject("albums", albums);
                     modelAndView.addObject("playlists", playlists);
-
-                    String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
-                    for (SoundDTO sound : sounds) {
-                        String pathImage = sound.getPathImage();
-                        if (pathImage != null) {
-                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
-                        }
-                        sound.setPathImage(urlPathImage);
-                    }
                     modelAndView.addObject("sounds", sounds);
                 } catch (Exception ex) {
                     String message = ex.getMessage();

@@ -1,0 +1,91 @@
+.album-container{
+    width: 100%; 
+    height: 500px; 
+    border: 1px solid white;
+}
+
+.album-left{
+    width: 35%; 
+    border: 1px solid blue; 
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 50px;
+}
+.album-left h4{
+    margin-top: 8px;
+    font-weight: 600;
+}
+.album-left p {
+    margin-top: 10px;
+}
+.album-left .bi-three-dots{
+    background-color: rgb(31, 27, 23);
+    padding: 8px 12px;
+    border-radius: 100%;
+}
+.album-left .bi-three-dots:hover{
+    opacity: 0.4;
+    cursor: pointer;
+}
+.album-left .img-album img{
+    max-width: 300px;
+    height: auto;
+    border-radius: 100%;
+    transition: 5s linear;
+}
+.album-left .img-album img:hover{
+   transform: rotate(360deg);
+}
+.album-right{
+    width: 65%; 
+    border: 1px solid blue; 
+    height: 500px;
+
+}
+
+.album-right table{
+    margin-top: 50px;
+}
+
+.album-right th,
+.album-right td
+{
+    color: white;
+}
+.album-right td{
+    width: 50%;
+    height: 40px;
+}
+
+.sound-item{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.sound-item i{
+    margin-right: 8px;
+}
+
+.sound-item img{
+    max-width: 50px;
+    border-radius: 4px;
+}
+
+.sound-item-content{
+    margin-left: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+.sound-item-content h6{
+    margin-bottom: 0;
+}
+.sound-item-content p{
+    font-size: 10px;
+    font-weight: 300;
+}
