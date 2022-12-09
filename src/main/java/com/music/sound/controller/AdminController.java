@@ -96,10 +96,14 @@ public class AdminController {
 
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
-                    String imageNameFile = user.getIdUser();
-
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     modelAndView.addObject("albums", albums);
                 } catch (Exception ex) {
@@ -227,8 +231,14 @@ public class AdminController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     // hiển thị thông tin của album
                     album = albumDAO.readAlbumByIdAlbum(idAlbum);
@@ -516,8 +526,14 @@ public class AdminController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     List<PlaylistDTO> playlists = new ArrayList<>();
                     playlists = playlistDAO.readAllPLaylist();
@@ -617,8 +633,14 @@ public class AdminController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
                     modelAndView.addObject("playlist", playlist);
@@ -866,8 +888,14 @@ public class AdminController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     List<SoundDTO> sounds = new ArrayList<>();
                     sounds = soundDAO.readAllSound();
@@ -918,6 +946,12 @@ public class AdminController {
 
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
 
@@ -963,62 +997,68 @@ public class AdminController {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
             if (isRoleAdmin) {
                 String valueActionButton = request.getParameter("button");
-                String idSound = soundDAO.getIdSoundBeforeInsert(sound);
-                switch (valueActionButton) {
-                    case "cancel":
-                        try {
-                            soundDAO.deleteSoundByIdSound(idSound);
-                        } catch (Exception ex) {
-
-                        }
-
-                        break;
-                    case "add":
-                        try {
-                            Long sizeFileAudio = fileAudio.getSize();
-                            if (sizeFileAudio == 0) {
-                                throw new NullPointerException("KHONG TIM THAY FILE AUDIO");
-                            }
-
-                            String prefixFileName = idSound;
-
-                            // chức năng lưu file ảnh vào thư mục /assets/img/data
-                            Long sizeFileImage = fileImage.getSize();
-                            if (sizeFileImage != 0) {
-                                saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, fileImage,
-                                        prefixFileName);
-
-                                saveFileUpload.setFullFileName();
-                                saveFileUpload.commit();
-                                String fullFileNameImage = saveFileUpload.getFullFileName();
-                                soundDAO.updatePathImageByIdSound(idSound, fullFileNameImage);
-                            }
-
-                            // lưu file âm nhạc vào thừ mục /assets/audio/data
-                            saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_AUDIO, fileAudio,
-                                    prefixFileName);
-                            saveFileUpload.setFullFileName();
-                            saveFileUpload.commit();
-                            String fullFileNameAudio = saveFileUpload.getFullFileName();
-                            soundDAO.updatePathAudioByIdSound(idSound, fullFileNameAudio);
-
-                        } catch (NullPointerException ex) {
-                            String message = "File Audio is null";
-                            modelAndView.setViewName(fileView);
-                            modelAndView.addObject("message", message);
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
+                try {
+                    String idSound = soundDAO.getIdSoundBeforeInsert(sound);
+                    switch (valueActionButton) {
+                        case "cancel":
                             try {
                                 soundDAO.deleteSoundByIdSound(idSound);
-                            } catch (Exception ex1) {
-                                ex1.printStackTrace();
+                            } catch (Exception ex) {
+
                             }
 
-                        }
-                        break;
-                    default:
-                        break;
+                            break;
+                        case "add":
+                            try {
+                                Long sizeFileAudio = fileAudio.getSize();
+                                if (sizeFileAudio == 0) {
+                                    throw new NullPointerException("KHONG TIM THAY FILE AUDIO");
+                                }
+
+                                String prefixFileName = idSound;
+
+                                // chức năng lưu file ảnh vào thư mục /assets/img/data
+                                Long sizeFileImage = fileImage.getSize();
+                                if (sizeFileImage != 0) {
+                                    saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_IMG, fileImage,
+                                            prefixFileName);
+
+                                    saveFileUpload.setFullFileName();
+                                    saveFileUpload.commit();
+                                    String fullFileNameImage = saveFileUpload.getFullFileName();
+                                    soundDAO.updatePathImageByIdSound(idSound, fullFileNameImage);
+                                }
+
+                                // lưu file âm nhạc vào thừ mục /assets/audio/data
+                                saveFileUpload = new SaveFileUpload(Constant.PATH_STATIC_SAVE_AUDIO, fileAudio,
+                                        prefixFileName);
+                                saveFileUpload.setFullFileName();
+                                saveFileUpload.commit();
+                                String fullFileNameAudio = saveFileUpload.getFullFileName();
+                                soundDAO.updatePathAudioByIdSound(idSound, fullFileNameAudio);
+
+                            } catch (NullPointerException ex) {
+                                String message = "File Audio is null";
+                                modelAndView.setViewName(fileView);
+                                modelAndView.addObject("message", message);
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                                try {
+                                    soundDAO.deleteSoundByIdSound(idSound);
+                                } catch (Exception ex1) {
+                                    ex1.printStackTrace();
+                                }
+
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
                 }
+
             } else {
                 modelAndView.setViewName(urlRedirectHome);
             }
@@ -1049,8 +1089,19 @@ public class AdminController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
+
+                    // lấy danh sach thể loại bài hát
+                    List<TypeSoundDTO> typeSounds = new ArrayList<>();
+                    typeSounds = typeSoundDAO.readAllTypeSound();
+                    modelAndView.addObject("typeSounds", typeSounds);
 
                     // lấy thông tin bài hát cần chỉnh sửa
                     SoundDTO sound = soundDAO.readSoundByIdSound(idSound);
@@ -1081,7 +1132,6 @@ public class AdminController {
     public ModelAndView postEditorSound(
             @RequestParam(value = "avatar", required = false) MultipartFile fileImage,
             @RequestParam(value = "audio", required = false) MultipartFile fileAudio,
-            @RequestParam(value = "isUpdateAudio", required = false) Boolean check,
             @ModelAttribute("sound") SoundDTO sound,
             HttpSession session) {
 
@@ -1127,9 +1177,12 @@ public class AdminController {
                         soundDAO.updatePathAudioByIdSound(idSound, fullFileNameAudio);
                     }
 
+                    soundDAO.updateNameSoundAndNameSingerByIdSound(sound);
+
                     modelAndView.setViewName(urlRedirectRootSound);
                 } catch (Exception ex) {
-
+                    String message = ex.getMessage();
+                    System.out.println(message);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectHome);
@@ -1208,6 +1261,12 @@ public class AdminController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
 
@@ -1249,8 +1308,14 @@ public class AdminController {
                 User user = new User();
                 UserDTO userDTO = userDAO.readUserByIdUser(idUser);
                 String nameUser = userDTO.getNameUser();
+                String pathImagerUser = userDTO.getPathImage();
+                String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                if (pathImagerUser != null) {
+                    urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImagerUser;
+                }
                 modelAndView.addObject("session_id", idSession);
                 modelAndView.addObject("name_user", nameUser);
+                modelAndView.addObject("path_image_user", urlPathImageUser);
 
                 String pathImage = user.getPathImg();
                 String urlImage = null;
@@ -1337,8 +1402,21 @@ public class AdminController {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
             if (isRoleAdmin) {
                 try {
-                    UserDTO user = userDAO.readUserByIdUser(idUser);
+                    // hiển thị thông tin của user đã đăng nhập
+                    String idUserRoot = roleDTO.getIdUser();
+                    UserDTO userDTO = userDAO.readUserByIdUser(idUserRoot);
+                    String nameUser = userDTO.getNameUser();
+                    String pathImagerUser = userDTO.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImagerUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImagerUser;
+                    }
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
 
+                    // hiển thị thông tin user được phép chỉnh sửa
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
                     String pathImage = user.getPathImage();
                     String urlImage = "";
                     if (pathImage != null) {
