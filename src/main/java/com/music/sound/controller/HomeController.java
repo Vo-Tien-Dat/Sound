@@ -298,12 +298,12 @@ public class HomeController {
     }
 
     // feature: redirect to home
-    @RequestMapping(value = "/album/*", method = RequestMethod.GET)
-    public ModelAndView getRootAlbum() {
-        String urlRedirect = "redirect:/album";
-        ModelAndView modelAndView = new ModelAndView(urlRedirect);
-        return modelAndView;
-    }
+    // @RequestMapping(value = "/album/*", method = RequestMethod.GET)
+    // public ModelAndView getRootAlbum() {
+    // String urlRedirect = "redirect:/album";
+    // ModelAndView modelAndView = new ModelAndView(urlRedirect);
+    // return modelAndView;
+    // }
 
     @RequestMapping(value = "/album", method = RequestMethod.GET)
     public ModelAndView getAlbum() {
@@ -329,7 +329,6 @@ public class HomeController {
                 modelAndView.addObject("album", album);
                 modelAndView.addObject("sounds", sounds);
             }
-
         } catch (Exception ex) {
             String message = ex.getMessage();
             System.out.println(message);

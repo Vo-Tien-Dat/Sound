@@ -16,9 +16,8 @@
 
 <body>
 <header>
-    <div class="container-fluid" style="width: 100vw;">
-        <div class="row">
-
+    <div class="container-fluid" style="width: 100vw; height: 100vh;">
+        <div class="row" style="height: 100vh">
             <div class="menu_side col-md-2">
                 <h1><strong>SOUND</strong></h1>
                 <div class="playlist">
@@ -36,7 +35,8 @@
                             <div class="subtitle" ><p th:text = "${sound.nameSinger}"></p></div>
                             <p th:text = "${sound.nameSinger}"></p>
                         </h5>
-                            <i class="bi playListPlay bi-play-circle-fill" id="1"></i>
+                        <i class="bi playListPlay bi-play-circle-fill" id="1"></i>  
+                       
                     </li>
                 </th:block>
                 </th:block>
@@ -114,8 +114,10 @@
                             <th:block th:each = "album : ${albums}">
                             <li class="songItem">
                                 <div class="img_play">
+                                    <a th:href="@{'/album/'+${album.idAlbum}}">
+                                        <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                    </a>
                                     <img th:src="@{${'/assets/img/data/'+album.pathImage}}" alt="alan">
-                                    <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
                                     <h5 th:text = "${album.nameAlbum}"></h5>
                                 </div>
                             </li>
@@ -137,8 +139,8 @@
                             <th:block th:each = "playlist : ${playlists}">
                             <li class="songItem">
                                 <div class="img_play">
-                                    <img th:src="@{${'/assets/img/data/'+playlist.pathImage}}" alt="alan">
                                     <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                    <img th:src="@{${'/assets/img/data/'+playlist.pathImage}}" alt="alan">
                                     <h5 th:text = "${playlist.namePlaylist}"></h5>
                                 </div>
                             </li>
