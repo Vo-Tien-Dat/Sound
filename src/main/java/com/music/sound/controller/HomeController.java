@@ -333,28 +333,54 @@ public class HomeController {
 
     // feature: show item album
     @RequestMapping(value = "/album/{id}", method = RequestMethod.GET)
-    public ModelAndView getAlbum(@PathVariable("id") String idAlbum) {
+    public ModelAndView getAlbum(@PathVariable("id") String idAlbum, HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
         String fileView = "/page/album/index";
         String urlRediect = "redirect:/home";
         ModelAndView modelAndView = new ModelAndView(fileView);
 
-        try {
-            AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
-            List<SoundDTO> sounds = soundDAO.readAllSoundByIdAlbum(idAlbum);
-            List<AlbumDTO> albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
-            if (album == null) {
-                modelAndView.setViewName(urlRediect);
-            } else {
-                modelAndView.addObject("album", album);
-                modelAndView.addObject("sounds", sounds);
-                modelAndView.addObject("albums", albums);
-            }
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-            modelAndView.setViewName(urlRediect);
-        }
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                List<PlaylistDTO> playlists = new ArrayList<>();
+                try {
+                    // hiển thị user của người dùng
+                    String idUser = roleDTO.getIdUser();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+                    String nameUser = user.getNameUser();
 
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
+
+                    AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
+                    List<SoundDTO> sounds = soundDAO.readAllSoundByIdAlbum(idAlbum);
+                    List<AlbumDTO> albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
+                    if (album == null) {
+                        modelAndView.setViewName(urlRediect);
+                    } else {
+                        modelAndView.addObject("album", album);
+                        modelAndView.addObject("sounds", sounds);
+                        modelAndView.addObject("albums", albums);
+                    }
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRediect);
+            }
+
+        } else {
+            modelAndView.setViewName(fileView);
+        }
         return modelAndView;
     }
 

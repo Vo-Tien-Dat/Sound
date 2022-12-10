@@ -42,25 +42,27 @@ header .master_play {
 }
 
 header .menu_side h1 {
-    font-size: 20px;
+    font-size: 30px;
     margin: 15px 0px 0px 20px;
     font-weight: 500;
 }
-
+/* 
 header .menu_side .playlist {
-    margin:  40px 0px 0px 20px;
+    margin:  40px 0px 0px 20px; 
+    display: flex;
+    align-items: center;
 }
 
 header .menu_side .playlist h4 {
-    font-size: 14px;
-    font-weight: 400;
+    /* font-size: 14px; */
+    /* font-weight: 400;
     padding-bottom: 10px;
     color: #4c5262;
     cursor: pointer;
     display: flex;
     align-items: center;
     transition: .3s linear;
-}
+} */
 header .menu_side .playlist h4:hover {
     color: #fff;
 }
@@ -93,17 +95,24 @@ header .menu_side .playlist .active span{
 header .menu_side .playlist .active .bi{
     display: flex;
     margin-right: 20px;
-}
+} */
 header .menu_side .menu_song {
     width: 100%;
-    /* height: 300px; */
-    /* border: 1px solid #fff; */
-    margin-top: 40px;
+    margin-top: 10px;
 }
+header .menu_side .menu_song_container{
+    margin-top: 50px;
+    border-top: 1px solid rgb(56, 52, 52);
+    padding: 10px 20px 20px 20px;
+}
+header .menu_side .menu_song_container h5{
+    margin-bottom: 20px;
+}
+
 header .menu_side .menu_song li{
     position: relative;
     list-style-type: none;
-    padding: 5px 20px;
+    padding: 5px 0;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -141,7 +150,7 @@ header .menu_side .menu_song li .bi{
 
 header .favorite{
     border-top: 1px solid rgb(77, 70, 62);
-    padding: 30px 20px;
+    padding: 10px 20px 20px 20px;
     position: absolute;
     width: 100%;
     display: flex;
@@ -155,13 +164,21 @@ header .favorite .favorite-item a{
     display: flex;
     text-decoration: none;
     color: white;
-    font-weight: 600;
+    font-weight: 500;
     margin-top: 10px;
+}
+
+header .favorite .favorite-item:hover{
+    background: rgb(105, 105, 170,.1);
+}
+
+header .favorite .favorite-item a p{
+    font-size: 12px;
 }
 
 header .favorite .favorite-item a i{
     margin-right: 8px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 header .master_play {
@@ -377,7 +394,7 @@ header .master_play .vol input{
  header .song_side nav{
     padding: 12px 20px;
     width: 90%;
-    height: 10%;
+    height: 7%;
     margin: auto;
     /* border: 1px solid #fff; */
     display: flex;
@@ -392,7 +409,7 @@ header .master_play .vol input{
     list-style-type: none;
     font-size: 13px;
     color: #4c5262;
-    margin-right: 35px;
+    margin-right: 20px;
     cursor: pointer;
     transition: .3s linear;
  }
@@ -515,7 +532,7 @@ header .master_play .vol input{
  }
 
  header .song_side .popular-song-container{
-    height: 600px;
+    height: 55%;
     overflow-y: scroll;
  }
  header .song_side .popular-song-container::-webkit-scrollbar{
@@ -541,6 +558,7 @@ header .master_play .vol input{
     font-size: 12px;
  }
  header .song_side .carousel .carousel-inner img{
+    max-height: 300px;
     /* object-fit: cover;
     object-position: center center; */
  }
@@ -692,11 +710,11 @@ a {
 }
 
 
-ul,
-li {
+/* ul, */
+/* li {
     padding: 0 !important;
     margin: 0 !important;
-}
+} */
 
 .user{
     position: relative;
