@@ -305,13 +305,6 @@ public class HomeController {
     // return modelAndView;
     // }
 
-    @RequestMapping(value = "/album", method = RequestMethod.GET)
-    public ModelAndView getAlbum() {
-        String fileView = "/page/album/index";
-        ModelAndView modelAndView = new ModelAndView(fileView);
-        return modelAndView;
-    }
-
     // feature: show item album
     @RequestMapping(value = "/album/{id}", method = RequestMethod.GET)
     public ModelAndView getAlbum(@PathVariable("id") String idAlbum) {
@@ -320,14 +313,15 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView(fileView);
 
         try {
-
             AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
             List<SoundDTO> sounds = soundDAO.readAllSoundByIdAlbum(idAlbum);
+            List<AlbumDTO> albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
             if (album == null) {
                 modelAndView.setViewName(urlRediect);
             } else {
                 modelAndView.addObject("album", album);
                 modelAndView.addObject("sounds", sounds);
+                modelAndView.addObject("albums", albums);
             }
         } catch (Exception ex) {
             String message = ex.getMessage();
@@ -335,6 +329,13 @@ public class HomeController {
             modelAndView.setViewName(urlRediect);
         }
 
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/album", method = RequestMethod.GET)
+    public ModelAndView getAlbum() {
+        String fileView = "/page/album/index";
+        ModelAndView modelAndView = new ModelAndView(fileView);
         return modelAndView;
     }
 

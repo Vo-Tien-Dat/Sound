@@ -10,12 +10,11 @@
 }
 
 .content-right{
-    border-left: 2px solid rgb(58, 52, 45); 
+    border-left: 1px solid rgb(58, 52, 45); 
 }
 .albums-suggestion{
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
 }
 .albums-suggestion h4{
@@ -26,11 +25,15 @@
     display: flex;
     padding: 8px 4px;
 }
+.albums-suggestion .album-suggestion_item:hover{
+    background-color: rgb(78, 78, 66);
+    border-radius: 4px;
+}
 .albums-suggestion .album-suggestion_item img{
     max-width: 80px;
     border-radius: 8px;
     margin-right: 8px;
-    
+    height: 100%;
 }
 
 .albums-suggestion .album-suggestion_item img:hover{
@@ -95,9 +98,9 @@
 }
 .album-left .img-album img{
     max-width: 300px;
-    height: auto;
+    height: 300px;
     border-radius: 100%;
-    transition: 5s linear;
+    transition: 8s linear;
 }
 .album-left .img-album img:hover{
    transform: rotate(360deg);
@@ -114,6 +117,12 @@
 
 .album-right table tbody tr{
     border-style: hidden !important;
+    border-radius: 8px;
+}
+
+.album-right table tbody tr:hover{
+    opacity: 0.8;
+    background-color: rgb(78, 78, 66);
 }
 
 .album-right th,
@@ -132,14 +141,45 @@
     align-items: center;
     justify-content: flex-start;
 }
+
+.sound-item-img{
+    height: 50px;
+    width: 50px;
+    position: relative;
+
+}
 .sound-item i{
     margin-right: 8px;
 }
 
-.sound-item img{
+.sound-item-img img{
+    position: absolute;
     max-width: 50px;
+    height: 50px;
     border-radius: 4px;
 }
+
+.sound-item-img img:hover{
+    cursor: pointer;
+}
+
+.sound-item-img .bi {
+    font-size: 18px;
+    position: absolute;
+    transition: .3s linear;
+    opacity: 0;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+.sound-item-img .bi:hover{
+    opacity: 1;
+    color:white;
+    z-index: 200;
+    cursor: pointer;
+}
+
 
 .sound-name__album{
     height: 100%;
