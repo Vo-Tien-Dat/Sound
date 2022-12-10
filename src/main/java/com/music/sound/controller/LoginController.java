@@ -12,6 +12,7 @@ import com.music.sound.DAO.UserDAO;
 import com.music.sound.DTO.UserDTO.UserLoginDTO;
 import com.music.sound.DTO.UserDTO.UserRegisterDTO;
 import com.music.sound.config.Constant;
+import com.music.sound.model.User;
 import com.music.sound.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import com.music.sound.DAO.UserDTO;
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
+import com.music.sound.Exception.UsernamePasswordException;
 
 @Controller
 public class LoginController {
@@ -42,12 +44,16 @@ public class LoginController {
             @RequestParam(value = "message", required = false) String message,
             @RequestParam(value = "invalid_username", required = false) String invalidUsername,
             @RequestParam(value = "invalid_password", required = false) String invalidPassword,
+            @RequestParam(value = "message_sign_up", required = false) String messageSignUp,
+            @RequestParam(value = "register", required = false) String isRegister,
             HttpSession session) {
         String pathFile = "/page/login/index";
         String urlRedirectHome = "redirect:/home";
-        String urlRedirectAdmin = "redirect:/admin/sound";
+        String urlRedirectAdmin = "redirect:/admin/album";
         ModelAndView modelAndView = new ModelAndView(pathFile);
         modelAndView.addObject("message", message);
+        modelAndView.addObject("register", isRegister);
+        modelAndView.addObject("message_sign_up", messageSignUp);
         String idSession = session.getId();
         if (session.getAttribute(idSession) == null) {
             modelAndView.addObject("userLoginDTO", new UserLoginDTO());
@@ -73,6 +79,7 @@ public class LoginController {
 
         String urlRedirectRole = "redirect:/role/";
         String urlRedirectHome = "redirect:/home";
+        String urlRedirectAdmin = "redirect:/admin/album";
         String urlRedirectLogin = "redirect:/login";
 
         String pathFile = "/page/login/index";
@@ -123,8 +130,17 @@ public class LoginController {
                             } else {
                                 // solve: role admin and user
                                 urlRedirectRole = urlRedirectRole + idUser;
-                                modelAndView.setViewName(urlRedirectRole);
+
+                                RoleDTO role = new RoleDTO();
+                                role.setIdUser(idUser);
+                                role.setRoleUser(Constant.ROLE_ADMIN);
+                                HttpSession session = request.getSession();
+                                String idSession = session.getId();
+                                session.setAttribute(idSession, role);
+                                modelAndView.setViewName(urlRedirectAdmin);
                             }
+                        } else {
+                            throw new UsernamePasswordException();
                         }
                     }
 
@@ -132,30 +148,61 @@ public class LoginController {
                     String message = "tải khoản hiện không tồn tại";
                     modelAndView.addObject("message", message);
                     modelAndView.setViewName(urlRedirectLogin);
+                    modelAndView.addObject("register", false);
                 } catch (EmptyResultDataAccessException ex) {
                     String message = "tải khoản hiện không tồn tại";
                     modelAndView.addObject("message", message);
                     modelAndView.setViewName(urlRedirectLogin);
+                    modelAndView.addObject("register", false);
+                } catch (UsernamePasswordException ex) {
+                    String message = "mật khẩu không đúng";
+                    modelAndView.addObject("message", message);
+                    modelAndView.setViewName(urlRedirectLogin);
+                    modelAndView.addObject("register", false);
                 } catch (Exception ex) {
                     String message = "lỗi không xác định";
                     modelAndView.addObject("message", message);
                     modelAndView.setViewName(urlRedirectLogin);
+                    modelAndView.addObject("register", false);
                 }
 
                 break;
 
             // case: register
             case Constant.ACTION_SIGN_UP:
+                try {
+                    String username = userRegisterDTO.getUsername();
+                    String nameuser = userRegisterDTO.getNameuser();
+                    String email = userRegisterDTO.getEmail();
+                    String password = userRegisterDTO.getPassword();
 
-                Boolean result = authenticationService.createNewUser(userRegisterDTO);
+                    if (username == "" || password == "" || nameuser == "") {
+                        throw new NullPointerException();
+                    }
 
-                if (result) {
-                    String urlRedirect = "redirect:/home";
-                    modelAndView.setViewName(urlRedirect);
-                } else {
-                    String message = "Không thể đăng kí được tài khoản";
-                    modelAndView.addObject("messageSignUp", message);
+                    User user = new User();
+                    user.setUserName(username);
+                    user.setPassword(password);
+                    user.setNameUser(nameuser);
+                    user.setEmail(email);
+
+                    // thêm một tài khoản
+                    userDAO.insertUserByUsernameAndPasswordAndNameUser(user);
+
+                    modelAndView.setViewName(urlRedirectLogin);
+
+                } catch (NullPointerException ex) {
+                    String message = "Kiểm tra lại các ô nhập thông tin";
+                    modelAndView.addObject("message_sign_up", message);
+                    modelAndView.addObject("register", true);
+                    modelAndView.setViewName(urlRedirectLogin);
+                } catch (Exception ex) {
+                    String message = "user name or email is existed";
+                    modelAndView.addObject("message_sign_up", message);
+                    modelAndView.addObject("register", true);
+                    modelAndView.setViewName(urlRedirectLogin);
                 }
+
                 break;
             default:
                 break;
@@ -256,18 +303,4 @@ public class LoginController {
 
         return modelAndView;
     }
-
-    // @RequestMapping(value = "/register", method = RequestMethod.POST)
-    // public ModelAndView postRegister(@ModelAttribute("userLoginDTO") UserLoginDTO
-    // userLoginDTO,
-    // @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO) {
-    // String pathFile = "/page/login/index";
-    // System.out.println(userRegisterDTO.getUsername());
-
-    // String message = authenticationService.createNewUser(userRegisterDTO);
-    // System.out.println(message);
-
-    // ModelAndView modelAndView = new ModelAndView(pathFile);
-    // return modelAndView;
-    // }
 }

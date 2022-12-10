@@ -46,6 +46,8 @@ public class SoundDAO {
 
         private final String SQL_UPDATE_SOUND_3_ARGUMENT = "UPDATE , nameSingersound SET name_sound = ?, name_singer = ? WHERE id_sound = ?";
 
+        private final String SQL_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND = "UPDATE sound set name_sound = ?, name_singer = ? WHERE id_sound = ?";
+
         private final String SQL_UPDATE_ID_ALBUM_BY_ID_SOUND = "UPDATE sound  SET id_album = ?  where id_sound = ? ";
 
         private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "UPDATE sound SET id_album = null WHERE id_album = ?";
@@ -260,6 +262,13 @@ public class SoundDAO {
         // cập nhật lại đường dẫn bài ảnh đại diện của bài hát
         public void updatePathImageByIdSound(String idSound, String pathImage) {
                 jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_SOUND, pathImage, idSound);
+        }
+
+        public void updateNameSoundAndNameSingerByIdSound(SoundDTO sound) {
+                String idSound = sound.getIdSound();
+                String nameSound = sound.getNameSound();
+                String nameSinger = sound.getNameSinger();
+                jdbcTemplate.update(SQL_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND, nameSound, nameSinger, idSound);
         }
 
         // cập nhật lại đường dẫn của link audio

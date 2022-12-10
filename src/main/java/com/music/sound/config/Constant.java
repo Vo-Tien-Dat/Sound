@@ -12,9 +12,9 @@ public interface Constant {
 
     public final String URL_STATIC_AUDIO = "/assets/audio/data/";
 
-    // public final String URL_STATIC_AUDIO = "/audio/";
+    // public final String URL_STATIC_AUDIO = "\\audio\\";
 
-    public final String URL_STATIC_ADD_PLAYLIST = "playlist/";
+    public final String URL_STATIC_ADD_PLAYLIST = "playlist\\";
 
     public final String DEFAULT_SOUND_IMAGE = "/assets/img/default/sound_default.png";
 

@@ -63,17 +63,27 @@ public class HomeController {
                 List<PlaylistDTO> playlists = new ArrayList<>();
                 List<SoundDTO> sounds = new ArrayList<>();
                 try {
+                    // hiển thị user của người dùng
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
-
                     String nameUser = user.getNameUser();
-                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
-                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
                     sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
 
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
+
+                    // hiển thị danh sách album
+                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
                     modelAndView.addObject("albums", albums);
+
+                    // hiển thị danh sách playlist
+                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
                     modelAndView.addObject("playlists", playlists);
                     modelAndView.addObject("sounds", sounds);
                 } catch (Exception ex) {

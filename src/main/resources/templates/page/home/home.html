@@ -65,18 +65,67 @@
         
             <div class="song_side col-md-10">
                 <nav>
-                    <ul>
-                        <li><i class="bi bi-music-note-list"></i><a href="/home">SOUND</a> <span></span></li>
-                        <li><i class="bi bi-journal-album"></i> <a href="/album">ALBUM</a> </li>
-                        <li><i class="bi bi-card-checklist"></i> <a href="/album">PLAYLIST</a></li>
-                    </ul>
-                    <div class="search">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Search Music...">
-                    </div>
-                    <div class="user">
-                        <img src="./assets/img/KDS CODER.png" alt="User" title="KDS CODER (Jahid Khan)">
-                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class = "container">
+                                    <ul class="row">
+                                        <li class="col"><i class="bi bi-music-note-list"></i><a href="/home">SOUND</a> <span></span></li>
+                                        <li class="col"><i class="bi bi-journal-album"></i> <a href="/album">ALBUM</a> </li>
+                                        <li class="col"><i class="bi bi-card-checklist"></i> <a href="/album">PLAYLIST</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                            <div class="col-6">
+                                <div class="search d-flex flex-row align-content-center w-100">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" placeholder="Search Music...">
+                                </div>
+                            </div>
+                            <div class="col-2" >
+                                <div class="user">
+                                    <img th:src="${path_image_user}" alt="User" title="KDS CODER (Jahid Khan)">
+
+                                    <ul class="dropdown">
+                                        <li>
+                                            <div class="item-dropdown gap-2" >
+                                                <img th:src="${path_image_user}"  class="rounded float-start" style = "position:relative">
+                                                <p class="mb-0" style="color: black" th:text="${name_user}"></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="item-dropdown">
+                                                <div class="d-flex flex-row justify-content-start align-item-center gap-2">
+                                                    <i class="fa-solid fa-lock"></i>
+                                                    <p class="text-start mb-0">Change password</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="item-dropdown">
+                                                <div class="d-flex flex-row justify-content-start align-items-center gap-2">
+                                                    <i class="fa-solid fa-heart"></i>
+                                                    <p class="text-start mb-0">Favorite</p>
+                                                </div>
+                                                
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <form th:action="@{'/logout/' + ${session_id}}" th:method="post">
+                                                <button type="submit" class="btn btn-light w-100">
+                                                    <div class="d-flex flex-row justify-content-start align-items-center gap-2">
+                                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                                        <p class="text-start mb-0" style="font-size: 0.875rem">Log out</p>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
                 </nav>
 
                 <!-- Slide  -->
