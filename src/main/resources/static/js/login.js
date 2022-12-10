@@ -6,6 +6,12 @@ const inputUsername = document.getElementById("input_user_name");
 
 const inputPassword = document.getElementById("input_password");
 
+const isRegister = document.getElementById("isRegister");
+
+if (isRegister.value == "true") {
+  container.classList.add("right-panel-active");
+}
+
 signUpButton.addEventListener("click", () => {
   container.classList.add("right-panel-active");
 });

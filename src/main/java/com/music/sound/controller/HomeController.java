@@ -63,20 +63,31 @@ public class HomeController {
                 List<SoundDTO> sounds = new ArrayList<>();
                 Map<String, List<SoundDTO>> playlistsDetail = new HashMap<String, List<SoundDTO>>();
                 try {
+                    // hiển thị user của người dùng
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
-
                     String nameUser = user.getNameUser();
-                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
-                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
-                    sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
-                    playlistsDetail = soundDAO.readAllSoundByIdListSound(playlists);
-
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
+
+                    playlistsDetail = soundDAO.readAllSoundByIdListSound(playlists);
+
+                    // hiển thị danh sách album
+                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
                     modelAndView.addObject("albums", albums);
+
+                    // hiển thị danh sách playlist
+                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
                     modelAndView.addObject("playlists", playlists);
 
+                    // hiển thi bài hát
+                    sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
                     String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
                     for (SoundDTO sound : sounds) {
                         String pathImage = sound.getPathImage();
