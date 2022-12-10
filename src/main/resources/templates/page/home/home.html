@@ -180,17 +180,17 @@
                         </div>
                         <div class="pop_song">
                             <th:block th:if = "${albums != null}">
-                            <th:block th:each = "album : ${albums}">
-                            <li class="songItem">
-                                <div class="img_play">
-                                    <a th:href="@{'/album/'+${album.idAlbum}}">
-                                        <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
-                                    </a>
-                                    <img th:src="@{${'/assets/img/data/'+album.pathImage}}" alt="alan">
-                                    <h5 th:text = "${album.nameAlbum}"></h5>
-                                </div>
-                            </li>
-                        </th:block>
+                                <th:block th:each = "album : ${albums}">
+                                <li class="songItem">
+                                    <div class="img_play">
+                                        <a th:href="@{'/album/'+${album.idAlbum}}">
+                                            <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                        </a>
+                                        <img th:src="@{${album.pathImage}}" alt="alan">
+                                        <h5 th:text = "${album.nameAlbum}"></h5>
+                                    </div>
+                                </li>
+                            </th:block>
                         </th:block>
                         </div>
                     </div>
@@ -205,16 +205,16 @@
                         </div>
                         <div class="pop_song">
                             <th:block th:if = "${playlists != null}">
-                            <th:block th:each = "playlist : ${playlists}">
-                            <li class="songItem">
-                                <div class="img_play">
-                                    <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
-                                    <img th:src="@{${'/assets/img/data/'+playlist.pathImage}}" alt="alan">
-                                    <h5 th:text = "${playlist.namePlaylist}"></h5>
-                                </div>
-                            </li>
-                        </th:block>
-                        </th:block>
+                                <th:block th:each = "playlist : ${playlists}">
+                                    <li class="songItem">
+                                        <div class="img_play">
+                                            <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                            <img th:src="@{${playlist.pathImage}}" alt="alan">
+                                            <h5 th:text = "${playlist.namePlaylist}"></h5>
+                                        </div>
+                                    </li>
+                                </th:block>
+                            </th:block>
                         </div>
                     </div>       
                 </div>

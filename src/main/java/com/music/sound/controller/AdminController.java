@@ -59,8 +59,6 @@ public class AdminController {
         return modelAndView;
     }
 
-    
-
     /*------------------------------------------------------- SOLVE: CRUD ALBUM--------------------------------------------- */
 
     @RequestMapping(value = "album", method = RequestMethod.GET)
@@ -1284,7 +1282,6 @@ public class AdminController {
 
                 String pathImage = user.getPathImg();
                 String urlImage = null;
-                System.out.println(pathImage);
                 if (pathImage != null) {
                     urlImage = Constant.URL_STATIC_IMAGE + pathImage;
                 }
