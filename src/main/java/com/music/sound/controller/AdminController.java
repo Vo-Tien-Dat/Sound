@@ -59,6 +59,8 @@ public class AdminController {
         return modelAndView;
     }
 
+    
+
     /*------------------------------------------------------- SOLVE: CRUD ALBUM--------------------------------------------- */
 
     @RequestMapping(value = "album", method = RequestMethod.GET)
@@ -119,43 +121,6 @@ public class AdminController {
 
         return modelAndView;
     }
-
-    // @RequestMapping(value = "album/add", method = RequestMethod.GET)
-    // public ModelAndView getIdAlbum(HttpSession session) {
-    // String idSession = session.getId();
-    // RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
-    // Boolean loginSuccess = roleDTO != null ? true : false;
-
-    // String fileView = "/page/admin/album/add";
-    // String urlRedirectLogin = "redirect:/login";
-    // String urlRedirectHome = "redirect:/home";
-    // String urlRedirectAddAlbum = "redirect:/admin/album/add/";
-    // String urlRedirectRootAlbum = "redirect:/admin/album";
-
-    // ModelAndView modelAndView = new ModelAndView(fileView);
-
-    // if (loginSuccess) {
-    // Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) ==
-    // 0 ? true : false;
-    // if (isRoleAdmin) {
-    // try {
-    // String idAlbum = albumDAO.getIdAblbumBeforeCreateAlbum();
-    // urlRedirectAddAlbum = urlRedirectAddAlbum + idAlbum;
-    // modelAndView.setViewName(urlRedirectAddAlbum);
-    // } catch (Exception ex) {
-    // String message = ex.getMessage();
-    // System.out.println(message);
-    // modelAndView.setViewName(urlRedirectRootAlbum);
-    // }
-    // } else {
-    // modelAndView.setViewName(urlRedirectHome);
-    // }
-    // } else {
-
-    // }
-
-    // return modelAndView;
-    // }
 
     // xử lí việc thêm album
     // xử lí việc lưu tên bài hát và ca sĩ vào cơ sở dữ liệu và lấy ra được image

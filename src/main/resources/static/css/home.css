@@ -643,3 +643,60 @@ header .song_side .popular_artists .item li img{
  border-radius: 50%;
  position: absolute;
 }
+
+
+a {
+    text-decoration: none;
+}
+
+
+ul,
+li {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.user{
+    position: relative;
+}
+
+
+
+
+.dropdown{
+    position: absolute;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    top: 100%; 
+    left: 0%;
+    transform: translateX(0%);
+    background-color: white;
+    margin-top: 0.5rem;
+    border-radius: 0.25rem;
+    padding: 0!important;
+    margin: 0.5rem!important;
+    padding-top:0.5rem!important;
+    overflow: hidden;
+}
+
+.item-dropdown{
+    width: 100%!important;    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    white-space: nowrap; 
+    padding-top: 0.5rem!important;
+    padding-right: 0.75rem!important;
+    padding-bottom: 0.5rem!important;
+    padding-left: 0.75rem!important;
+    font-size: 0.875rem;
+    color: black;
+}
+
+.item-dropdown:hover{
+   background-color: #e9e9eb;
+}
+
