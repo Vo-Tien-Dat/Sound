@@ -28,7 +28,7 @@ public interface Constant {
 
     public final int LIMIT_PLAYLIST_HOME = 8;
 
-    public final int LIMIT_SOUND_HOME = 10;
+    public final int LIMIT_SOUND_HOME = 5;
 
     public final String ROLE_ADMIN = "ROLE_ADMIN";
 

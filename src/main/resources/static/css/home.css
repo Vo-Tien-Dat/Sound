@@ -392,7 +392,7 @@ header .master_play .vol input{
      z-index: -1;
  }
  header .song_side nav{
-    padding: 12px 20px;
+    /* padding: 12px 20px; */
     width: 90%;
     height: 7%;
     margin: auto;
@@ -419,8 +419,8 @@ header .master_play .vol input{
   header .song_side nav ul li a{
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
-    margin-left: 8px;
+    font-size: 10px;
+    /* margin-left: 8px; */
     color: whitesmoke;
  }
  header .song_side nav ul li:hover{
@@ -458,7 +458,7 @@ header .master_play .vol input{
  }
  header .song_side nav .search .bi{
     font-size: 13px;
-    padding: 3px 0px 0px 10px;
+    padding: 12px 0px 0px 10px;
  }
  header .song_side nav .search input{
     background: none;
@@ -532,7 +532,7 @@ header .master_play .vol input{
  }
 
  header .song_side .popular-song-container{
-    height: 55%;
+    height: 48%;
     overflow-y: scroll;
  }
  header .song_side .popular-song-container::-webkit-scrollbar{
