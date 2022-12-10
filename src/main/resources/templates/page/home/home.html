@@ -518,7 +518,7 @@
                                     <a th:href="@{'/album/'+${playlist.idPlaylist}}">
                                         <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
                                     </a>
-                                    <img th:src="@{${'/assets/img/data/'+playlist.pathImage}}" alt="alan">
+                                    <img th:src="@{${playlist.pathImage}}" alt="alan">
                                     <h5 th:text = "${playlist.namePlaylist}"></h5>
                                 </div>
                             </li>
