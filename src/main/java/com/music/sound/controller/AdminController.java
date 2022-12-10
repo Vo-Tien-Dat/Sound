@@ -59,8 +59,6 @@ public class AdminController {
         return modelAndView;
     }
 
-    
-
     /*------------------------------------------------------- SOLVE: CRUD ALBUM--------------------------------------------- */
 
     @RequestMapping(value = "album", method = RequestMethod.GET)
