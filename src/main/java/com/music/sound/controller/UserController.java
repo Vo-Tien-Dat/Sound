@@ -284,12 +284,12 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = { "/user/*", "/user" }, method = RequestMethod.GET)
-    public ModelAndView getIndex() {
-        String pathRedirect = "redirect:/user/tracks";
-        ModelAndView modelAndView = new ModelAndView(pathRedirect);
-        return modelAndView;
-    }
+    // @RequestMapping(value = { "/user/*", "/user" }, method = RequestMethod.GET)
+    // public ModelAndView getIndex() {
+    // String pathRedirect = "redirect:/user/tracks";
+    // ModelAndView modelAndView = new ModelAndView(pathRedirect);
+    // return modelAndView;
+    // }
 
     @RequestMapping(value = "/user/albums", method = RequestMethod.GET)
     public ModelAndView getAlbums() {

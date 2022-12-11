@@ -119,7 +119,7 @@
 .controls {
   position: relative;
   text-align: right;
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 
 .controls ul {

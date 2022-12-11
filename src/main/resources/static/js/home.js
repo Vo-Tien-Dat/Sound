@@ -1,85 +1,10 @@
 const music = new Audio("vande.mp3");
-
-// create Array
-
 const songs = [
   // {
   //     id:'1',
   //     songName:` On My Way <br>
   //     <div class="subtitle">Alan Walker</div>`,
   //     poster: "./assets/img/1.jpg"
-  // },
-  // {
-  //     id:'2',
-  //     songName:` Alan Walker-Fade <br>
-  //     <div class="subtitle">Alan Walker</div>`,
-  //     poster: "./assets/img/2.jpg"
-  // },
-  // // all object type
-  // {
-  //     id:"3",
-  //     songName: `Cartoon - On & On <br><div class="subtitle"> Daniel Levi</div>`,
-  //     poster: "./assets/img/3.jpg",
-  // },
-  // {
-  //     id:"4",
-  //     songName: `Warriyo - Mortals <br><div class="subtitle">Mortals</div>`,
-  //     poster: "./assets/img/4.jpg",
-  // },
-  // {
-  //     id:"5",
-  //     songName: `Ertugrul Gazi <br><div class="subtitle">Ertugrul</div>`,
-  //     poster: "./assets/img/5.jpg",
-  // },
-  // {
-  //     id:"6",
-  //     songName: `Electronic Music <br><div class="subtitle">Electro</div>`,
-  //     poster: "./assets/img/6.jpg",
-  // },
-  // {
-  //     id:"7",
-  //     songName: `Agar Tum Sath Ho <br><div class="subtitle">Tamashaa</div>`,
-  //     poster: "./assets/img/7.jpg",
-  // },
-  // {
-  //     id:"8",
-  //     songName: `Suna Hai <br><div class="subtitle">Neha Kakker</div>`,
-  //     poster: "./assets/img/8.jpg",
-  // },
-  // {
-  //     id:"9",
-  //     songName: `Dilber <br><div class="subtitle">Satyameva Jayate</div>`,
-  //     poster: "./assets/img/9.jpg",
-  // },
-  // {
-  //     id:"10",
-  //     songName: `Duniya <br><div class="subtitle">Luka Chuppi</div>`,
-  //     poster: "./assets/img/10.jpg",
-  // },
-  // {
-  //     id:"11",
-  //     songName: `Lagdi Lahore Di <br><div class="subtitle">Street Dancer 3D</div>`,
-  //     poster: "./assets/img/11.jpg",
-  // },
-  // {
-  //     id:"12",
-  //     songName: `Putt Jatt Da <br><div class="subtitle">Putt Jatt Da</div>`,
-  //     poster: "./assets/img/12.jpg",
-  // },
-  // {
-  //     id:"13",
-  //     songName: `Baarishein <br><div class="subtitle">Atif Aslam</div>`,
-  //     poster: "./assets/img/13.jpg",
-  // },
-  // {
-  //     id:"14",
-  //     songName: `Vaaste <br><div class="subtitle">Dhvani Bhanushali</div>`,
-  //     poster: "./assets/img/14.jpg",
-  // },
-  // {
-  //     id:"15",
-  //     songName: `Lut Gaye <br><div class="subtitle">Jubin Nautiyal</div>`,
-  //     poster: "./assets/img/15.jpg",
   // },
 ];
 
@@ -88,69 +13,78 @@ const songs = [
 //     element.getElementsByTagName('h5')[0].innerHTML = songs[i].songName;
 // })
 
-// let masterPlay = document.getElementById('masterPlay');
-// let wave = document.getElementsByClassName('wave')[0];
+let masterPlay = document.getElementById('masterPlay');
+let wave = document.getElementsByClassName('wave')[0];
 
-// masterPlay.addEventListener('click',()=>{
-//     if (music.paused || music.currentTime <=0) {
-//         music.play();
-//         masterPlay.classList.remove('bi-play-fill');
-//         masterPlay.classList.add('bi-pause-fill');
-//         wave.classList.add('active2');
-//     } else {
-//         music.pause();
-//         masterPlay.classList.add('bi-play-fill');
-//         masterPlay.classList.remove('bi-pause-fill');
-//         wave.classList.remove('active2');
-//     }
-// } )
-
-const makeAllPlays = () => {
-  Array.from(document.getElementsByClassName("playListPlay")).forEach(
-    (element) => {
-      element.classList.add("bi-play-circle-fill");
-      element.classList.remove("bi-pause-circle-fill");
+// ** Start and stop sound 
+masterPlay.addEventListener('click',()=>{
+  
+    if (music.paused || music.currentTime <=0) {
+        music.play();
+        masterPlay.classList.remove('bi-play-fill');
+        masterPlay.classList.add('bi-pause-fill');
+        wave.classList.add('active2');
+    } else {
+        music.pause();
+        masterPlay.classList.add('bi-play-fill');
+        masterPlay.classList.remove('bi-pause-fill');
+        wave.classList.remove('active2');
     }
-  );
-};
-const makeAllBackgrounds = () => {
-  Array.from(document.getElementsByClassName("songItem")).forEach((element) => {
-    element.style.background = "rgb(105, 105, 170, 0)";
-  });
-};
+} )
 
-// let index = 0;
-// let poster_master_play = document.getElementById('poster_master_play');
-// let title = document.getElementById('title');
-// Array.from(document.getElementsByClassName('playListPlay')).forEach((element)=>{
-//     element.addEventListener('click', (e)=>{
-//         index = e.target.id;
-//         makeAllPlays();
-//         e.target.classList.remove('bi-play-circle-fill');
-//         e.target.classList.add('bi-pause-circle-fill');
-//         music.src = `audio/${index}.mp3`;
-//         poster_master_play.src =`./assets/img/${index}.jpg`;
-//         music.play();
-//         let song_title = songs.filter((ele)=>{
-//             return ele.id == index;
-//         })
 
-//         song_title.forEach(ele =>{
-//             let {songName} = ele;
-//             title.innerHTML = songName;
-//         })
-//         masterPlay.classList.remove('bi-play-fill');
-//         masterPlay.classList.add('bi-pause-fill');
-//         wave.classList.add('active2');
-//         music.addEventListener('ended',()=>{
-//             masterPlay.classList.add('bi-play-fill');
-//             masterPlay.classList.remove('bi-pause-fill');
-//             wave.classList.remove('active2');
-//         })
-//         makeAllBackgrounds();
-//         Array.from(document.getElementsByClassName('songItem'))[`${index-1}`].style.background = "rgb(105, 105, 170, .1)";
-//     })
-// })
+const makeAllPlays = () =>{
+    Array.from(document.getElementsByClassName('playListPlay')).forEach((element)=>{
+            element.classList.add('bi-play-circle-fill');
+            element.classList.remove('bi-pause-circle-fill');
+    })
+}
+const makeAllBackgrounds = () =>{
+    Array.from(document.getElementsByClassName('songItem')).forEach((element)=>{
+            element.style.background = "rgb(105, 105, 170, 0)";
+    })
+}
+
+let index;
+let poster_master_play = document.getElementById('poster_master_play');
+let title = document.getElementById('title');
+let imgSound,audioSound,nameSound;
+console.log(title )
+Array.from(document.getElementsByClassName('playListPlay')).map((element,index)=>{
+    element.addEventListener('click', (e)=>{
+        imgSound = document.getElementsByClassName('img-play-music')[index]
+        audioSound = document.getElementsByClassName('audio-play-music')[index]
+        nameSound = document.getElementsByClassName('name-play-music')[index];
+        console.log(imgSound,audioSound ,nameSound)
+        if(imgSound!=null && audioSound!=null){
+          index = e.target.id;
+          makeAllPlays();
+          e.target.classList.remove('bi-play-circle-fill');
+          e.target.classList.add('bi-pause-circle-fill');
+          music.src = `assets/audio/data/${audioSound.textContent}`;
+          poster_master_play.src =`/assets/img/data/${imgSound.textContent}`;
+          music.play();
+          // let song_title = songs.filter((ele)=>{
+          //     return ele.id == index;
+          // })
+  
+          // song_title.forEach(ele =>{
+          //     let {songName} = ele;
+          title.innerHTML = nameSound.textContent;
+          // })
+          masterPlay.classList.remove('bi-play-fill');
+          masterPlay.classList.add('bi-pause-fill');
+          wave.classList.add('active2');
+          music.addEventListener('ended',()=>{
+              masterPlay.classList.add('bi-play-fill');
+              masterPlay.classList.remove('bi-pause-fill');
+              wave.classList.remove('active2');
+          })
+        }
+        // makeAllBackgrounds();
+        // Array.from(document.getElementsByClassName('songItem'))[`${index-1}`].style.background = "rgb(105, 105, 170, .1)";
+    })
+})
 
 let currentStart = document.getElementById("currentStart");
 let currentEnd = document.getElementById("currentEnd");

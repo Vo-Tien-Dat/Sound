@@ -28,15 +28,21 @@
                     <h5>SUGGESTION</h5>
                     <div class="menu_song">
                         <th:block th:if = "${sounds != null}">
-                            <th:block th:each = "sound : ${sounds}">
+                            <th:block th:each = "sound,index : ${sounds}">
                             <li class="songItem">
-                                <span>01</span>
+                                <span th:text="${index.index}"></span>
                                 <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="Alan">
+                                <p th:text="${sound.pathAudio}" style="display: none;" class="audio-play-music"></p>
+                                <p th:text="${sound.pathImage}" style="display: none;" class="img-play-music"></p>
+                                <p th:text="${sound.nameSound}" style="display: none;" class="name-play-music"></p>
+
                                 <h5 th:text = "${sound.nameSound}">
-                                    <div class="subtitle" ><p th:text = "${sound.nameSinger}"></p></div>
+                                    <div class="subtitle" >
+                                        <p th:text = "${sound.nameSinger}"></p>
+                                    </div>
                                     <p th:text = "${sound.nameSinger}"></p>
                                 </h5>
-                                <i class="bi playListPlay bi-play-circle-fill" id="1"></i>  
+                                <i class="bi playListPlay bi-play-circle-fill"></i>  
                             </li>
                         </th:block>
                         </th:block>
@@ -45,19 +51,19 @@
                 <div class="favorite">
                     <h5>FAVORITE</h5>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-journal-album"></i>
                             <p>ALBUMS</p>
                         </a>
                     </div>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-file-music"></i>
                             <p>PLAYLISTS</p>
                         </a>
                     </div>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-music-note-list"></i>
                             <p>SOUNDS</p>
                         </a>
@@ -494,6 +500,11 @@
                                         </a>
                                         <img th:src="@{${album.pathImage}}" alt="alan">
                                         <h5 th:text = "${album.nameAlbum}"></h5>
+                                        <form th:action="@{'/favorite/create/album/' + ${album.idAlbum}}" th:method="post">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-heart tym"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </li>
                             </th:block>
@@ -514,11 +525,16 @@
                             <th:block th:each = "playlist : ${playlists}">
                             <li class="songItem">
                                 <div class="img_play">
-                                    <a th:href="@{'/album/'+${playlist.idPlaylist}}">
+                                    <a th:href="@{'/playlist/'+${playlist.idPlaylist}}">
                                         <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
                                     </a>
                                     <img th:src="@{${playlist.pathImage}}" alt="alan">
                                     <h5 th:text = "${playlist.namePlaylist}"></h5>
+                                    <form th:action="@{'/favorite/create/playlist/' + ${playlist.idPlaylist}}" th:method="post">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-heart tym"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         </th:block>
@@ -536,7 +552,7 @@
                     <div class="wave1"></div>
                     <div class="wave1"></div>
                 </div>
-                <img src="./assets/img/26th.jpg" alt="Alan" id="poster_master_play">
+                <img src="/assets/img/default/sound_default.png" alt="Alan" id="poster_master_play">
                 <h5 id="title">Vande Mataram<br>
                     <div class="subtitle">Bankim Chandra</div>
                 </h5>

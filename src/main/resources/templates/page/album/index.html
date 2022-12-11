@@ -26,39 +26,33 @@
                     <h1><strong>SOUND</strong></h1>
                 </a>
                 <div class="menu_song_container">
-                    <h5>SUGGESTION</h5>
                     <div class="menu_song">
-                        <th:block th:if = "${sounds != null}">
-                            <th:block th:each = "sound : ${sounds}">
-                            <li class="songItem">
-                                <span>01</span>
-                                <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="Alan">
-                                <h5 th:text = "${sound.nameSound}">
-                                    <div class="subtitle" ><p th:text = "${sound.nameSinger}"></p></div>
-                                    <p th:text = "${sound.nameSinger}"></p>
-                                </h5>
-                                <i class="bi playListPlay bi-play-circle-fill" id="1"></i>  
-                            </li>
-                        </th:block>
-                        </th:block>
+                        <div class="menu_song-item">
+                            <p>Listen to ad-free music with VIP music store</p>
+                            <button type="button" class="btn btn-outline-success">Nâng cấp VIP</button>
+                        </div>
+                        <div class="menu_song-item">
+                            <p>Spotify is a digital music service that gives you access to millions of songs.</p>
+                            <button type="button" class="btn btn-outline-success">Nâng cấp VIP</button>
+                        </div>
                     </div>
                 </div>
                 <div class="favorite">
-                     <h5>FAVORITE</h5>
+                    <h5>FAVORITE</h5>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-journal-album"></i>
                             <p>ALBUMS</p>
                         </a>
                     </div>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-file-music"></i>
                             <p>PLAYLISTS</p>
                         </a>
                     </div>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-music-note-list"></i>
                             <p>SOUNDS</p>
                         </a>
@@ -156,11 +150,13 @@
                                             <th:block th:each="sound : ${sounds}">
                                             <tr>
                                                 <th scope="row">
-                                                    <div class="sound-item" style="display: flex;">
+                                                    <div class="sound-item songItem" style="display: flex;">
                                                         <i class="bi bi-music-note"></i>
+                                                        <p th:text="${sound.pathAudio}" style="display: none;" class="audio-play-music"></p>
+                                                         <p th:text="${sound.pathImage}" style="display: none;" class="img-play-music"></p>
                                                         <div class="sound-item-img">
                                                             <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="" style="max-width: 50px;">
-                                                            <i class="bi bi-play-circle"></i>
+                                                            <i class="bi playListPlay bi-play-circle-fill"></i> 
                                                         </div>
                                                         <div class="sound-item-content">
                                                             <h6 th:text = "${sound.nameSound}"></h6>
@@ -170,7 +166,6 @@
                                                 </th>
                                                 <td>
                                                     <div class="sound-name__album">
-                                                        <p>Đừng khóc một mình</p>
                                                         <i class="bi bi-heart"></i>
                                                     </div>
                                                 </td>
@@ -212,7 +207,7 @@
                     <div class="wave1"></div>
                     <div class="wave1"></div>
                 </div>
-                <img src="./assets/img/26th.jpg" alt="Alan" id="poster_master_play">
+                <img src="/assets/img/default/sound_default.png" alt="Alan" id="poster_master_play">
                 <h5 id="title">Vande Mataram<br>
                     <div class="subtitle">Bankim Chandra</div>
                 </h5>

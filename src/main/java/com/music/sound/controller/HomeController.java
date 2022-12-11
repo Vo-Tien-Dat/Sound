@@ -392,12 +392,12 @@ public class HomeController {
     }
 
     // feature: redirect to home
-    @RequestMapping(value = "/playlist/*", method = RequestMethod.GET)
-    public ModelAndView getRootPlaylist() {
-        String urlRedirect = "redirect:/home";
-        ModelAndView modelAndView = new ModelAndView(urlRedirect);
-        return modelAndView;
-    }
+    // @RequestMapping(value = "/playlist/*", method = RequestMethod.GET)
+    // public ModelAndView getRootPlaylist() {
+    // String urlRedirect = "redirect:/home";
+    // ModelAndView modelAndView = new ModelAndView(urlRedirect);
+    // return modelAndView;
+    // }
 
     // @RequestMapping(value = "/playlist", method = RequestMethod.GET)
     // public ModelAndView getPlaylist() {
@@ -409,12 +409,11 @@ public class HomeController {
     // feature: show item playlist
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)
     public ModelAndView getPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
-
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/playlist/index1";
+        String fileView = "/page/playlist/index";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectAdmin = "redirect:/admin/*";
         String urlRedirectHome = "redirect:/home";
@@ -423,26 +422,33 @@ public class HomeController {
         if (loginSuccess) {
             Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
             if (isRoleUser) {
-
                 try {
+                    // hien thi thong tin user
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
-
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
                     PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
+                    List<PlaylistDTO> playlists = playlistDAO.readAllPLaylist();
+                    List<SoundDTO> sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistHome(idPlaylist);
 
-                    if (playlist == null) {
+                    if (playlist == null || playlists == null || sounds == null) {
                         modelAndView.setViewName(urlRedirectHome);
                     } else {
-                        List<SoundDTO> sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+                        System.out.print(playlist);
                         modelAndView.addObject("sounds", sounds);
                         modelAndView.addObject("playlist", playlist);
+                        modelAndView.addObject("playlists", playlists);
                     }
-
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
+                    // System.out.println(ex.getMessage());
                     modelAndView.setViewName(urlRedirectHome);
                 }
             } else {

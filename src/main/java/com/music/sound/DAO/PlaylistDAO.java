@@ -17,6 +17,9 @@ public class PlaylistDAO {
     private SoundDAO soundDAO;
 
     @Autowired
+    private AlbumDAO albumDAO;
+
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -48,6 +51,8 @@ public class PlaylistDAO {
     private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST = "select sound.id_sound from sound LEFT JOIN (SELECT id_sound from sound_playlist where id_playlist = ?) as playlist on sound.id_sound = playlist.id_sound where playlist.id_sound is null";
 
     private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM sound_playlist WHERE id_playlist = ? ";
+
+    private final String SQL_READ_ALBUM_WITH_ID_SOUND = "select * from album as T,(select id_album from sound where id_sound = ?)as S where T.id_album=S.id_album limit 1";
 
     private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM sound_playlist WHERE id_playlist = ? ";
 
@@ -115,6 +120,28 @@ public class PlaylistDAO {
             record = soundDAO.readSoundByIdSound(idSound);
             records.add(record);
         }
+        return records;
+    }
+
+    public List<SoundDTO> readAllSoundByIdPlaylistFromSoundPlaylistHome(String idPlaylist) {
+        List<SoundDTO> records = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_READ_ALL_SOUND_BY_ID_PLAYLIST, idPlaylist);
+        for (Map<String, Object> row : rows) {
+
+            String idSound = row.get("id_sound").toString();
+            SoundDTO sound = new SoundDTO();
+
+            if (idSound != null) {
+                sound = soundDAO.readSoundByIdSound(idSound);
+                AlbumDTO album = jdbcTemplate.queryForObject(SQL_READ_ALBUM_WITH_ID_SOUND,
+                        new AlbumReadMapper(), new Object[] { idSound });
+                if (album != null) {
+                    sound.setNameAlbum(album.getNameAlbum());
+                }
+            }
+            records.add(sound);
+        }
+        System.out.println(records);
         return records;
     }
 

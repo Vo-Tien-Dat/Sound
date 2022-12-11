@@ -5,307 +5,461 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Menu</title>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <title>Sidebar Menu</title>
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/b36a60f224.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/album.css}" />
+
+    <title>Sound App</title>
 </head>
 
 <body>
-    <nav>
-        <div class="sidebar-top">
-            <span class="shrink-btn">
-                <i class='bx bx-chevron-left'></i>
-            </span>
-            <img src="./img/logo.png" class="logo" alt="">
-            <h3 class="hide">Aqumex</h3>
-        </div>
-
-        <div class="search">
-            <i class='bx bx-search'></i>
-            <input type="text" class="hide" placeholder="Quick Search ...">
-        </div>
-
-        <div class="sidebar-links">
-            <ul>
-                <div class="active-tab"></div>
-                <li class="tooltip-element" data-tooltip="0">
-                    <a href="/" class="active" data-active="0">
-                        <div class="icon">
-                            <i class='bx bx-home'></i>
-                            <i class='bx bxs-home'></i>
+<header>
+    <div class="container-fluid" style="width: 100vw; height: 100vh;">
+        <div class="row" style="height: 100vh">
+            <div class="menu_side col-md-2">
+                <a href="/home" style="color: white;">
+                    <h1><strong>SOUND</strong></h1>
+                </a>
+                <div class="menu_song_container">
+                    <div class="menu_song">
+                        <div class="menu_song-item">
+                            <p>Listen to ad-free music with VIP music store</p>
+                            <button type="button" class="btn btn-outline-success">Nâng cấp VIP</button>
                         </div>
-                        <span class="link hide">Home</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="1">
-                    <a href="/favorite" data-active="1">
-                        <div class="icon">
-                            <i class='bx bx-heart'></i>
-                            <i class='bx bxs-heart'></i>
+                        <div class="menu_song-item">
+                            <p>Spotify is a digital music service that gives you access to millions of songs.</p>
+                            <button type="button" class="btn btn-outline-success">Nâng cấp VIP</button>
                         </div>
-                        <span class="link hide">Favorite</span>
-                    </a>
-                </li>
-                
-                <div class="tooltip">
-                    <span class="show">Dashboard</span>
-                    <span>Projects</span>
-                    <span>Messages</span>
-                    <span>Analytics</span>
-                </div>
-            </ul>
-        </div>
-
-        <div class="sidebar-footer">
-            <a href="#" class="account tooltip-element" data-tooltip="0">
-                <i class='bx bx-user'></i>
-            </a>
-            <div class="admin-user tooltip-element" data-tooltip="1">
-                <div class="admin-profile hide">
-                    <img src="./img/face-1.png" alt="">
-                    <div class="admin-info">
-                        <h3 th:text="${name_user}"></h3>
                     </div>
                 </div>
-                <form th:action="@{'/logout/' + ${session_id}}" th:method="post">
-                    <button type="submit" class="logout btn btn-primary">
-                        <i class='bx bx-log-out'></i>
-                    </button>
-                </form>
+                <div class="favorite">
+                     <h5>FAVORITE</h5>
+                    <div class="favorite-item">
+                        <a href="">
+                            <i class="bi bi-journal-album"></i>
+                            <p>ALBUMS</p>
+                        </a>
+                    </div>
+                    <div class="favorite-item">
+                        <a href="">
+                            <i class="bi bi-file-music"></i>
+                            <p>PLAYLISTS</p>
+                        </a>
+                    </div>
+                    <div class="favorite-item">
+                        <a href="">
+                            <i class="bi bi-music-note-list"></i>
+                            <p>SOUNDS</p>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="tooltip">
-                <span class="show">John Doe</span>
-                <span>Logout</span>
-            </div>
-        </div>
-    </nav>
+        
+            <div class="song_side col-md-10">
+                <nav>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class = "container">
+                                    <ul class="row">
+                                        <li class="col"><i class="bi bi-music-note-list"></i><a href="/home">SOUND</a> <span></span></li>
+                                        <li class="col"><i class="bi bi-journal-album"></i> <a href="/album">ALBUM</a> </li>
+                                        <li class="col"><i class="bi bi-card-checklist"></i> <a href="/album">PLAYLIST</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                            <div class="col-6">
+                                <div class="search d-flex flex-row align-content-center w-100">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" placeholder="Search Music...">
+                                </div>
+                            </div>
+                            <div class="col-2" >
+                                <div class="user">
+                                    <img th:src="${path_image_user}" alt="User" title="KDS CODER (Jahid Khan)">
 
-
-    <main>
-        <div class="container-fluid">
-            <div class="container text-center">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <div class="nav-link border-nav-link active" aria-current="page" id = "tab" data-tab = "0">
-                            <p class="fs-6 mb-0">Album</p>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <div class="item-dropdown gap-2" >
+                                                <img th:src="${path_image_user}"  class="rounded float-start" style = "position:relative">
+                                                <p class="mb-0" style="color: black" th:text="${name_user}"></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="item-dropdown">
+                                                <div class="d-flex flex-row justify-content-start align-item-center gap-2">
+                                                    <i class="fa-solid fa-lock"></i>
+                                                    <p class="text-start mb-0">Change password</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="item-dropdown">
+                                                <div class="d-flex flex-row justify-content-start align-items-center gap-2">
+                                                    <i class="fa-solid fa-heart"></i>
+                                                    <p class="text-start mb-0">Favorite</p>
+                                                </div>
+                                                
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <form th:action="@{'/logout/' + ${session_id}}" th:method="post">
+                                                <button type="submit" class="btn btn-light w-100">
+                                                    <div class="d-flex flex-row justify-content-start align-items-center gap-2">
+                                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                                        <p class="text-start mb-0" style="font-size: 0.875rem">Log out</p>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link border-nav-link"  aria-current="page" id = "tab" data-tab = "1">
-                            <p class="fs-6 mb-0">Playlist</p>
+                    </div>            
+                </nav>
+                <div class="container-fluid">
+                    <div class="container text-center">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <div class="nav-link border-nav-link active" aria-current="page" id = "tab" data-tab = "0">
+                                    <p class="fs-6 mb-0">Album</p>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link border-nav-link"  aria-current="page" id = "tab" data-tab = "1">
+                                    <p class="fs-6 mb-0">Playlist</p>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link border-nav-link" aria-current="page" id = "tab" data-tab = "2">
+                                    <p class="fs-6 mb-0">Sound</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- ALBUMS -->
+                                <div class="popular_song">
+                                    <div class="h4">
+                                        <h4>ALBUMS</h4>
+                                        <div class="btn_s">
+                                            <i id="left_scroll" class="bi bi-arrow-left-short"></i>
+                                            <i id="right_scroll" class="bi bi-arrow-right-short"></i>
+                                        </div>
+                                    </div>
+                                    <div class="pop_song">
+                                        <th:block th:if = "${albums != null}">
+                                            <th:block th:each = "album : ${albums}">
+                                            <li class="songItem">
+                                                <div class="img_play">
+                                                    <a th:href="@{'/album/'+${album.idAlbum}}">
+                                                        <i class="bi playListPlay bi-play-circle-fill" id="0af4bd63-0df0-4db9-820c-8118ed465393"></i>
+                                                    </a>
+                                                    <img th:src="@{${album.pathImage}}" alt="alan">
+                                                    <h5 th:text = "${album.nameAlbum}"></h5>
+                                                </div>
+                                            </li>
+                                        </th:block>
+                                    </th:block>
+                                    </div>
+                                </div>
+                                <!-- PLAYLISTS -->
+                                <div class="popular_song">
+                                    <div class="h4">
+                                        <h4>PLAYLIST</h4>
+                                        <div class="btn_s">
+                                            <i id="left_scroll" class="bi bi-arrow-left-short"></i>
+                                            <i id="right_scroll" class="bi bi-arrow-right-short"></i>
+                                        </div>
+                                    </div>
+                                    <div class="pop_song">
+                                        <th:block th:if = "${playlists != null}">
+                                        <th:block th:each = "playlist : ${playlists}">
+                                        <li class="songItem">
+                                            <div class="img_play">
+                                                <a th:href="@{'/playlist/'+${playlist.idPlaylist}}">
+                                                    <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                                </a>
+                                                <img th:src="@{${playlist.pathImage}}" alt="alan">
+                                                <h5 th:text = "${playlist.namePlaylist}"></h5>
+                                            </div>
+                                        </li>
+                                    </th:block>
+                                    </th:block>
+                                    </div>
+                                </div>  
+                                <!-- SOUNDS -->
+                                <div class="popular_song">
+                                    <div class="h4">
+                                        <h4>SOUNDS</h4>
+                                        <div class="btn_s">
+                                            <i id="left_scroll" class="bi bi-arrow-left-short"></i>
+                                            <i id="right_scroll" class="bi bi-arrow-right-short"></i>
+                                        </div>
+                                    </div>
+                                    <div class="pop_song">
+                                        <th:block th:if = "${sounds != null}">
+                                        <th:block th:each = "sound : ${sounds}">
+                                        <li class="songItem">
+                                            <div class="img_play">
+                                                <img th:src="@{${sound.pathImage}}" alt="alan">
+                                                <h5 th:text = "${sound.nameSound}"></h5>
+                                            </div>
+                                        </li>
+                                    </th:block>
+                                    </th:block>
+                                    </div>
+                                </div>                                  
+                            </div>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link border-nav-link" aria-current="page" id = "tab" data-tab = "2">
-                            <p class="fs-6 mb-0">Sound</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="container text-center rounded p-0">
-                <div class="tab-content">
-                    <div class="tab-pane tab-pane-active h-100" id = "tab-pane">
-                        <div class="container px-4 py-3 h-100 overflow-auto">
-                            <th:block th:if="${albums != null}">
-                                <th:block th:if="${#lists.size(albums) != 0}">
-                                    <div class="row">
-                                        <th:block th:each="album : ${albums}">
-                                            <div class="col-3 p-2 mb-2">
-                                                <div class="card w-100 p-0" style="width: 18rem;">
-                                                    <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="d-flex align-item-center">
-                                                                <div class="px-1 flex-grow-1">
-                                                                    <div class="d-inline">
-                                                                        <a th:href="@{'/album/' + ${album.idAlbum}}" style="text-decoration: none;">
-                                                                            <p class="card-title fs-4 mb-0 fw-semibold" th:text="${album.nameAlbum}"></p>
-                                                                        </a>
-                                                                        <p class="card-title fw-5" th:text="${album.nameSinger}"></p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="p-2">
-                                                                    <div class="d-inline">
-                                                                        <form th:action="@{'/favorite/create/album/' + ${album.idAlbum}}" th:method="post">
-                                                                            <button type="submit" class="btn btn-light">
-                                                                                <i class="fa-solid fa-heart text-danger"></i>
-                                                                            </button>
-                                                                        </form>
+                    </div>
+                    <div class="container text-center rounded p-0">
+                        <div class="tab-content">
+                            <div class="tab-pane tab-pane-active h-100" id = "tab-pane">
+                                <div class="container px-4 py-3 h-100 overflow-auto">
+                                    <th:block th:if="${albums != null}">
+                                        <th:block th:if="${#lists.size(albums) != 0}">
+                                            <div class="row">
+                                                <th:block th:each="album : ${albums}">
+                                                    <div class="col-3 p-2 mb-2">
+                                                        <div class="card w-100 p-0" style="width: 18rem;">
+                                                            <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="d-flex align-item-center">
+                                                                        <div class="px-1 flex-grow-1">
+                                                                            <div class="d-inline">
+                                                                                <a th:href="@{'/album/' + ${album.idAlbum}}" style="text-decoration: none;">
+                                                                                    <p class="card-title fs-4 mb-0 fw-semibold" th:text="${album.nameAlbum}"></p>
+                                                                                </a>
+                                                                                <p class="card-title fw-5" th:text="${album.nameSinger}"></p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="p-2">
+                                                                            <div class="d-inline">
+                                                                                <form th:action="@{'/favorite/create/album/' + ${album.idAlbum}}" th:method="post">
+                                                                                    <button type="submit" class="btn btn-light">
+                                                                                        <i class="fa-solid fa-heart text-danger"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </th:block>
+                                            </div>
+                                            
+                                        </th:block>
+                                        <th:block th:if="${#lists.size(albums) == 0}">
+                                            <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
+                                                <div class="d-inline">
+                                                    <div class="d-flex flex-column">
+                                                        <div class="p-2">
+                                                            <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                                        </div>
+                                                        <div class="p-2">
+                                                            <p class="fs-6 text-center opacity-25">Your Album is empty</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </th:block>
-                                    </div>
+                                    </th:block>
+                                    <th:block th:if="${albums == null}">
+                                        <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
+                                            <div class="d-inline">
+                                                <div class="d-flex flex-column">
+                                                    <div class="p-2">
+                                                        <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <p class="fs-6 text-center opacity-25">Your Album is empty </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="tab-pane h-100 " id = "tab-pane">
+                                <div class="container px-4 py-3 h-100 overflow-auto">
+                                    <th:block th:if = "${playlists != null}">
+                                        <th:block th:if="${#lists.size(playlists) != 0}">
+                                            <div class="row">
+                                                <th:block th:each="playlist : ${playlists}">
+                                                    <div class="col-3 p-1 mb-2">
+                                                        <div class="card w-100 p-0" style="width: 18rem;">
+                                                            <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="d-flex align-item-center">
+                                                                        <div class="px-1 flex-grow-1">
+                                                                            <div class="d-inline">
+                                                                                <a th:href="@{'/playlist/' + ${playlist.idPlaylist}}" style="text-decoration: none;">
+                                                                                    <p class="card-title fs-4 mb-0 fw-semibold" th:text="${playlist.namePlaylist}"></p>
+                                                                                </a>
+                                                                                <p class="card-title fw-5">singer</p>
+                                                                            </div>
+                                                
+                                                                        </div>
+                                                                        <div class="p-2">
+                                                                            <div class="d-inline">
+                                                                                <form th:action="@{'/favorite/create/playlist/' + ${playlist.idPlaylist}}"
+                                                                                    th:method="post">
+                                                                                    <button type="submit" class="btn btn-light">
+                                                                                        <i class="fa-solid fa-heart text-danger"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${#lists.size(playlists) == 0}">
+                                            <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
+                                                <div class="d-inline">
+                                                    <div class="d-flex flex-column">
+                                                        <div class="p-2">
+                                                            <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                                        </div>
+                                                        <div class="p-2">
+                                                            <p class="fs-6 text-center opacity-25">Your playlist is emtpy</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                    </th:block>
+                                    <th:block th:if="${playlists == null}">
+                                        <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
+                                            <div class="d-inline">
+                                                <div class="d-flex flex-column">
+                                                    <div class="p-2">
+                                                        <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <p class="fs-6 text-center opacity-25">Your playlist is emtpy</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
                                     
-                                </th:block>
-                                <th:block th:if="${#lists.size(albums) == 0}">
-                                    <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
-                                        <div class="d-inline">
-                                            <div class="d-flex flex-column">
-                                                <div class="p-2">
-                                                    <i class="fa-solid fa-folder fs-1 opacity-25"></i>
-                                                </div>
-                                                <div class="p-2">
-                                                    <p class="fs-6 text-center opacity-25">Your Album is empty</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th:block>
-                            </th:block>
-                            <th:block th:if="${albums == null}">
-                                <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
-                                    <div class="d-inline">
-                                        <div class="d-flex flex-column">
-                                            <div class="p-2">
-                                                <i class="fa-solid fa-folder fs-1 opacity-25"></i>
-                                            </div>
-                                            <div class="p-2">
-                                                <p class="fs-6 text-center opacity-25">Your Album is empty </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                            </th:block>
-                        
-                        </div>
-                    </div>
-                    <div class="tab-pane h-100 " id = "tab-pane">
-                        <div class="container px-4 py-3 h-100 overflow-auto">
-                            <th:block th:if = "${playlists != null}">
-                                <th:block th:if="${#lists.size(playlists) != 0}">
-                                    <div class="row">
-                                        <th:block th:each="playlist : ${playlists}">
-                                            <div class="col-3 p-1 mb-2">
-                                                <div class="card w-100 p-0" style="width: 18rem;">
-                                                    <img th:src="@{/assets/img/test.jfif}" class="card-img-top rounded" alt="...">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="d-flex align-item-center">
-                                                                <div class="px-1 flex-grow-1">
-                                                                    <div class="d-inline">
-                                                                        <a th:href="@{'/playlist/' + ${playlist.idPlaylist}}" style="text-decoration: none;">
-                                                                            <p class="card-title fs-4 mb-0 fw-semibold" th:text="${playlist.namePlaylist}"></p>
-                                                                        </a>
-                                                                        <p class="card-title fw-5">singer</p>
+                            </div>
+                            <div class="tab-pane h-100" id = "tab-pane">
+                                <div class="container px-4 py-3 h-100 overflow-auto">
+                                    <th:block th:if = "${sounds != null}">
+                                        <th:block th:if = "${#lists.size(sounds) != 0}">
+                                            <div class="d-flex flex-column gap-2">
+                                                <th:block th:each="sound : ${sounds}">
+                                                    <div class="container bg-white border rounded px-4 py-2">
+                                                        <div class="d-flex flex-row justify-content-between align-item-center">
+                                                            <div class="p-0">
+                                                                <div class="d-flex flex-row align-item-center gap-2">
+                                                                    <div class="p-0 align-self-center h-100">
+                                                                        <img src="./img/test.jfif" class="img-thumbnail p-0" alt="..."
+                                                                            style="height: 3rem; width: 3rem;">
                                                                     </div>
-                                        
-                                                                </div>
-                                                                <div class="p-2">
-                                                                    <div class="d-inline">
-                                                                        <form th:action="@{'/favorite/create/playlist/' + ${playlist.idPlaylist}}"
-                                                                            th:method="post">
-                                                                            <button type="submit" class="btn btn-light">
-                                                                                <i class="fa-solid fa-heart text-danger"></i>
-                                                                            </button>
-                                                                        </form>
+                                                                    <div class="p-0 align-self-center">
+                                                                        <p class="text-start mb-0 fw-semibold" th:text="${sound.nameSound}"></p>
+                                                                        <p class="text-start mb-0" th:text="${sound.nameSinger}"></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </th:block>
-                                    </div>
-                                </th:block>
-                                <th:block th:if="${#lists.size(playlists) == 0}">
-                                    <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
-                                        <div class="d-inline">
-                                            <div class="d-flex flex-column">
-                                                <div class="p-2">
-                                                    <i class="fa-solid fa-folder fs-1 opacity-25"></i>
-                                                </div>
-                                                <div class="p-2">
-                                                    <p class="fs-6 text-center opacity-25">Your playlist is emtpy</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th:block>
-                            </th:block>
-                            <th:block th:if="${playlists == null}">
-                                <div class="container w-100 h-100 d-flex justify-content-center align-items-center">
-                                    <div class="d-inline">
-                                        <div class="d-flex flex-column">
-                                            <div class="p-2">
-                                                <i class="fa-solid fa-folder fs-1 opacity-25"></i>
-                                            </div>
-                                            <div class="p-2">
-                                                <p class="fs-6 text-center opacity-25">Your playlist is emtpy</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th:block>
-                            
-                        </div>
-                    </div>
-                    <div class="tab-pane h-100" id = "tab-pane">
-                        <div class="container px-4 py-3 h-100 overflow-auto">
-                            <th:block th:if = "${sounds != null}">
-                                <th:block th:if = "${#lists.size(sounds) != 0}">
-                                    <div class="d-flex flex-column gap-2">
-                                        <th:block th:each="sound : ${sounds}">
-                                            <div class="container bg-white border rounded px-4 py-2">
-                                                <div class="d-flex flex-row justify-content-between align-item-center">
-                                                    <div class="p-0">
-                                                        <div class="d-flex flex-row align-item-center gap-2">
-                                                            <div class="p-0 align-self-center h-100">
-                                                                <img src="./img/test.jfif" class="img-thumbnail p-0" alt="..."
-                                                                    style="height: 3rem; width: 3rem;">
-                                                            </div>
-                                                            <div class="p-0 align-self-center">
-                                                                <p class="text-start mb-0 fw-semibold" th:text="${sound.nameSound}"></p>
-                                                                <p class="text-start mb-0" th:text="${sound.nameSinger}"></p>
+                                                            <div class="d-inline p-0 align-self-center">
+                                                                <form th:action="@{'/favorite/create/sound/' + ${sound.idSound}}" th:method="post">
+                                                                    <button type="submit" class="btn btn-light">
+                                                                        <i class="fa-solid fa-heart text-danger"></i>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="d-inline p-0 align-self-center">
-                                                        <form th:action="@{'/favorite/create/sound/' + ${sound.idSound}}" th:method="post">
-                                                            <button type="submit" class="btn btn-light">
-                                                                <i class="fa-solid fa-heart text-danger"></i>
-                                                            </button>
-                                                        </form>
+                                                </th:block>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if = "${#lists.size(sounds) == 0 }"></th:block>
+                                    </th:block>
+                                    <th:block th:if = "${sounds == null} ">
+                                        <div class="container p-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                                            <div class="d-inline">
+                                                <div class="d-flex flex-column">
+                                                    <div class="p-2">
+                                                        <i class="fa-solid fa-folder fs-1 opacity-25"></i>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <p class="fs-6 text-center opacity-25">Your sound is empty</p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </th:block>
-                                    </div>
-                                </th:block>
-                                <th:block th:if = "${#lists.size(sounds) == 0 }"></th:block>
-                            </th:block>
-                            <th:block th:if = "${sounds == null} ">
-                                <div class="container p-0 w-100 h-100 d-flex justify-content-center align-items-center">
-                                    <div class="d-inline">
-                                        <div class="d-flex flex-column">
-                                            <div class="p-2">
-                                                <i class="fa-solid fa-folder fs-1 opacity-25"></i>
-                                            </div>
-                                            <div class="p-2">
-                                                <p class="fs-6 text-center opacity-25">Your sound is empty</p>
-                                            </div>
                                         </div>
-                                    </div>
+                                    </th:block>
                                 </div>
-                            </th:block>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
-    <script type="text/javascript" th:src="@{/js/favorite.js}"></script>
+        
+        <div class="row">
+            <div class="master_play">
+                <div class="wave">
+                    <div class="wave1"></div>
+                    <div class="wave1"></div>
+                    <div class="wave1"></div>
+                </div>
+                <img src="./assets/img/26th.jpg" alt="Alan" id="poster_master_play">
+                <h5 id="title">Vande Mataram<br>
+                    <div class="subtitle">Bankim Chandra</div>
+                </h5>
+                <div class="icon">
+                    <i class="bi bi-skip-start-fill" id="back"></i>
+                    <i class="bi bi-play-fill" id="masterPlay"></i>
+                    <i class="bi bi-skip-end-fill" id="next"></i>
+                </div>
+                <span id="currentStart">0:00</span>
+                <div class="bar">
+                    <input type="range" id="seek" min="0" value="0" max="100">
+                    <div class="bar2" id="bar2"></div>
+                    <div class="dot"></div>
+                </div>
+                <span id="currentEnd">0:00</span>
+        
+                <div class="vol">
+                    <i class="bi bi-volume-down-fill" id="vol_icon"></i>
+                    <input type="range" id="vol" min="0" value="30" max="100">
+                    <div class="vol_bar"></div>
+                    <div class="dot" id="vol_dot"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</header>
+<!-- <script type="text/javascript" th:src="@{/js/admin.js}"></script> -->
+<script type="text/javascript" th:src="@{/js/favorite.js}"></script>
+<script type="text/javascript" th:src="@{/js/home.js}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
