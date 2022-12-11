@@ -94,16 +94,15 @@
                             <div class="col-2" >
                                 <div class="user">
                                     <img th:src="${path_image_user}" alt="User" title="KDS CODER (Jahid Khan)">
-
                                     <ul class="dropdown">
                                         <li>
-                                            <div class="item-dropdown gap-2" >
-                                                <img th:src="${path_image_user}"  class="rounded float-start" style = "position:relative">
+                                            <a th:href="@{/editor}" class="item-dropdown gap-2">
+                                                <img th:src="${path_image_user}" class="rounded float-start" style="position:relative">
                                                 <p class="mb-0" style="color: black" th:text="${name_user}"></p>
-                                            </div>
+                                            </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="item-dropdown">
+                                            <a th:href="@{/reset_password}" class="item-dropdown">
                                                 <div class="d-flex flex-row justify-content-start align-item-center gap-2">
                                                     <i class="fa-solid fa-lock"></i>
                                                     <p class="text-start mb-0">Change password</p>

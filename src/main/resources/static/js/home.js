@@ -289,51 +289,99 @@ const status = {
 const reduce = {
   current_input_password: {
     value: "",
-    status: "",
+    status: false,
     pattern: "",
   },
   type_input_password: {
     value: "",
-    status: "",
+    status: false,
     pattern: "",
   },
   retype_input_password: {
     value: "",
     status: "",
-    pattern: "",
+    pattern: false,
   },
+};
+
+const element = {
+  current_input_password: "",
+  type_input_password: "",
+  retype_input_password: "",
 };
 
 if (forms !== null) {
   Array.from(forms).forEach((form) => {
+    // nghe sự kiện thay đổi các input trong form
     const needValidations = document.querySelectorAll(".need-validation");
     Array.from(needValidations).forEach((needValidation) => {
       const formControl = needValidation.querySelector(".form-control");
       const idFormControl = formControl.id;
-      const valueFormControl = formControl.value;
       const invalidFeedback = needValidation.querySelector(".invalid-feedback");
+      element[idFormControl] = needValidation;
 
+      // chỉ dùng để cập nhật giá trí
       formControl.addEventListener("input", function (e) {
-        console.log(this.value);
-        value[idFormControl].value = this.value;
+        reduce[idFormControl].value = this.value;
+        if (this.value.length != 0) {
+          reduce[idFormControl].status = true;
+        } else {
+          reduce[idFormControl].status = false;
+        }
+      });
+
+      //xử lí sự kiện
+      formControl.addEventListener("input", function () {
+        if (idFormControl === "type_input_password") {
+          const validFeedback =
+            element["retype_input_password"].querySelector(".invalid-feedback");
+          if (
+            reduce["retype_input_password"].value ===
+              reduce["type_input_password"].value &&
+            reduce["retype_input_password"].value.length === 0
+          ) {
+            validFeedback.style.display = "none";
+          } else {
+            validFeedback.style.display = "inline";
+          }
+        }
+
+        if (idFormControl === "retype_input_password") {
+          if (
+            reduce["retype_input_password"].value ===
+            reduce["type_input_password"].value
+          ) {
+            invalidFeedback.style.display = "none";
+            reduce["retype_input_password"].status = true;
+          } else {
+            invalidFeedback.style.display = "inline";
+            reduce["retype_input_password"].status = false;
+          }
+        }
       });
     });
 
     form.addEventListener("submit", function (event) {
-      const needValidations = document.querySelectorAll(".need-validation");
-      Array.from(needValidations).forEach((needValidation) => {
-        const formControl = needValidation.querySelector(".form-control");
-        const idFormControl = formControl.id;
-        const valueFormControl = formControl.value;
-        const invalidFeedback =
-          needValidation.querySelector(".invalid-feedback");
-        console.log(formControl);
-        formControl.addEventListener("change", function (e) {
-          console.log(this.value);
-          value[idFormControl].value = this.value;
-        });
+      const keys = Object.keys(reduce);
+      let activeRequestPost = true;
+      Array.from(keys).forEach((key) => {
+        if (reduce[key]["status"] == false) {
+          activeRequestPost = false;
+        }
       });
-      event.preventDefault();
+      if (!activeRequestPost) {
+        event.preventDefault();
+      }
     });
   });
 }
+
+const formNeedEditors = document.querySelectorAll(".form-need-editor");
+
+Array.from(formNeedEditors).forEach((formNeedEditor) => {
+  const needEditors = formNeedEditor.querySelectorAll(".need-editor");
+  Array.from(needEditors).forEach((needEditor) => {
+    const buttonNeedEditor = needEditor.querySelector(".button-need-editor");
+    buttonNeedEditor.addEventListener("click", function () {});
+  });
+});
