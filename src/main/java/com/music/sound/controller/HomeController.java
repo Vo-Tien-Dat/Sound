@@ -376,12 +376,12 @@ public class HomeController {
     }
 
     // feature: redirect to home
-    @RequestMapping(value = "/playlist/*", method = RequestMethod.GET)
-    public ModelAndView getRootPlaylist() {
-        String urlRedirect = "redirect:/home";
-        ModelAndView modelAndView = new ModelAndView(urlRedirect);
-        return modelAndView;
-    }
+    // @RequestMapping(value = "/playlist/*", method = RequestMethod.GET)
+    // public ModelAndView getRootPlaylist() {
+    // String urlRedirect = "redirect:/home";
+    // ModelAndView modelAndView = new ModelAndView(urlRedirect);
+    // return modelAndView;
+    // }
 
     // @RequestMapping(value = "/playlist", method = RequestMethod.GET)
     // public ModelAndView getPlaylist() {
@@ -393,12 +393,11 @@ public class HomeController {
     // feature: show item playlist
     @RequestMapping(value = "/playlist/{id}", method = RequestMethod.GET)
     public ModelAndView getPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
-
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/playlist/index1";
+        String fileView = "/page/playlist/index";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectAdmin = "redirect:/admin/*";
         String urlRedirectHome = "redirect:/home";
@@ -407,8 +406,8 @@ public class HomeController {
         if (loginSuccess) {
             Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
             if (isRoleUser) {
-
                 try {
+                    // hien thi thong tin user
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
@@ -416,7 +415,6 @@ public class HomeController {
                     modelAndView.addObject("name_user", nameUser);
 
                     PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
-
                     if (playlist == null) {
                         modelAndView.setViewName(urlRedirectHome);
                     } else {
@@ -427,12 +425,13 @@ public class HomeController {
 
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
-                    modelAndView.setViewName(urlRedirectHome);
+                    // modelAndView.setViewName(urlRedirectHome);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectAdmin);
             }
         } else {
+            System.out.print('T');
             modelAndView.setViewName(urlRedirectLogin);
         }
 

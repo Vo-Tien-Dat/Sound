@@ -515,7 +515,7 @@
                             <th:block th:each = "playlist : ${playlists}">
                             <li class="songItem">
                                 <div class="img_play">
-                                    <a th:href="@{'/album/'+${playlist.idPlaylist}}">
+                                    <a th:href="@{'/playlist/'+${playlist.idPlaylist}}">
                                         <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
                                     </a>
                                     <img th:src="@{${'/assets/img/data/'+playlist.pathImage}}" alt="alan">

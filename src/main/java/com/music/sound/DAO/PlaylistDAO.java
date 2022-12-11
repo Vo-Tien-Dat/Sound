@@ -111,8 +111,12 @@ public class PlaylistDAO {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_READ_ALL_SOUND_BY_ID_PLAYLIST, idPlaylist);
         for (Map<String, Object> row : rows) {
             SoundDTO record = new SoundDTO();
+
             String idSound = row.get("id_sound").toString();
-            record = soundDAO.readSoundByIdSound(idSound);
+            System.out.println(idSound);
+            record = null;
+            System.out.println(soundDAO.readSoundByIdSound(idSound));
+
             records.add(record);
         }
         return records;

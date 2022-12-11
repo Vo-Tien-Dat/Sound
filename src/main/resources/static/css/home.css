@@ -594,8 +594,8 @@ header .master_play .vol input{
  }
  header .song_side .popular_song .pop_song li{
      border-radius: 10px;
-     width: 220px;
-     height: 250px;
+     width: 200px;
+     height: 230px;
      list-style-type: none;
      margin-right: 15px;
      transition: .3s linear;
@@ -606,7 +606,7 @@ header .master_play .vol input{
  header .song_side .popular_song .pop_song li .img_play{
     position: relative;
     display: flex;
-    width: 220px;
+    width: 200px;
     height: 100%;
     align-items: center;
     flex-direction: column;
@@ -619,8 +619,8 @@ header .master_play .vol input{
    bottom: 0;
    left: 0;
    right: 0;
-   width: 220px;
-   height: 220px;
+   width: 200px;
+   height: 200px;
  }
 
  header .song_side .popular_song .pop_song li .img_play a .bi{
