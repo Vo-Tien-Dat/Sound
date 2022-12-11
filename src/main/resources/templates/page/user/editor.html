@@ -11,6 +11,7 @@
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/b36a60f224.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/upload.css}" />
     <link rel="stylesheet" th:href="@{/css/slidehome.css}" />
 
     <title>Sound App</title>
@@ -25,7 +26,24 @@
                         <h1><strong>SOUND</strong></h1>
                     </a>
                     <div class="menu_song_container">
-                        
+                        <h5>SUGGESTION</h5>
+                        <div class="menu_song">
+                            <th:block th:if="${sounds != null}">
+                                <th:block th:each="sound : ${sounds}">
+                                    <li class="songItem">
+                                        <span>01</span>
+                                        <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="Alan">
+                                        <h5 th:text="${sound.nameSound}">
+                                            <div class="subtitle">
+                                                <p th:text="${sound.nameSinger}"></p>
+                                            </div>
+                                            <p th:text="${sound.nameSinger}"></p>
+                                        </h5>
+                                        <i class="bi playListPlay bi-play-circle-fill" id="1"></i>
+                                    </li>
+                                </th:block>
+                            </th:block>
+                        </div>
                     </div>
                     <div class="favorite">
                         <h5>FAVORITE</h5>
@@ -76,6 +94,7 @@
                                 <div class="col-2">
                                     <div class="user">
                                         <img th:src="${path_image_user}" alt="User" title="KDS CODER (Jahid Khan)">
+
                                         <ul class="dropdown">
                                             <li>
                                                 <a th:href="@{/editor}" class="item-dropdown gap-2">
@@ -85,7 +104,8 @@
                                             </li>
                                             <li>
                                                 <a th:href="@{/reset_password}" class="item-dropdown">
-                                                    <div class="d-flex flex-row justify-content-start align-item-center gap-2">
+                                                    <div
+                                                        class="d-flex flex-row justify-content-start align-item-center gap-2">
                                                         <i class="fa-solid fa-lock"></i>
                                                         <p class="text-start mb-0">Change password</p>
                                                     </div>
@@ -119,39 +139,68 @@
                             </div>
                         </div>
                     </nav>
-                    <div class="container-fluid d-flex flex-row align-items-center vh-100">
-                        <div class="container w-50" style = "transform: translateY(-25%);"  >
-                            <form class="row g-3 needs-validation rounded px-4 py-3 bg-dark" th:action="@{/reset_password}" th:method="post" th:object = "${PasswordDTO}">
-                                <div class="col-md-12 m-0 need-validation">
-                                    <label for="current_input_password" class="form-label">Current</label>
-                                    <input type="password" class="form-control" id="current_input_password" th:field = "*{currentPassword}" required>
-                                    <th:block th:if = "${valid_message != null}">
-                                        <div class="p-1 mb-1 bg-danger text-white rounded mt-3">
-                                            <p class="text-start mb-0">Mật khẩu không đúng vui lòng nhập lại</p>
+                    <div class="container-fluid vh-100 d-flex flex-row align-items-center">
+                        <div class="container w-75 rounded border border-light px-4 py-4" style = "transform: translateY(-25%);">
+                            <label class = "form-label fs-5 fw-semibold">General Account Setting</label>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <form class="p-0" th:action="@{/user/update/image}" th:method="post" enctype="multipart/form-data" th:id = "form_update_image">
+                                        <div class="avatar" style="height: 15rem; width: 15rem">
+                                            <div class="avatar-icon">
+                                                <input type="file" id="file_image" style="display: none" th:name="avatar" />
+                                                <label for="file_image">
+                                                    <i class='bx bxs-camera avatar-icon__icon'></i>
+                                                </label>
+                                            </div>
+                                            <div class="avatar-preview" id="avatar-preview">
+                                                <img th:src="@{${urlImage}}" alt="image_empty" class="avatar-preview__image" id="id_preview_avatar"
+                                                    accept="image/*" />
+                                            </div>
                                         </div>
-                                       
-                                    </th:block>
+                                    </form>
                                 </div>
-                                <div class="col-md-12 need-validation">
-                                    <label for="type_input_password" class="form-label">Type New</label>
-                                    <input type="password" class="form-control" id="type_input_password"th:field = "*{newPassword}" required>
+                                <div class="col-sm-8 ">
+                                    <form class="p-0" th:action="@{/user/update/infor}" th:method="post" enctype="multipart/form-data"
+                                        th:id="form_update_image" th:object = "${user}">
+                                        <div class="container form-need-editor">
+                                            <div class="d-flex flex-column gap-2">
+                                                <div class="d-inline need-editor">
+                                                    <label class="form-label">User name</label>
+                                                    <div class="d-flex flex-row align-items-center gap-2">
+                                                        <input type="text" class="form-control input-need-editor" required th:field = "*{userName}">
+                                                    </div>
+                                                </div>
+                                                <div class="d-inline need-editor">
+                                                    <label class="form-label">Email</label>
+                                                    <div class="d-flex flex-row align-items-center gap-2">
+                                                        <input type="text" class="form-control input-need-editor" required th:field = "*{email}">
+
+                                                    </div>
+                                                </div>
+                                                <div class="d-inline need-editor">
+                                                    <label class="form-label">Name user</label>
+                                                    <div class="d-flex flex-row align-items-center gap-2">
+                                                        <input type="text" class="form-control input-need-editor" required th:field = "*{nameUser}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container mt-4">
+                                            <div class="d-flex flex-row justify-content-end gap-2">
+                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
                                 </div>
-                                <div class="col-md-12 need-validation">
-                                    <label for="retype_input_password" class="form-label">Re-type new </label>
-                                    <input type="password" class="form-control" id="retype_input_password" required>
-                                    <div class="invalid-feedback mb-0">
-                                        Không khớp mật khẩu
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
-                
+            </div>
+
+                    <!-- Slide  -->
+  
             <div class="row">
                 <div class="master_play">
                     <div class="wave">
@@ -186,10 +235,12 @@
             </div>
         </div>
 
-
     </header>
     <script type="text/javascript" th:src="@{/js/home.js}"></script>
-    <!-- <script type="text/javascript" th:src="@{/js/slidehome.js}"></script> -->
+    <script type="text/javascript" th:src="@{/js/slidehome.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+    <script type="text/javascript" th:src="@{/js/upload.js}"></script>
+    <script type="text/javascript" th:src="@{/js/validation.js}"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
