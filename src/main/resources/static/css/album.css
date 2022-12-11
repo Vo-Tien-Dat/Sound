@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: 10px;
 }
 .albums-suggestion h4{
     font-weight: 600;
@@ -61,7 +62,7 @@
 }
 .albums-suggestion .album-suggestion_item .sug-content h6{
     font-weight: 400;
-    width: 250px;
+    width: 200px;
     overflow: hidden;
     white-space: nowrap; 
     text-overflow: ellipsis;
@@ -83,6 +84,10 @@
 .album-left h4{
     margin-top: 8px;
     font-weight: 600;
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .album-left p {
     margin-top: 10px;
@@ -221,4 +226,25 @@
     
     font-size: 10px;
     font-weight: 300;
+}
+
+.menu_song-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin:12px 0;
+    background-image: linear-gradient(#333333, #6be585);
+}
+
+.menu_song-item p{
+    padding: 12px;
+    font-size: 12px;
+}
+
+.menu_song-item button{
+    border-radius: 15px;
+    font-size: 10px;
+    margin-bottom: 4px;
 }

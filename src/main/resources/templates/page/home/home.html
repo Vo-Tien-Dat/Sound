@@ -45,19 +45,19 @@
                 <div class="favorite">
                     <h5>FAVORITE</h5>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-journal-album"></i>
                             <p>ALBUMS</p>
                         </a>
                     </div>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-file-music"></i>
                             <p>PLAYLISTS</p>
                         </a>
                     </div>
                     <div class="favorite-item">
-                        <a href="">
+                        <a th:href="@{/favorite}">
                             <i class="bi bi-music-note-list"></i>
                             <p>SOUNDS</p>
                         </a>
@@ -495,6 +495,11 @@
                                         </a>
                                         <img th:src="@{${album.pathImage}}" alt="alan">
                                         <h5 th:text = "${album.nameAlbum}"></h5>
+                                        <form th:action="@{'/favorite/create/album/' + ${album.idAlbum}}" th:method="post">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-heart tym"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </li>
                             </th:block>
@@ -520,6 +525,11 @@
                                     </a>
                                     <img th:src="@{${playlist.pathImage}}" alt="alan">
                                     <h5 th:text = "${playlist.namePlaylist}"></h5>
+                                    <form th:action="@{'/favorite/create/playlist/' + ${playlist.idPlaylist}}" th:method="post">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-heart tym"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         </th:block>

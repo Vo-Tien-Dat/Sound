@@ -625,7 +625,7 @@ header .master_play .vol input{
 
  header .song_side .popular_song .pop_song li .img_play a .bi{
    position: absolute;
-   font-size: 50px;
+   font-size: 40px;
    cursor: pointer;
    transition: .3s linear;
    opacity: 0;
@@ -633,16 +633,41 @@ header .master_play .vol input{
     left: 50%; 
     transform: translate(-50%, -50%);
  }
+
+  header .song_side .popular_song .pop_song li .img_play form .tym{
+   position: absolute;
+   top: 5px;
+    right: 10px;
+   opacity: 0;
+   transition: .3s linear;
+  }
+
+   header .song_side .popular_song .pop_song li .img_play:hover form button i{
+   opacity: 1;
+   z-index: 200;
+   cursor: pointer;
+   font-size: 18px;
+ }
+
+ header .song_side .popular_song .pop_song li .img_play:hover form button i:hover{
+    color: red;
+ }
+
+
   header .song_side .popular_song .pop_song li .img_play h5{
    position: absolute;
    padding: 5px 0px 0px 5px;
    line-height: 15px;
    font-size: 12px;
    bottom: 0;
+   width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
  }
  header .song_side .popular_song .pop_song li .img_play:hover .bi{
    opacity: 1;
-   color:white;
+   color:rgb(176, 170, 170);
    z-index: 200;
  }
  /* header .song_side .popular_song .pop_song li h5{

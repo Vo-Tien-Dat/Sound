@@ -36,7 +36,6 @@ public class FavoriteController {
 
     @RequestMapping(value = "/favorite", method = RequestMethod.GET)
     public ModelAndView getFavorite(HttpSession session) {
-
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
@@ -60,6 +59,11 @@ public class FavoriteController {
 
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
 
@@ -69,11 +73,9 @@ public class FavoriteController {
                     sounds = soundDAO.readAllSoundByIdUserFromFavoriteSoundUser(idUser);
                     modelAndView.addObject("sounds", sounds);
 
-
                     playlists = playlistDAO.readAllPlaylistByIdUserFromFavoritePlaylistUser(idUser);
                     modelAndView.addObject("playlists", playlists);
-                    
-
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);

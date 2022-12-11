@@ -574,7 +574,6 @@ public class AdminController {
     // hiển thị trang thêm playlist
     @RequestMapping(value = "playlist/editor/{id}", method = RequestMethod.GET)
     public ModelAndView getAddPlaylist(@PathVariable("id") String idPlaylist, HttpSession session) {
-
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
@@ -608,6 +607,7 @@ public class AdminController {
                     playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
                     modelAndView.addObject("playlist", playlist);
 
+                    // cac bai hat chua duoc them vao
                     sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistFirst(idPlaylist);
                     for (SoundDTO sound : sounds) {
                         String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
@@ -618,10 +618,11 @@ public class AdminController {
                         sound.setPathImage(urlPathImage);
                     }
                     modelAndView.addObject("sounds", sounds);
-
+                    // cac bai hat da duoc them vao
                     soundAddedPlaylists = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
                     for (SoundDTO sound : soundAddedPlaylists) {
                         String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        System.out.println(sound);
                         String pathImage = sound.getPathImage();
                         if (pathImage != null) {
                             urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
@@ -637,8 +638,7 @@ public class AdminController {
                     }
                     modelAndView.addObject("urlAvatarImage", urlAvatarImage);
                 } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
+                    System.out.println(ex.getMessage());
                 }
             } else {
                 modelAndView.setViewName(urlRedirectHome);

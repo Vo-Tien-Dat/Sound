@@ -427,27 +427,34 @@ public class HomeController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
-
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
                     PlaylistDTO playlist = playlistDAO.readPlaylistByIdPlaylist(idPlaylist);
-                    if (playlist == null) {
+                    List<PlaylistDTO> playlists = playlistDAO.readAllPLaylist();
+                    List<SoundDTO> sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylistHome(idPlaylist);
+
+                    if (playlist == null || playlists == null || sounds == null) {
                         modelAndView.setViewName(urlRedirectHome);
                     } else {
-                        List<SoundDTO> sounds = playlistDAO.readAllSoundByIdPlaylistFromSoundPlaylist(idPlaylist);
+                        System.out.print(playlist);
                         modelAndView.addObject("sounds", sounds);
                         modelAndView.addObject("playlist", playlist);
+                        modelAndView.addObject("playlists", playlists);
                     }
-
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                    // modelAndView.setViewName(urlRedirectHome);
+                    // System.out.println(ex.getMessage());
+                    modelAndView.setViewName(urlRedirectHome);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectAdmin);
             }
         } else {
-            System.out.print('T');
             modelAndView.setViewName(urlRedirectLogin);
         }
 
