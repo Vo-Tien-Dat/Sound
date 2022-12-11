@@ -280,12 +280,12 @@ let left_scroll = document.getElementById("left_scroll");
 let right_scroll = document.getElementById("right_scroll");
 let pop_song = document.getElementsByClassName("pop_song")[0];
 
-if(left_scroll!==null){
+if (left_scroll !== null) {
   left_scroll.addEventListener("click", () => {
     pop_song.scrollLeft -= 330;
   });
 }
-if(right_scroll!==null){
+if (right_scroll !== null) {
   right_scroll.addEventListener("click", () => {
     pop_song.scrollLeft += 330;
   });
@@ -299,16 +299,12 @@ if (left_scrolls != null) {
   left_scrolls.addEventListener("click", () => {
     item.scrollLeft -= 330;
   });
-} else {
-  console.log("left_scrolls is null");
 }
 
 if (right_scrolls != null) {
   right_scrolls.addEventListener("click", () => {
     item.scrollLeft += 330;
   });
-} else {
-  console.log("right_scrolls is null");
 }
 
 const classNameUser = document.getElementsByClassName("user");
@@ -329,3 +325,81 @@ document.addEventListener("click", function (e) {
     classNameDropDown[0].style.display = "none";
   }
 });
+
+const forms = document.querySelectorAll(".needs-validation");
+
+const currentInputPassword = document.getElementById("current_input_password");
+
+const typeInputPassword = document.getElementById("type_input_password");
+
+const retypeInputPassword = document.getElementById("retype_input_password");
+
+const pattern = {
+  current_input_password: "",
+  type_input_password: "",
+  retype_input_password: "",
+};
+
+const value = {
+  current_input_password: "",
+  type_input_password: "",
+  retype_input_password: "",
+};
+
+const status = {
+  current_input_password: "",
+  type_input_password: "",
+  retype_input_password: "",
+};
+
+const reduce = {
+  current_input_password: {
+    value: "",
+    status: "",
+    pattern: "",
+  },
+  type_input_password: {
+    value: "",
+    status: "",
+    pattern: "",
+  },
+  retype_input_password: {
+    value: "",
+    status: "",
+    pattern: "",
+  },
+};
+
+if (forms !== null) {
+  Array.from(forms).forEach((form) => {
+    const needValidations = document.querySelectorAll(".need-validation");
+    Array.from(needValidations).forEach((needValidation) => {
+      const formControl = needValidation.querySelector(".form-control");
+      const idFormControl = formControl.id;
+      const valueFormControl = formControl.value;
+      const invalidFeedback = needValidation.querySelector(".invalid-feedback");
+
+      formControl.addEventListener("input", function (e) {
+        console.log(this.value);
+        value[idFormControl].value = this.value;
+      });
+    });
+
+    form.addEventListener("submit", function (event) {
+      const needValidations = document.querySelectorAll(".need-validation");
+      Array.from(needValidations).forEach((needValidation) => {
+        const formControl = needValidation.querySelector(".form-control");
+        const idFormControl = formControl.id;
+        const valueFormControl = formControl.value;
+        const invalidFeedback =
+          needValidation.querySelector(".invalid-feedback");
+        console.log(formControl);
+        formControl.addEventListener("change", function (e) {
+          console.log(this.value);
+          value[idFormControl].value = this.value;
+        });
+      });
+      event.preventDefault();
+    });
+  });
+}

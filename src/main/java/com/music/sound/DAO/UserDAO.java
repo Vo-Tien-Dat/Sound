@@ -33,11 +33,11 @@ public class UserDAO {
 
     private final String SQL_UPDATE_USER_BY_ID_USER = "UPDATE user SET user_name = ?, password = ?,email = ?, name_user = ?, description = ? WHERE id_user = ?";
 
-    private final String SQL_CREATE_USER_BY_USER_NAME_AND_PASSWORD = "INSERT INTO user(user_name, password, name_user) VALUES (?, ?, ?)";
-
     private final String SQL_DELETE_USER_BY_ID_USER = "DELETE FROM user WHERE id_user = ? ";
 
     private final String SQL_UPDATE_PATH_IMAGE_BY_ID_USER = "UPDATE user set path_image = ? where id_user = ? ";
+
+    private final String SQL_UPDATE_PASSWORD_BY_ID_USER = "UPDATE user set password = ? where id_user = ?";
     // feature: fina all user
 
     public List<User> findAllUser() {
@@ -146,6 +146,12 @@ public class UserDAO {
 
     public void updatePathImageByIdUser(String idUser, String pathImage) {
         jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_USER, pathImage, idUser);
+    }
+
+    public void updatePasswordbyIdUser(UserDTO user) {
+        String password = user.getPassword();
+        String idUser = user.getIdUser();
+        jdbcTemplate.update(SQL_UPDATE_PASSWORD_BY_ID_USER, password, idUser);
     }
 
 }

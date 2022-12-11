@@ -80,10 +80,26 @@ public class HomeController {
 
                     // hiển thị danh sách album
                     albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
+                    for (AlbumDTO album : albums) {
+                        String pathImage = album.getPathImage();
+                        String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        if (pathImage != null) {
+                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        album.setPathImage(urlPathImage);
+                    }
                     modelAndView.addObject("albums", albums);
 
                     // hiển thị danh sách playlist
                     playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
+                    for (PlaylistDTO playlist : playlists) {
+                        String pathImage = playlist.getPathImage();
+                        String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        if (pathImage != null) {
+                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        playlist.setPathImage(urlPathImage);
+                    }
                     modelAndView.addObject("playlists", playlists);
                     modelAndView.addObject("sounds", sounds);
                 } catch (Exception ex) {
