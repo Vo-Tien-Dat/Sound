@@ -68,12 +68,28 @@ public class FavoriteController {
                     modelAndView.addObject("name_user", nameUser);
 
                     albums = albumDAO.readAllAlbumByIdUserFromFavoriteAlbumUser(idUser);
+                    for (AlbumDTO album : albums) {
+                        String pathImage = album.getPathImage();
+                        String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        if (pathImage != null) {
+                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        album.setPathImage(urlPathImage);
+                    }
                     modelAndView.addObject("albums", albums);
 
                     sounds = soundDAO.readAllSoundByIdUserFromFavoriteSoundUser(idUser);
                     modelAndView.addObject("sounds", sounds);
 
                     playlists = playlistDAO.readAllPlaylistByIdUserFromFavoritePlaylistUser(idUser);
+                    for (PlaylistDTO playlist : playlists) {
+                        String pathImage = playlist.getPathImage();
+                        String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
+                        if (pathImage != null) {
+                            urlPathImage = Constant.URL_STATIC_IMAGE + pathImage;
+                        }
+                        playlist.setPathImage(urlPathImage);
+                    }
                     modelAndView.addObject("playlists", playlists);
                     modelAndView.addObject("path_image_user", urlPathImageUser);
                 } catch (Exception ex) {

@@ -161,15 +161,10 @@
                                             <li class="songItem">
                                                 <div class="img_play">
                                                     <a th:href="@{'/album/'+${album.idAlbum}}">
-                                                        <i class="bi playListPlay bi-play-circle-fill" id="7"></i>
+                                                        <i class="bi playListPlay bi-play-circle-fill" id="0af4bd63-0df0-4db9-820c-8118ed465393"></i>
                                                     </a>
                                                     <img th:src="@{${album.pathImage}}" alt="alan">
                                                     <h5 th:text = "${album.nameAlbum}"></h5>
-                                                    <form th:action="@{'/favorite/create/album/' + ${album.idAlbum}}" th:method="post">
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <i class="bi bi-heart tym"></i>
-                                                        </button>
-                                                    </form>
                                                 </div>
                                             </li>
                                         </th:block>
@@ -195,11 +190,6 @@
                                                 </a>
                                                 <img th:src="@{${playlist.pathImage}}" alt="alan">
                                                 <h5 th:text = "${playlist.namePlaylist}"></h5>
-                                                <form th:action="@{'/favorite/create/playlist/' + ${playlist.idPlaylist}}" th:method="post">
-                                                    <button type="submit" class="btn btn-primary">
-                                                        <i class="bi bi-heart tym"></i>
-                                                    </button>
-                                                </form>
                                             </div>
                                         </li>
                                     </th:block>
@@ -222,11 +212,6 @@
                                             <div class="img_play">
                                                 <img th:src="@{${sound.pathImage}}" alt="alan">
                                                 <h5 th:text = "${sound.nameSound}"></h5>
-                                                <form th:action="@{'/favorite/create/sound/' + ${sound.idSound}}" th:method="post">
-                                                    <button type="submit" class="btn btn-primary">
-                                                        <i class="bi bi-heart tym"></i>
-                                                    </button>
-                                                </form>
                                             </div>
                                         </li>
                                     </th:block>

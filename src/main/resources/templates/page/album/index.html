@@ -150,11 +150,13 @@
                                             <th:block th:each="sound : ${sounds}">
                                             <tr>
                                                 <th scope="row">
-                                                    <div class="sound-item" style="display: flex;">
+                                                    <div class="sound-item songItem" style="display: flex;">
                                                         <i class="bi bi-music-note"></i>
+                                                        <p th:text="${sound.pathAudio}" style="display: none;" class="audio-play-music"></p>
+                                                         <p th:text="${sound.pathImage}" style="display: none;" class="img-play-music"></p>
                                                         <div class="sound-item-img">
                                                             <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="" style="max-width: 50px;">
-                                                            <i class="bi bi-play-circle"></i>
+                                                            <i class="bi playListPlay bi-play-circle-fill"></i> 
                                                         </div>
                                                         <div class="sound-item-content">
                                                             <h6 th:text = "${sound.nameSound}"></h6>
@@ -205,7 +207,7 @@
                     <div class="wave1"></div>
                     <div class="wave1"></div>
                 </div>
-                <img src="./assets/img/26th.jpg" alt="Alan" id="poster_master_play">
+                <img src="/assets/img/default/sound_default.png" alt="Alan" id="poster_master_play">
                 <h5 id="title">Vande Mataram<br>
                     <div class="subtitle">Bankim Chandra</div>
                 </h5>
