@@ -44,6 +44,8 @@ public class HomeController {
 
     /*-------------------------------------------- HOME PAGE --------------------------------------------------------------------- */
 
+    
+
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView getHome(HttpSession session) {
         String idSession = session.getId();

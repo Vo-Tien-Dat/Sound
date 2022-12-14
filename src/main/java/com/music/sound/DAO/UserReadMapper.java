@@ -2,11 +2,11 @@ package com.music.sound.DAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.springframework.jdbc.core.RowMapper;
 
 public class UserReadMapper implements RowMapper<UserDTO> {
     public UserDTO mapRow(ResultSet rs, int numRow) throws SQLException {
+
         UserDTO dto = new UserDTO();
 
         String idUser = rs.getString("id_user");

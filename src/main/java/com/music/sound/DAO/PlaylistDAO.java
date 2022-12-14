@@ -26,39 +26,39 @@ public class PlaylistDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_CREATE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER = "INSERT INTO favorite_playlist_user VALUES (?,?)";
+    private final String SQL_CREATE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER = "call SP_CREATE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER(?,?)";
 
-    private final String SQL_CREATE_SOUND_PLAYLIST_BY_ID_PLAYLIST_AND_ID_SOUND = "INSERT INTO sound_playlist(id_sound, id_playlist) VALUES (?, ?)";
+    private final String SQL_CREATE_SOUND_PLAYLIST_BY_ID_PLAYLIST_AND_ID_SOUND = "call SP_CREATE_SOUND_PLAYLIST_BY_ID_PLAYLIST_AND_ID_SOUND(?,?)";
 
-    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER = "SELECT * FROM playlist FROM id_user = ?";
+    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER = "call SP_READ_ALL_PLAYLIST_BY_ID_USER(?) ";
 
-    private final String SQL_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM playlist ORDER BY RAND() LIMIT  ? ";
+    private final String SQL_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM = "call SP_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM(?)";
 
-    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER = "SELECT * FROM favorite_playlist_user WHERE id_user = ? ";
+    private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER = "call SP_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER(?)";
 
-    private final String SQL_READ_ALL_PLAYLIST = "SELECT * FROM playlist";
+    private final String SQL_READ_ALL_PLAYLIST = "call SP_READ_ALL_PLAYLIST()";
 
-    private final String SQL_PLAYLIST_BY_ID_PLAYLIST = "SELECT * FROM playlist WHERE id_playlist = ?";
+    private final String SQL_PLAYLIST_BY_ID_PLAYLIST = "call SP_PLAYLIST_BY_ID_PLAYLIST(?)";
 
-    private final String SQL_DELETE_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM playlist WHERE id_playlist = ? ";
+    private final String SQL_DELETE_PLAYLIST_BY_ID_PLAYLIST = "call SP_DELETE_PLAYLIST_BY_ID_PLAYLIST(?)";
 
-    private final String SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST = "UPDATE playlist SET name_playlist = ?, path_image = ?  WHERE id_playlist = ? ";
+    private final String SQL_UPDATE_PLAYLIST_BY_ID_PLAYLIST = "call SP_UPDATE_PLAYLIST_BY_ID_PLAYLIST(?,?,?)";
 
-    private final String SQL_UPDATE_NAME_PLAYLIST_BY_ID_PLAYLIST = "UPDATE playlist SET name_playlist = ? WHERE id_playlist = ?";
+    private final String SQL_UPDATE_NAME_PLAYLIST_BY_ID_PLAYLIST = "call SP_UPDATE_NAME_PLAYLIST_BY_ID_PLAYLIST(?,?)";
 
-    private final String SQL_UPDATE_IMAGE_PLAYLIST_BY_ID_PLAYLIST = "UPDATE playlist SET path_image = ? WHERE id_playlist = ? ";
+    private final String SQL_UPDATE_IMAGE_PLAYLIST_BY_ID_PLAYLIST = "call SP_UPDATE_IMAGE_PLAYLIST_BY_ID_PLAYLIST(?,?)";
 
-    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST = "select sound.id_sound from sound LEFT JOIN (SELECT id_sound from sound_playlist where id_playlist = ?) as playlist on sound.id_sound = playlist.id_sound where playlist.id_sound is null";
+    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST = "call SP_READ_ALL_SOUND_BY_ID_PLAYLIST_FIRST(?)";
 
-    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM sound_playlist WHERE id_playlist = ? ";
+    private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "call SP_READ_ALL_SOUND_BY_ID_PLAYLIST(?)";
 
-    private final String SQL_READ_ALBUM_WITH_ID_SOUND = "select * from album as T,(select id_album from sound where id_sound = ?)as S where T.id_album=S.id_album limit 1";
+    private final String SQL_READ_ALBUM_WITH_ID_SOUND = "call SP_READ_ALBUM_WITH_ID_SOUND(?)";
 
-    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_PLAYLIST = "DELETE FROM sound_playlist WHERE id_playlist = ? ";
+    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_PLAYLIST = "call SP_DELETE_SOUND_PLAYLIST_BY_ID_PLAYLIST(?)";
 
-    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_SOUND_AND_ID_PLAYLIST = "DELETE FROM sound_playlist WHERE id_sound = ? and id_playlist = ? ";
+    private final String SQL_DELETE_SOUND_PLAYLIST_BY_ID_SOUND_AND_ID_PLAYLIST = "call SP_DELETE_SOUND_PLAYLIST_BY_ID_SOUND_AND_ID_PLAYLIST(?,?)";
 
-    private final String SQL_DELETE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER = "DELETE FROM favorite_playlist_user WHERE id_playlist = ? AND  id_user = ? ";
+    private final String SQL_DELETE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER = "call SP_DELETE_FAVORITE_PLAYLIST_USER_BY_ID_PLAYLIST_AND_ID_USER(?,?)";
 
     public List<Playlist> findAllPlaylist() {
 

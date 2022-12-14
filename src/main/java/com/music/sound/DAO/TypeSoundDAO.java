@@ -15,9 +15,9 @@ public class TypeSoundDAO {
 
     // sql
 
-    private final String SQL_READ_ALL_TYPE_SOUND = "SELECT * FROM type_sound";
+    private final String SQL_READ_ALL_TYPE_SOUND = "call SP_READ_ALL_TYPE_SOUND()";
 
-    private final String SQL_RAED_TYPE_SOUND_BY_ID_TYPE_SOUND = "SELECT * FROM type_sound WHERE id_type_sound = ?";
+    private final String SQL_RAED_TYPE_SOUND_BY_ID_TYPE_SOUND = "call SP_RAED_TYPE_SOUND_BY_ID_TYPE_SOUND(?)";
 
     public List<TypeSound> findAllTypeSound() {
         List<TypeSound> records = new ArrayList<>();
