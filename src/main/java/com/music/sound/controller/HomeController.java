@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,7 @@ public class HomeController {
 
     /*-------------------------------------------- HOME PAGE --------------------------------------------------------------------- */
 
-    
-
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = { "/home/**", "/", "//" }, method = RequestMethod.GET)
     public ModelAndView getHome(HttpSession session) {
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
@@ -104,6 +103,55 @@ public class HomeController {
                     }
                     modelAndView.addObject("playlists", playlists);
                     modelAndView.addObject("sounds", sounds);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
+                }
+            } else {
+                modelAndView.setViewName(urlRedirectAdmin);
+            }
+
+        } else {
+            modelAndView.setViewName(urlRedirectLogin);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam(value = "key", required = true) String key, HttpSession session) {
+        String idSession = session.getId();
+        RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
+        Boolean loginSuccess = roleDTO != null ? true : false;
+
+        String fileView = "/page/home/search";
+        String urlRedirectLogin = "redirect:/login";
+        String urlRedirectAdmin = "redirect:/admin/*";
+
+        ModelAndView modelAndView = new ModelAndView(fileView);
+
+        if (loginSuccess) {
+            Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
+            if (isRoleUser) {
+                List<SoundDTO> sounds = new ArrayList<>();
+                try {
+                    // hiển thị user của người dùng
+                    String idUser = roleDTO.getIdUser();
+                    UserDTO user = userDAO.readUserByIdUser(idUser);
+                    String nameUser = user.getNameUser();
+                    sounds = soundDAO.readAllSoundWithKeyDetail(key);
+                    // System.out.print(sounds);
+                    String pathImageUser = user.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImageUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImageUser;
+                    }
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
+
+                    modelAndView.addObject("sounds", sounds);
+                    modelAndView.addObject("key", key);
+
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);
@@ -512,4 +560,13 @@ public class HomeController {
         }
         return modelAndView;
     }
+
+    // @RequestMapping(value = "/**", method = RequestMethod.GET)
+    // public ModelAndView getTest() {
+    // String urlRedirectLogin = "redirect:/login";
+    // String urlRedirectHome = "redirect:/home";
+    // ModelAndView modelAndView = new ModelAndView("/page/home/error");
+    // System.out.print("TEst");
+    // return modelAndView;
+    // }
 }

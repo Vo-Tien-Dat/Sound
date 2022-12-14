@@ -17,10 +17,12 @@ const slider = {
     slider.reset();
     if (current === items.length - 1) current = -1; // Check if current slide is last in array
     current++;
-    controls[current].classList.add('active');
-    items[current].classList.add('active');
-    slider.transitionDelay(headerItems);
-    slider.transitionDelay(descriptionItems);
+    if(controls[current]){
+      controls[current].classList.add('active');
+      items[current].classList.add('active');
+      slider.transitionDelay(headerItems);
+      slider.transitionDelay(descriptionItems);
+    }
   },
   clickedControl: (e) => { // Add active class to clicked control and corresponding slide
     slider.reset();

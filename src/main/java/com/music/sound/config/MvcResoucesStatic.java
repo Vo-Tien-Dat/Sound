@@ -10,7 +10,8 @@
 // public class MvcResoucesStatic implements WebMvcConfigurer {
 // @Override
 // public void addResourceHandlers(ResourceHandlerRegistry registry) {
-// String path = "file:///D:/doan/Sound/src/main/resources/static/css/";
+// String path =
+// "file:///media/lifegoeson/7A66F4EE66F4ABCF/backup_file/IT_hk1nam4/LTW/Sound/src/main/resources/static/css/";
 // registry
 // .addResourceHandler("/css/**")
 // .addResourceLocations(path);
