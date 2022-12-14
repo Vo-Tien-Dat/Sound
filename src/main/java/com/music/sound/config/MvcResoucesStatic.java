@@ -12,9 +12,10 @@
 // public class MvcResoucesStatic implements WebMvcConfigurer {
 // @Override
 // public void addResourceHandlers(ResourceHandlerRegistry registry) {
+// String path =
+// "file:///media/lifegoeson/7A66F4EE66F4ABCF/backup_file/IT_hk1nam4/LTW/Sound/src/main/resources/static/css/";
 // registry
-// .addResourceHandler("/static/**")
-// .addResourceLocations("/resources/static/assets/", "/resources/static/css/",
-// "/resources/static/js/");
+// .addResourceHandler("/css/**")
+// .addResourceLocations(path);
 // }
 // }

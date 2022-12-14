@@ -40,6 +40,8 @@ public class SoundDAO {
 
         private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM sound ORDER BY RAND() LIMIT ? ";
 
+        private final String SQL_READ_ALL_SOUND_WITH_KEY_DETAIL = "SELECT * FROM sound WHERE name_sound = ? ";
+
         private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "SELECT * FROM sound WHERE id_album IS NULL";
 
         private final String SQL_UPDATE_SOUND = "UPDATE sound SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
@@ -106,6 +108,14 @@ public class SoundDAO {
                 List<SoundDTO> records = new ArrayList<>();
                 records = jdbcTemplate.query(SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM, new SoundReadMapper(),
                                 new Object[] { rowLimit });
+                return records;
+        }
+
+        public List<SoundDTO> readAllSoundWithKeyDetail(String key) {
+                List<SoundDTO> records = new ArrayList<>();
+                records = jdbcTemplate.query(
+                                SQL_READ_ALL_SOUND_WITH_KEY_DETAIL, new SoundReadMapper(),
+                                new Object[] { key });
                 return records;
         }
 
