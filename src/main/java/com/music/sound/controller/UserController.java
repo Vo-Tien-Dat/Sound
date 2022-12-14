@@ -141,7 +141,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/editor", method = RequestMethod.GET)
-    public ModelAndView getEditorUser(HttpSession session) {
+    public ModelAndView getEditorUser(@RequestParam(value = "message", required = false) String message,
+            HttpSession session) {
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
@@ -170,11 +171,12 @@ public class UserController {
                     modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     modelAndView.addObject("urlImage", urlPathImageUser);
+                    modelAndView.addObject("message", message);
                     modelAndView.addObject("user", user);
 
                 } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
+                    String messageException = ex.getMessage();
+                    System.out.println(messageException);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectAdmin);
@@ -272,8 +274,9 @@ public class UserController {
 
                     modelAndView.setViewName(urlEditorUser);
                 } catch (Exception ex) {
-                    String message = ex.getMessage();
-                    System.out.println(message);
+                    String message = "Tên tài khoản hoặc email đã tồn tại! Vui long nhập tên khác";
+                    modelAndView.addObject("message", message);
+                    modelAndView.setViewName(urlEditorUser);
                 }
             } else {
                 modelAndView.setViewName(urlRedirectAdmin);

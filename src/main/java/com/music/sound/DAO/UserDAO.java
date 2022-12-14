@@ -5,12 +5,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.music.sound.config.Constant;
 import com.music.sound.model.User;
+import com.music.sound.security.EncryptAndDecrypt.DES;
+import com.music.sound.security.EncryptAndDecrypt.DESAlgorithm;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.lang.Object;
 import java.util.List;
 import java.util.ArrayList;
+import com.music.sound.security.EncryptAndDecrypt.DES;
 
 @Repository
 public class UserDAO {
@@ -21,25 +26,25 @@ public class UserDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_ALL_USER = "SELECT * FROM user";
+    private final String SQL_ALL_USER = "call SP_ALL_USER()";
 
-    private final String SQL_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE = "SELECT * FROM user_role WHERE id_user = ?";
+    private final String SQL_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE = "call SP_READ_ALL_ROLE_BY_ID_USER_FROM_USER_ROLE(?)";
 
-    private final String SQL_FIND_USER_BY_ID_USER = "SELECT * FROM user WHERE id_user = ?";
+    private final String SQL_FIND_USER_BY_ID_USER = "call SP_FIND_USER_BY_ID_USER(?)";
 
-    private final String SQL_FIND_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name = ?";
+    private final String SQL_FIND_USER_BY_USERNAME = "call SP_FIND_USER_BY_USERNAME(?)";
 
-    private final String SQL_READ_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name = ? ";
+    private final String SQL_READ_USER_BY_USERNAME = "call SP_READ_USER_BY_USERNAME(?)";
 
-    private final String SQL_UPDATE_USER_BY_ID_USER = "UPDATE user SET user_name = ?, password = ?,email = ?, name_user = ?, description = ? WHERE id_user = ?";
+    private final String SQL_UPDATE_USER_BY_ID_USER = "call SP_UPDATE_USER_BY_ID_USER(?,?,?,?,?,?)";
 
-    private final String SQL_UPDATE_USER_NAME_AND_EMAIL_AND_NAME_USER_BY_ID_USER = "UPDATE user set user_name = ?, email = ? , name_user = ? WHERE id_user = ?";
+    private final String SQL_UPDATE_USER_NAME_AND_EMAIL_AND_NAME_USER_BY_ID_USER = "call SP_UPDATE_USER_NAME_AND_EMAIL_AND_NAME_USER_BY_ID_USER(?,?,?,?)";
 
-    private final String SQL_DELETE_USER_BY_ID_USER = "DELETE FROM user WHERE id_user = ? ";
+    private final String SQL_DELETE_USER_BY_ID_USER = "call SP_DELETE_USER_BY_ID_USER(?)";
 
-    private final String SQL_UPDATE_PATH_IMAGE_BY_ID_USER = "UPDATE user set path_image = ? where id_user = ? ";
+    private final String SQL_UPDATE_PATH_IMAGE_BY_ID_USER = "call SP_UPDATE_PATH_IMAGE_BY_ID_USER(?,?)";
 
-    private final String SQL_UPDATE_PASSWORD_BY_ID_USER = "UPDATE user set password = ? where id_user = ?";
+    private final String SQL_UPDATE_PASSWORD_BY_ID_USER = "call SP_UPDATE_PASSWORD_BY_ID_USER(?,?)";
 
     // feature: fina all user
 
@@ -62,9 +67,14 @@ public class UserDAO {
         return records;
     }
 
-    public UserDTO readUserByUsername(String username) {
+    public UserDTO readUserByUsername(String username) throws Exception {
+        DES des = new DES(Constant.KEY_DES);
+        String encryptUserName = des.encrypt(username);
         UserDTO record = new UserDTO();
-        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(), username);
+        record = jdbcTemplate.queryForObject(SQL_READ_USER_BY_USERNAME, new UserReadMapper(), encryptUserName);
+        String password = record.getPassword();
+        String decryptPassword = des.decrypt(password);
+        record.setPassword(decryptPassword);
         return record;
     }
 
@@ -76,8 +86,15 @@ public class UserDAO {
         return result;
     }
 
-    public UserDTO readUserByIdUser(String idUser) {
+    public UserDTO readUserByIdUser(String idUser) throws Exception {
+        DES des = new DES(Constant.KEY_DES);
         UserDTO record = (UserDTO) jdbcTemplate.queryForObject(SQL_FIND_USER_BY_ID_USER, new UserReadMapper(), idUser);
+        String userName = record.getUserName();
+        String password = record.getPassword();
+        String decryptUserName = des.decrypt(userName);
+        String decryptPassword = des.decrypt(password);
+        record.setUserName(decryptUserName);
+        record.setPassword(decryptPassword);
         return record;
     }
 
@@ -106,6 +123,13 @@ public class UserDAO {
     }
 
     public void insertUserByUsernameAndPasswordAndNameUser(User user) throws Exception {
+        DES des = new DES(Constant.KEY_DES);
+        String userName = user.getUserName();
+        String password = user.getPassword();
+        String encryptUserName = des.encrypt(userName);
+        String encryptPassword = des.encrypt(password);
+        user.setUserName(encryptUserName);
+        user.setPassword(encryptPassword);
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
@@ -120,7 +144,17 @@ public class UserDAO {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         try {
+            String userName = user.getUserName();
+            String password = user.getPassword();
+
+            DES des = new DES(Constant.KEY_DES);
+            String encryptUserName = des.encrypt(userName);
+            String encryptPassword = des.encrypt(password);
+
+            user.setUserName(encryptUserName);
+            user.setPassword(encryptPassword);
             entityManager.persist(user);
+
             entityTransaction.commit();
             idUser = user.getId().toString();
         } catch (Exception ex) {
@@ -151,10 +185,12 @@ public class UserDAO {
         jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_USER, pathImage, idUser);
     }
 
-    public void updatePasswordbyIdUser(UserDTO user) {
+    public void updatePasswordbyIdUser(UserDTO user) throws Exception {
+        DES des = new DES(Constant.KEY_DES);
         String password = user.getPassword();
+        String encryptPassword = des.encrypt(password);
         String idUser = user.getIdUser();
-        jdbcTemplate.update(SQL_UPDATE_PASSWORD_BY_ID_USER, password, idUser);
+        jdbcTemplate.update(SQL_UPDATE_PASSWORD_BY_ID_USER, encryptPassword, idUser);
     }
 
     public void updatePathImageByIdUser(UserDTO user) {
@@ -163,12 +199,15 @@ public class UserDAO {
         jdbcTemplate.update(SQL_UPDATE_PATH_IMAGE_BY_ID_USER, pathImage, idUser);
     }
 
-    public void updateUserNameAndEmailAndNameUserByIdUser(UserDTO user) {
+    public void updateUserNameAndEmailAndNameUserByIdUser(UserDTO user) throws Exception {
+        DES des = new DES(Constant.KEY_DES);
         String userName = user.getUserName();
+        String encryptUserName = des.encrypt(userName);
         String email = user.getEmail();
         String nameUser = user.getNameUser();
         String idUser = user.getIdUser();
-        jdbcTemplate.update(SQL_UPDATE_USER_NAME_AND_EMAIL_AND_NAME_USER_BY_ID_USER, userName, email, nameUser, idUser);
+        jdbcTemplate.update(SQL_UPDATE_USER_NAME_AND_EMAIL_AND_NAME_USER_BY_ID_USER, encryptUserName, email, nameUser,
+                idUser);
     }
 
 }

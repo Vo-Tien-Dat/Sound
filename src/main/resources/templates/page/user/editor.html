@@ -183,6 +183,11 @@
                                                         <input type="text" class="form-control input-need-editor" required th:field = "*{nameUser}">
                                                     </div>
                                                 </div>
+                                                <div class="d-inline">
+                                                    <th:block th:if = "${message != null}">
+                                                        <div class="p-3 mb-2 bg-danger text-white rounded" th:text = "${message}"></div>
+                                                    </th:block>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="container mt-4">

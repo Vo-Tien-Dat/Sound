@@ -20,29 +20,29 @@ public class AlbumDAO {
     private EntityManagerFactory entityManagerFactory;
 
     // sql
-    private final String SQL_READ_ALL_ALBUM = "SELECT * FROM album";
+    private final String SQL_READ_ALL_ALBUM = "call SP_READ_ALL_ALBUM()";
 
-    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "SELECT * FROM album WHERE id_album = ?";
+    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "call SP_READ_ALBUM_BY_ID_ALBUM(?)";
 
-    private final String SQL_READ_ALBUM_BY_ID_USER = "SELECT * FROM FROM album WHERE id_user = ? ";
+    private final String SQL_READ_ALBUM_BY_ID_USER = "call SP_READ_ALBUM_BY_ID_USER(?)";
 
-    private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER = "SELECT * FROM  favorite_album_user WHERE id_user = ? ";
+    private final String SQL_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER = "call SP_READ_ALL_ALBUM_BY_ID_USER_FROM_FAVORITE_ALBUM_USER(?)";
 
-    private final String SQL_CREATE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "INSERT INTO favorite_album_user(id_album, id_user) VALUES (?,?)";
+    private final String SQL_CREATE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "call SP_CREATE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER(?,?)";
 
-    private final String SQL_DELETE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "DELETE FROM favorite_album_user WHERE id_album = ? AND id_user = ? ";
+    private final String SQL_DELETE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER = "call SP_DELETE_FAVORITE_ALBUM_USER_BY_ID_ALBUM_AND_ID_USER(?,?)";
 
-    private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM = "UPDATE album SET name_album = ?, name_singer = ?, path_image = ? WHERE id_album = ?";
+    private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM = "call SP_UPDATE_ALBUM_BY_ID_ALBUM(?,?,?,?)";
 
-    private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM_2_ARGUMENT = "UPDATE album set name_album = ?, name_singer = ? WHERE id_album = ?";
+    private final String SQL_UPDATE_ALBUM_BY_ID_ALBUM_2_ARGUMENT = "call SP_UPDATE_ALBUM_BY_ID_ALBUM_2_ARGUMENT(?,?,?)";
 
-    private final String SQL_UPDATE_IMAGE_ALBUM_BY_ID_ALBUM = "UPDATE album set path_image = ? WHERE id_album = ? ";
+    private final String SQL_UPDATE_IMAGE_ALBUM_BY_ID_ALBUM = "call SP_UPDATE_IMAGE_ALBUM_BY_ID_ALBUM(?,?)";
 
-    private final String SQL_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM album LIMIT  ? ";
+    private final String SQL_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM = "call SP_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM(?)";
 
-    private final String SQL_DELETE_ALBUM_BY_ID_ALBUM = "DELETE FROM album WHERE id_album = ? ";
+    private final String SQL_DELETE_ALBUM_BY_ID_ALBUM = "call SP_DELETE_ALBUM_BY_ID_ALBUM(?)";
 
-    private final String SQL_DELETE_ALBUM_BY_NAME_ALBUM_IS_NULL_AND_NAME_SINGER_IS_NULL = "DELETE FROM album WHERE name_album is null and name_singer is null";
+    private final String SQL_DELETE_ALBUM_BY_NAME_ALBUM_IS_NULL_AND_NAME_SINGER_IS_NULL = "call SP_DELETE_ALBUM_BY_NAME_ALBUM_IS_NULL_AND_NAME_SINGER_IS_NULL()";
 
     public Album findAlbumByIdAlbum(String idAlbum) {
         Album album = jdbcTemplate.queryForObject(SQL_READ_ALBUM_BY_ID_ALBUM, new AlbumMapper(), idAlbum);
