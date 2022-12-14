@@ -1267,28 +1267,33 @@ public class AdminController {
         if (loginSuccess) {
             Boolean isRoleAdmin = roleDTO.getRoleUser().compareTo(Constant.ROLE_ADMIN) == 0 ? true : false;
             if (isRoleAdmin) {
-                String idUser = roleDTO.getIdUser();
-                User user = new User();
-                UserDTO userDTO = userDAO.readUserByIdUser(idUser);
-                String nameUser = userDTO.getNameUser();
-                String pathImagerUser = userDTO.getPathImage();
-                String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
-                if (pathImagerUser != null) {
-                    urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImagerUser;
+                try {
+                    String idUser = roleDTO.getIdUser();
+                    User user = new User();
+                    UserDTO userDTO = userDAO.readUserByIdUser(idUser);
+                    String nameUser = userDTO.getNameUser();
+                    String pathImagerUser = userDTO.getPathImage();
+                    String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
+                    if (pathImagerUser != null) {
+                        urlPathImageUser = Constant.URL_STATIC_IMAGE + pathImagerUser;
+                    }
+                    modelAndView.addObject("session_id", idSession);
+                    modelAndView.addObject("name_user", nameUser);
+                    modelAndView.addObject("path_image_user", urlPathImageUser);
+
+                    String pathImage = user.getPathImg();
+                    String urlImage = null;
+                    if (pathImage != null) {
+                        urlImage = Constant.URL_STATIC_IMAGE + pathImage;
+                    }
+
+                    modelAndView.addObject("urlImage", urlImage);
+
+                    modelAndView.addObject("user", user);
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    System.out.println(message);
                 }
-                modelAndView.addObject("session_id", idSession);
-                modelAndView.addObject("name_user", nameUser);
-                modelAndView.addObject("path_image_user", urlPathImageUser);
-
-                String pathImage = user.getPathImg();
-                String urlImage = null;
-                if (pathImage != null) {
-                    urlImage = Constant.URL_STATIC_IMAGE + pathImage;
-                }
-
-                modelAndView.addObject("urlImage", urlImage);
-
-                modelAndView.addObject("user", user);
 
             } else {
                 modelAndView.setViewName(urlRedirectHome);

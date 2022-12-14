@@ -24,41 +24,41 @@ public class SoundDAO {
 
         // sql
 
-        private final String SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "INSERT INTO favorite_sound_user VALUES (?,?)";
+        private final String SQL_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "call SP_CREATE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER(?,?)";
 
-        private final String SQL_READ_ALL_SOUND = "SELECT * FROM sound";
+        private final String SQL_READ_ALL_SOUND = "call SP_READ_ALL_SOUND()";
 
-        private final String SQL_READ_SOUND_BY_ID_SOUND = "SELECT * FROM sound WHERE id_sound = ?";
+        private final String SQL_READ_SOUND_BY_ID_SOUND = "call SP_READ_SOUND_BY_ID_SOUND(?)";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_USER = "SELECT * FROM sound WHERE id_user = ?";
+        private final String SQL_READ_ALL_SOUND_BY_ID_USER = "call SP_READ_ALL_SOUND_BY_ID_USER(?)";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "SELECT * FROM sound_album WHERE id_playlist = ?";
+        private final String SQL_READ_ALL_SOUND_BY_ID_PLAYLIST = "call SP_READ_ALL_SOUND_BY_ID_PLAYLIST(?)";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM = "SELECT * FROM sound WHERE id_album = ?";
+        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM = "call SP_READ_ALL_SOUND_BY_ID_ALBUM(?)";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "SELECT * FROM favorite_sound_user WHERE id_user = ? ";
+        private final String SQL_READ_ALL_SOUND_BY_ID_USER_FROM_FAVORITE_SOUND_USER = "call SP_READ_ALL_SOUND_BY_ID_USER_FROM_FAVORITE_SOUND_USER(?)";
 
-        private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "SELECT * FROM sound ORDER BY RAND() LIMIT ? ";
+        private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "call SP_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM(?)";
 
-        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "SELECT * FROM sound WHERE id_album IS NULL";
+        private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "call SP_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL()";
 
-        private final String SQL_UPDATE_SOUND = "UPDATE sound SET name_sound = ?, id_type_sound = ?  WHERE id_sound = ? ";
+        private final String SQL_UPDATE_SOUND = "call SP_UPDATE_SOUND(?,?,?) ";
 
-        private final String SQL_UPDATE_SOUND_3_ARGUMENT = "UPDATE , nameSingersound SET name_sound = ?, name_singer = ? WHERE id_sound = ?";
+        private final String SQL_UPDATE_SOUND_3_ARGUMENT = "call SP_UPDATE_SOUND_3_ARGUMENT(?,?,?)";
 
-        private final String SQL_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND = "UPDATE sound set name_sound = ?, name_singer = ? WHERE id_sound = ?";
+        private final String SQL_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND = "call SP_UPDATE_NAME_SOUND_AND_NAME_SINGER_BY_ID_SOUND(?,?,?)";
 
-        private final String SQL_UPDATE_ID_ALBUM_BY_ID_SOUND = "UPDATE sound  SET id_album = ?  where id_sound = ? ";
+        private final String SQL_UPDATE_ID_ALBUM_BY_ID_SOUND = "call SP_UPDATE_ID_ALBUM_BY_ID_SOUND(?,?)";
 
-        private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "UPDATE sound SET id_album = null WHERE id_album = ?";
+        private final String SQL_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND = "call SP_UPDATE_ID_ALBUM_IS_NULL_BY_ID_ALBUM_FROM_SOUND(?)";
 
-        private final String SQL_UPDATE_PATH_IMAGE_BY_ID_SOUND = "UPDATE sound set path_image = ? where id_sound = ? ";
+        private final String SQL_UPDATE_PATH_IMAGE_BY_ID_SOUND = "call SP_UPDATE_PATH_IMAGE_BY_ID_SOUND(?,?)";
 
-        private final String SQL_UPDATE_PATH_AUDIO_BY_ID_SOUND = "UPDATE sound set path_audio = ? where id_sound = ? ";
+        private final String SQL_UPDATE_PATH_AUDIO_BY_ID_SOUND = "call SP_UPDATE_PATH_AUDIO_BY_ID_SOUND(?,?)";
 
-        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "DELETE FROM sound WHERE id_sound = ?";
+        private final String SQL_DELETE_SOUND_BY_ID_SOUND = "call SP_DELETE_SOUND_BY_ID_SOUND(?)";
 
-        private final String SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "DELETE FROM favorite_sound_user WHERE id_sound = ? and id_user = ? ";
+        private final String SQL_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER = "call SP_DELETE_FAVORITE_SOUND_USER_BY_ID_SOUND_AND_ID_USER(?,?)";
 
         public void createFavoriteSoundUserByIdSoundAndIdUser(String idSound, String idUser) {
                 jdbcTemplate.update(

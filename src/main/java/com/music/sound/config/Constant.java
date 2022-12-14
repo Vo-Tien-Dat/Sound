@@ -4,9 +4,9 @@ public interface Constant {
 
     public final String REDIRECT = "redirect:/";
 
-    public final String PATH_STATIC_SAVE_AUDIO = "/media/lifegoeson/7A66F4EE66F4ABCF/backup_file/IT_hk1nam4/LTW/Sound/src/main/resources/static/assets/audio/data/";
+    public final String PATH_STATIC_SAVE_AUDIO = "D:\\doan\\Sound\\src\\main\\resources\\static\\assets\\audio\\data\\";
 
-    public final String PATH_STATIC_SAVE_IMG = "/media/lifegoeson/7A66F4EE66F4ABCF/backup_file/IT_hk1nam4/LTW/Sound/src/main/resources/static/assets/img/data/";
+    public final String PATH_STATIC_SAVE_IMG = "D:\\doan\\Sound\\src\\main\\resources\\static\\assets\\img\\data\\";
 
     public final String URL_STATIC_IMAGE = "/assets/img/data/";
 
@@ -33,5 +33,7 @@ public interface Constant {
     public final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public final String ROLE_USER = "ROLE_USER";
+
+    public final String KEY_DES = "votiendat";
 
 }
