@@ -167,14 +167,18 @@ public class UserDAO {
     }
 
     // feature: update User
-    public void updateUser(UserDTO user) {
+    public void updateUser(UserDTO user) throws Exception {
         String idUser = user.getIdUser();
         String userName = user.getUserName();
         String password = user.getPassword();
         String email = user.getEmail();
         String nameUser = user.getNameUser();
         String description = user.getDescription();
-        jdbcTemplate.update(SQL_UPDATE_USER_BY_ID_USER, userName, password, email, nameUser, description, idUser);
+        DES des = new DES(Constant.KEY_DES);
+        String encryptUserName = des.encrypt(userName);
+        String encryptPassword = des.encrypt(password);
+        jdbcTemplate.update(SQL_UPDATE_USER_BY_ID_USER, encryptUserName, encryptPassword, email, nameUser, description,
+                idUser);
     }
 
     public void deleteUserByIdUser(String idUser) {

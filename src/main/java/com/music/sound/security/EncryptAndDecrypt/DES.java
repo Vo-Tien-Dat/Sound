@@ -35,18 +35,4 @@ public class DES {
         String decryptStr = new String(byteDecrypt);
         return decryptStr;
     }
-
-    public static void main(String[] args) {
-        try {
-            DES des = new DES("VO_TIEN_DAT");
-            String encryptStr = des.encrypt("vo_tien_dat_hello");
-            String decryptStr = des.decrypt(encryptStr);
-            System.out.println(encryptStr);
-            System.out.println(decryptStr);
-
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            System.out.println(message);
-        }
-    }
 }
