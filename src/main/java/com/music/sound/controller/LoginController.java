@@ -197,7 +197,7 @@ public class LoginController {
                     modelAndView.addObject("register", true);
                     modelAndView.setViewName(urlRedirectLogin);
                 } catch (Exception ex) {
-                    String message = "user name or email is existed";
+                    String message = "username  hoặc email đã tồn tại";
                     modelAndView.addObject("message_sign_up", message);
                     modelAndView.addObject("register", true);
                     modelAndView.setViewName(urlRedirectLogin);

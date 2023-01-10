@@ -34,6 +34,8 @@ public class PlaylistDAO {
 
     private final String SQL_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM = "call SP_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM(?)";
 
+    private final String SQL_READ_ALL_PLAYLIST_WITHOUT_FAVORITE = "SELECT * FROM playlist LEFT JOIN (SELECT * FROM favorite_playlist_user where id_user = ?) as playlist1 on playlist.id_playlist = playlist1.id_playlist where playlist1.id_playlist IS NULL";
+
     private final String SQL_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER = "call SP_READ_ALL_PLAYLIST_BY_ID_USER_FROM_FAVORITE_PLAYLIST_USER(?)";
 
     private final String SQL_READ_ALL_PLAYLIST = "call SP_READ_ALL_PLAYLIST()";
@@ -75,6 +77,14 @@ public class PlaylistDAO {
     public List<PlaylistDTO> readAllPLaylistHaveLimit(int rowLimit) {
         List<PlaylistDTO> records = jdbcTemplate.query(
                 SQL_READ_ALL_PLAYLIST_HAVE_LIMIT_AND_RANDOM, new PlaylistReadMapper(), new Object[] { rowLimit });
+        return records;
+    }
+
+    public List<PlaylistDTO> readAllPlaylistWithoutFavorite(String idUser) {
+        List<PlaylistDTO> records = new ArrayList<>();
+        records = jdbcTemplate.query(
+                SQL_READ_ALL_PLAYLIST_WITHOUT_FAVORITE, new PlaylistReadMapper(),
+                new Object[] { idUser });
         return records;
     }
 

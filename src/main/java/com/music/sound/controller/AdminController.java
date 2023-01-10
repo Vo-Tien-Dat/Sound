@@ -2,7 +2,6 @@ package com.music.sound.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1201,7 +1200,8 @@ public class AdminController {
         return modelAndView;
     }
 
-    // all feature CRUD User
+    // ----------------------------------------------------- SOLVE: CRUD USER
+    // ---------------------------------------------
 
     @RequestMapping(value = "user", method = RequestMethod.GET)
     public ModelAndView getIndexUser(HttpSession session) {

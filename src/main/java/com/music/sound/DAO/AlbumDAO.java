@@ -22,7 +22,7 @@ public class AlbumDAO {
     // sql
     private final String SQL_READ_ALL_ALBUM = "call SP_READ_ALL_ALBUM()";
 
-    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "call SP_READ_ALBUM_BY_ID_ALBUM(?)";
+    private final String SQL_READ_ALBUM_BY_ID_ALBUM = "SELECT * FROM album WHERE id_album = ?";
 
     private final String SQL_READ_ALBUM_BY_ID_USER = "call SP_READ_ALBUM_BY_ID_USER(?)";
 
@@ -40,21 +40,11 @@ public class AlbumDAO {
 
     private final String SQL_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM = "call SP_READ_ALL_ALBUM_HAVE_LIMIT_AND_RANDOM(?)";
 
+    private final String SQL_READ_ALL_ALBUM_WITHOUT_FAVORITE = "SELECT * FROM album LEFT JOIN (SELECT * FROM favorite_album_user where id_user = ?) as album1 on album.id_album = album1.id_album where album1.id_album IS NULL";
+
     private final String SQL_DELETE_ALBUM_BY_ID_ALBUM = "call SP_DELETE_ALBUM_BY_ID_ALBUM(?)";
 
     private final String SQL_DELETE_ALBUM_BY_NAME_ALBUM_IS_NULL_AND_NAME_SINGER_IS_NULL = "call SP_DELETE_ALBUM_BY_NAME_ALBUM_IS_NULL_AND_NAME_SINGER_IS_NULL()";
-
-    public Album findAlbumByIdAlbum(String idAlbum) {
-        Album album = jdbcTemplate.queryForObject(SQL_READ_ALBUM_BY_ID_ALBUM, new AlbumMapper(), idAlbum);
-        return album;
-    }
-
-    public List<Album> findAllAlbum() {
-
-        List<Album> records = jdbcTemplate.query(SQL_READ_ALL_ALBUM, new AlbumMapper());
-
-        return records;
-    }
 
     public List<AlbumDTO> readAllAlbum() {
         List<AlbumDTO> records = jdbcTemplate.query(SQL_READ_ALL_ALBUM, new AlbumReadMapper());
@@ -68,9 +58,17 @@ public class AlbumDAO {
         return records;
     }
 
+    public List<AlbumDTO> readAllAlbumWithoutFavorite(String idUser) {
+        List<AlbumDTO> records = jdbcTemplate.query(
+                SQL_READ_ALL_ALBUM_WITHOUT_FAVORITE, new AlbumReadMapper(),
+                new Object[] { idUser });
+        return records;
+    }
+
     public AlbumDTO readAlbumByIdAlbum(String idAlbum) {
         AlbumDTO record = jdbcTemplate.queryForObject(SQL_READ_ALBUM_BY_ID_ALBUM, new AlbumReadMapper(),
-                new Object[] { idAlbum });
+                idAlbum);
+
         return record;
     }
 

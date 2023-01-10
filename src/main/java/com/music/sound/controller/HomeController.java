@@ -47,6 +47,7 @@ public class HomeController {
 
     @RequestMapping(value = { "/home/**", "/", "//" }, method = RequestMethod.GET)
     public ModelAndView getHome(HttpSession session) {
+
         String idSession = session.getId();
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
@@ -68,7 +69,7 @@ public class HomeController {
                     String idUser = roleDTO.getIdUser();
                     UserDTO user = userDAO.readUserByIdUser(idUser);
                     String nameUser = user.getNameUser();
-                    sounds = soundDAO.readAllSoundHaveLimit(Constant.LIMIT_SOUND_HOME);
+                    sounds = soundDAO.readAllSoundWithoutFavorite(idUser);
 
                     String pathImageUser = user.getPathImage();
                     String urlPathImageUser = Constant.DEFAULT_USER_IMAGE;
@@ -80,7 +81,7 @@ public class HomeController {
                     modelAndView.addObject("path_image_user", urlPathImageUser);
 
                     // hiển thị danh sách album
-                    albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
+                    albums = albumDAO.readAllAlbumWithoutFavorite(idUser);
                     for (AlbumDTO album : albums) {
                         String pathImage = album.getPathImage();
                         String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
@@ -92,7 +93,7 @@ public class HomeController {
                     modelAndView.addObject("albums", albums);
 
                     // hiển thị danh sách playlist
-                    playlists = playlistDAO.readAllPLaylistHaveLimit(Constant.LIMIT_PLAYLIST_HOME);
+                    playlists = playlistDAO.readAllPlaylistWithoutFavorite(idUser);
                     for (PlaylistDTO playlist : playlists) {
                         String pathImage = playlist.getPathImage();
                         String urlPathImage = Constant.DEFAULT_SOUND_IMAGE;
@@ -242,7 +243,6 @@ public class HomeController {
         RoleDTO roleDTO = (RoleDTO) session.getAttribute(idSession);
         Boolean loginSuccess = roleDTO != null ? true : false;
 
-        String fileView = "/page/home/index";
         String urlRedirectHome = "redirect:/home";
         String urlRedirectLogin = "redirect:/login";
         String urlRedirectAdmin = "redirect:/admin/*";
@@ -394,7 +394,7 @@ public class HomeController {
         if (loginSuccess) {
             Boolean isRoleUser = roleDTO.getRoleUser().compareTo(Constant.ROLE_USER) == 0 ? true : false;
             if (isRoleUser) {
-                List<PlaylistDTO> playlists = new ArrayList<>();
+
                 try {
                     // hiển thị user của người dùng
                     String idUser = roleDTO.getIdUser();
@@ -409,17 +409,13 @@ public class HomeController {
                     modelAndView.addObject("session_id", idSession);
                     modelAndView.addObject("name_user", nameUser);
                     modelAndView.addObject("path_image_user", urlPathImageUser);
-
+                    idAlbum = idAlbum.replace("vande.mp3", "");
                     AlbumDTO album = albumDAO.readAlbumByIdAlbum(idAlbum);
                     List<SoundDTO> sounds = soundDAO.readAllSoundByIdAlbum(idAlbum);
                     List<AlbumDTO> albums = albumDAO.readAllAlbumHaveLimit(Constant.LIMIT_ALBUM_HOME);
-                    if (album == null) {
-                        modelAndView.setViewName(urlRediect);
-                    } else {
-                        modelAndView.addObject("album", album);
-                        modelAndView.addObject("sounds", sounds);
-                        modelAndView.addObject("albums", albums);
-                    }
+                    modelAndView.addObject("album", album);
+                    modelAndView.addObject("sounds", sounds);
+                    modelAndView.addObject("albums", albums);
                 } catch (Exception ex) {
                     String message = ex.getMessage();
                     System.out.println(message);

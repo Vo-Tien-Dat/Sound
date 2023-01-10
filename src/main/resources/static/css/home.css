@@ -532,7 +532,7 @@ header .master_play .vol input{
  }
 
  header .song_side .popular-song-container{
-    height: 48%;
+    height: 35rem;
     overflow-y: scroll;
  }
  header .song_side .popular-song-container::-webkit-scrollbar{
@@ -785,3 +785,17 @@ a {
    background-color: #e9e9eb;
 }
 
+
+
+.overflow-y-scrollbar{
+    overflow-y: scroll;
+}
+
+.overflow-y-scrollbar::-webkit-scrollbar{
+    display: none; 
+}
+
+.overflow-y-scrollbar{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

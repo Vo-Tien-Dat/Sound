@@ -147,30 +147,30 @@
                                         </thead>
                                         <tbody>
                                             <th:block th:if = "${sounds != null}">
-                                            <th:block th:each="sound : ${sounds}">
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="sound-item songItem" style="display: flex;">
-                                                        <i class="bi bi-music-note"></i>
-                                                        <p th:text="${sound.pathAudio}" style="display: none;" class="audio-play-music"></p>
-                                                         <p th:text="${sound.pathImage}" style="display: none;" class="img-play-music"></p>
-                                                        <div class="sound-item-img">
-                                                            <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="" style="max-width: 50px;">
-                                                            <i class="bi playListPlay bi-play-circle-fill"></i> 
-                                                        </div>
-                                                        <div class="sound-item-content">
-                                                            <h6 th:text = "${sound.nameSound}"></h6>
-                                                            <p th:text = "${sound.nameSinger}"></p>
-                                                        </div>  
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <div class="sound-name__album">
-                                                        <i class="bi bi-heart"></i>
-                                                    </div>
-                                                </td>
-                                            </tr> 
-                                            </th:block>
+                                                <th:block th:each="sound : ${sounds}">
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="sound-item songItem" style="display: flex;">
+                                                                <i class="bi bi-music-note"></i>
+                                                                <p th:text="${sound.pathAudio}" style="display: none;" class="audio-play-music"></p>
+                                                                <p th:text="${sound.pathImage}" style="display: none;" class="img-play-music"></p>
+                                                                <div class="sound-item-img">
+                                                                    <img th:src="@{${'/assets/img/data/'+sound.pathImage}}" alt="" style="max-width: 50px;">
+                                                                    <i class="bi playListPlay bi-play-circle-fill"></i> 
+                                                                </div>
+                                                                <div class="sound-item-content">
+                                                                    <h6 th:text = "${sound.nameSound}"></h6>
+                                                                    <p th:text = "${sound.nameSinger}"></p>
+                                                                </div>  
+                                                            </div>
+                                                        </th>
+                                                        <td>
+                                                            <div class="sound-name__album">
+                                                                <i class="bi bi-heart"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr> 
+                                                </th:block>
                                             </th:block>                                                                                                                             
                                         </tbody>
                                     </table>
@@ -180,17 +180,17 @@
                                 <div class="albums-suggestion">
                                     <h4>ALBUMS SUGGESTION</h4>
                                     <th:block th:if = "${albums != null}">
-                                    <th:block th:each = "album : ${albums}">
-                                        <div class="album-suggestion_item">
-                                            <a th:href="@{'/album/'+${album.idAlbum}}">
-                                                <img th:src="@{${'/assets/img/data/'+album.pathImage}}" alt="">
-                                            </a>
-                                            <div class="sug-content">
-                                                <h6 th:text="${album.nameAlbum}"></h6>
-                                                <p th:text="${album.nameSinger}"></p>
-                                            </div>
-                                        </div>   
-                                    </th:block>
+                                        <th:block th:each = "album : ${albums}">
+                                            <div class="album-suggestion_item">
+                                                <a th:href="@{'/album/'+${album.idAlbum}}">
+                                                    <img th:src="@{${'/assets/img/data/'+album.pathImage}}" alt="">
+                                                </a>
+                                                <div class="sug-content">
+                                                    <h6 th:text="${album.nameAlbum}"></h6>
+                                                    <p th:text="${album.nameSinger}"></p>
+                                                </div>
+                                            </div>   
+                                        </th:block>
                                     </th:block>                                                                    
                                 </div>
                             </div>

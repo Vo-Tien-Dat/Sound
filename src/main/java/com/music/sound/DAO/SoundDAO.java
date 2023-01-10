@@ -40,6 +40,8 @@ public class SoundDAO {
 
         private final String SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM = "call SP_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM(?)";
 
+        private final String SQL_READ_ALL_SOUND_WITHOUT_FAVORITE = "SELECT * FROM sound LEFT JOIN (SELECT * FROM favorite_sound_user where id_user = ?) as sound1 on sound.id_sound = sound1.id_sound where sound1.id_sound IS NULL";
+
         private final String SQL_READ_ALL_SOUND_WITH_KEY_DETAIL = "SELECT * FROM sound WHERE name_sound = ? ";
 
         private final String SQL_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL = "call SP_READ_ALL_SOUND_BY_ID_ALBUM_IS_NULL()";
@@ -108,6 +110,13 @@ public class SoundDAO {
                 List<SoundDTO> records = new ArrayList<>();
                 records = jdbcTemplate.query(SQL_READ_ALL_SOUND_HAVE_LIMIT_AND_RANDOM, new SoundReadMapper(),
                                 new Object[] { rowLimit });
+                return records;
+        }
+
+        public List<SoundDTO> readAllSoundWithoutFavorite(String idUser) {
+                List<SoundDTO> records = new ArrayList<>();
+                records = jdbcTemplate.query(SQL_READ_ALL_SOUND_WITHOUT_FAVORITE, new SoundReadMapper(),
+                                new Object[] { idUser });
                 return records;
         }
 
